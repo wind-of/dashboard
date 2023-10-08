@@ -1,13 +1,14 @@
 <script setup>
-import { computed } from "vue"
+import { computed, toRefs } from "vue"
 import { DARK_THEME, LIGHT_THEME } from "@/constants"
-const { isActive } = defineProps({
+const props = defineProps({
 	isActive: {
 		type: Boolean,
 		default: false
 	}
 })
-const theme = computed(() => isActive ? DARK_THEME : LIGHT_THEME)
+const { isActive } = toRefs(props)
+const theme = computed(() => isActive.value ? DARK_THEME : LIGHT_THEME)
 </script>
 
 <template>

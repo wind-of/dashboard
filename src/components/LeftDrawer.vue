@@ -1,12 +1,22 @@
 <script setup>
-import IconLogo from "@/components/icons/IconLogo.vue"
-import IconButton from "@/components/IconButton.vue"
-import IconHome from "@/components/icons/IconHome.vue"
-import IconStorage from "@/components/icons/IconStorage.vue"
-import IconKanban from "@/components/icons/IconKanban.vue"
-import IconSettings from "@/components/icons/IconSettings.vue"
-import IconChat from "@/components/icons/IconChat.vue"
-import IconVisual from "@/components/icons/IconVisual.vue"
+import { ref } from "vue"
+import IconLogo from "./icons/IconLogo.vue"
+import IconButton from "./IconButton.vue" 
+import IconHome from "./icons/IconHome.vue"
+import IconStorage from "./icons/IconStorage.vue"
+import IconKanban from "./icons/IconKanban.vue"
+import IconSettings from "./icons/IconSettings.vue"
+import IconChat from "./icons/IconChat.vue"
+import IconVisual from "./icons/IconVisual.vue"
+
+const isActive = ref(false)
+
+setTimeout(() => {
+	isActive.value = true
+	setTimeout(() => {
+		isActive.value = false
+	}, 2000)
+}, 2000)
 
 </script>
 
@@ -19,7 +29,7 @@ import IconVisual from "@/components/icons/IconVisual.vue"
 		<nav class="navigation">
 			<ul class="navigation-list">
 				<li class="navigation-item">
-					<IconButton v-slot="{ theme }">
+					<IconButton v-slot="{ theme }" :isActive="isActive">
 						<IconHome :theme="theme"/>
 					</IconButton>
 				</li>
