@@ -17,5 +17,11 @@ import AppHeader from './components/AppHeader.vue';
 </template>
 
 <style scoped>
-
+.app {
+  display: flex;
+}
+.content {
+  width: 100%;
+  min-height: 100vh;
+}
 </style>

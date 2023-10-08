@@ -19,7 +19,7 @@ import IconVisual from "./icons/IconVisual.vue"
 		<nav class="navigation">
 			<ul class="navigation-list">
 				<li class="navigation-item">
-					<IconButton v-slot="{ theme }" :isActive="isActive">
+					<IconButton v-slot="{ theme }" :isActive="true">
 						<IconHome :theme="theme"/>
 					</IconButton>
 				</li>
