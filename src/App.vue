@@ -1,15 +1,14 @@
 <script setup>
 import { RouterView } from 'vue-router'
 import LeftDrawer from './components/LeftDrawer.vue';
+import AppHeader from './components/AppHeader.vue';
 </script>
 
 <template>
   <section class="app">
-    <LeftDrawer/>
+    <LeftDrawer />
     <section class="content">
-      <header class="header">
-        
-      </header>
+      <AppHeader />
       <main>
         <RouterView />
       </main>
