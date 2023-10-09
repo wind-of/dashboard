@@ -12,6 +12,7 @@ import CanbanTableColumnList from "./CanbanTableColumnList.vue"
 
 <style scoped>
 .column {
+	min-width: 235px;
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
