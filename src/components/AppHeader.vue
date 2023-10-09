@@ -59,11 +59,10 @@ import IconNotification from './icons/IconNotification.vue';
 	border-radius: 20px;
 	background: grey;
 }
-.dropdown {
+.dropdown, .profile, .notification-icon {
 	cursor: pointer;
 }
 .notification-icon {
-	cursor: pointer;
 	display: flex;
 	align-items: center;
 }
