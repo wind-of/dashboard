@@ -9,9 +9,9 @@ import AppHeader from './components/AppHeader.vue';
     <LeftDrawer />
     <section class="content">
       <AppHeader />
-      <main>
+      <section class="body">
         <RouterView />
-      </main>
+      </section>
     </section>
   </section>
 </template>
@@ -23,5 +23,9 @@ import AppHeader from './components/AppHeader.vue';
 .content {
   width: 100%;
   min-height: 100vh;
+}
+.body {
+  padding: 30px;
+  overflow: scroll;
 }
 </style>
