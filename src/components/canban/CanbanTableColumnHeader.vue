@@ -1,11 +1,17 @@
 <script setup>
 import IconOptions from "../icons/IconOptions.vue"
 import IconPlus from "../icons/IconPlus.vue"
+defineProps({
+	title: {
+		type: String,
+		default: "Column Header"
+	}
+})
 </script>
 
 <template>
 	<header class="header">
-		<h3 class="title">ColumnHeader</h3>
+		<h3 class="title">{{ title }}</h3>
 		<section class="settings">
 			<i class="options-icon"><IconOptions /></i>
 			<i class="add-icon"><IconPlus /></i>

@@ -1,12 +1,18 @@
 <script setup>
 import CanbanTableColumnHeader from "./CanbanTableColumnHeader.vue"
 import CanbanTableColumnList from "./CanbanTableColumnList.vue"
+defineProps({
+	column: {
+		type: Object,
+		required: true
+	}
+})
 </script>
 
 <template>
 	<section class="column">
-		<CanbanTableColumnHeader />
-		<CanbanTableColumnList />
+		<CanbanTableColumnHeader :title="column.title"/>
+		<CanbanTableColumnList :tasks="column.tasks" />
 	</section>
 </template>
 

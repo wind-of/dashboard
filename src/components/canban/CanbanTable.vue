@@ -1,10 +1,16 @@
 <script setup>
 import CanbanTableColumn from './CanbanTableColumn.vue';
+defineProps({
+	columns: {
+		type: Array,
+		default: () => []
+	}
+})
 </script>
 
 <template>
 	<section class="columns">
-		<CanbanTableColumn v-for="i in 3" :key="i" />
+		<CanbanTableColumn v-for="column in columns" :key="column.id" :column="column" />
 	</section>
 </template>
 

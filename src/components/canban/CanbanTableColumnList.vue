@@ -1,10 +1,16 @@
 <script setup>
-import CanbanTableColumnListItem from './CanbanTableColumnListItem.vue';
+import CanbanTableColumnListItem from './CanbanTableColumnListItem.vue'
+defineProps({
+	tasks: {
+		type: Array,
+		default: () => []
+	}
+})
 </script>
 
 <template>
 	<section class="list">
-		<CanbanTableColumnListItem v-for="i in 3" :key="i"/>
+		<CanbanTableColumnListItem v-for="task in tasks" :key="task.id" :task="task"/>
 	</section>
 </template>
 

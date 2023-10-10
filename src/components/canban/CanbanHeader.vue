@@ -1,6 +1,12 @@
+<script setup>
+const props = defineProps({ 
+	title: { type: String, default: "Tasks" } 
+})
+</script>
+
 <template>
 	<header class="header">
-		<h1 class="title">Tasks</h1>
+		<h1 class="title">{{ props.title }}</h1>
 	</header>
 </template>
 
