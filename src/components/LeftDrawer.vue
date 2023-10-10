@@ -1,6 +1,6 @@
 <script setup>
 import IconLogo from "./icons/IconLogo.vue"
-import IconButton from "./IconButton.vue"
+import IconButton from "./common/IconButton.vue"
 import IconHome from "./icons/IconHome.vue"
 import IconStorage from "./icons/IconStorage.vue"
 import IconKanban from "./icons/IconKanban.vue"
