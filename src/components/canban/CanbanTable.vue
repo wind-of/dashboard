@@ -1,23 +1,35 @@
 <script setup>
+import { reactive } from "vue"
+import draggable from "vuedraggable"
 import CanbanTableColumn from "./CanbanTableColumn.vue"
-defineProps({
+const props = defineProps({
   columns: {
     type: Array,
     default: () => []
   }
 })
+const columns = reactive(props.columns)
 </script>
 
 <template>
-  <section class="columns">
-    <CanbanTableColumn v-for="column in columns" :key="column.id" :column="column" />
+  <section class="wrapper">
+    <draggable
+      class="columns"
+      :list="columns"
+      group="columns"
+      itemKey="id"
+    >
+      <template #item="{ element: column }">
+        <CanbanTableColumn :key="column.id" :column="column" />
+      </template>
+    </draggable>
   </section>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .columns {
+  @include flex-row;
   width: 100%;
-  display: flex;
   gap: 16px;
 }
 </style>
