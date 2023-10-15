@@ -12,6 +12,6 @@ const generateColumns = (length) => Array.from({ length }, () => column())
 
 export const project = {
   id: uid("project"),
-  title: "Project Title",
+  title: "Tasks",
   columns: generateColumns(3)
 }

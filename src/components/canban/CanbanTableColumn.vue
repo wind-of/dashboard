@@ -7,12 +7,16 @@ defineProps({
     required: true
   }
 })
+const emit = defineEmits(["onListChange"])
+function handleListChange(message) {
+  emit("onListChange", message)
+}
 </script>
 
 <template>
   <section class="column">
     <CanbanTableColumnHeader :title="column.title" />
-    <CanbanTableColumnList :tasks="column.tasks" />
+    <CanbanTableColumnList :tasks="column.tasks" @onListChange="handleListChange"/>
   </section>
 </template>
 

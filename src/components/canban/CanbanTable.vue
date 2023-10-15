@@ -1,5 +1,5 @@
 <script setup>
-import { reactive } from "vue"
+import { computed, reactive } from "vue"
 import draggable from "vuedraggable"
 import CanbanTableColumn from "./CanbanTableColumn.vue"
 const props = defineProps({
@@ -8,19 +8,30 @@ const props = defineProps({
     default: () => []
   }
 })
-const columns = reactive(props.columns)
+const emit = defineEmits(["onColumnListChange"])
+const columnsList = computed({
+  get() {
+    return props.columns
+  },
+  set(updatedColumns) {
+    emit("onColumnChange", updatedColumns)
+  }
+})
+function handleColumnListChange(data) {
+  emit("onColumnListChange", data)
+}
 </script>
 
 <template>
   <section class="wrapper">
     <draggable
       class="columns"
-      :list="columns"
+      v-model="columnsList"
       group="columns"
       itemKey="id"
     >
-      <template #item="{ element: column }">
-        <CanbanTableColumn :key="column.id" :column="column" />
+      <template #item="{ index }">
+        <CanbanTableColumn :key="columns[index].id" :column="columns[index]" @onListChange="handleColumnListChange({ updatedList: $event, columnId: columns[index].id })"/>
       </template>
     </draggable>
   </section>

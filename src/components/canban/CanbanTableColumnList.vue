@@ -1,26 +1,34 @@
 <script setup>
-import { reactive } from "vue"
 import draggable from "vuedraggable"
 import CanbanTableColumnListItem from "./CanbanTableColumnListItem.vue"
+import { computed } from "vue"
 const props = defineProps({
   tasks: {
     type: Array, 
     default: () => []
   }
 })
-const tasks = reactive(props.tasks)
+const emit = defineEmits(["onListChange"])
+const tasks = computed({
+  get() {
+    return props.tasks
+  },
+  set(updatedTasks) {
+    emit("onListChange", updatedTasks)
+  }
+})
 </script>
-
+ 
 <template>
   <section class="list">
     <draggable
       class="list-group"
-      :list="tasks"
+      v-model="tasks" 
       group="tasks"
       itemKey="id"
     >
-      <template #item="{ element: task }">
-        <CanbanTableColumnListItem :key="task.id" :task="task" />
+      <template #item="{ index }">
+        <CanbanTableColumnListItem :key="tasks[index].id" :task="tasks[index]" />
       </template>
     </draggable>
   </section>
