@@ -7,6 +7,7 @@ defineProps({
     default: "Column Header"
   }
 })
+defineEmits(["onCreateTask"])
 </script>
 
 <template>
@@ -14,7 +15,7 @@ defineProps({
     <h3 class="title">{{ title }}</h3>
     <section class="settings">
       <i class="options-icon"><IconOptions /></i>
-      <i class="add-icon"><IconPlus /></i>
+      <i class="add-icon" @click="$emit('onCreateTask')"><IconPlus /></i>
     </section>
   </header>
 </template>

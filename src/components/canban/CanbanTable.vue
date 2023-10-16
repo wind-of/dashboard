@@ -1,5 +1,5 @@
 <script setup>
-import { computed, reactive } from "vue"
+import { computed } from "vue"
 import draggable from "vuedraggable"
 import CanbanTableColumn from "./CanbanTableColumn.vue"
 const props = defineProps({
@@ -8,7 +8,7 @@ const props = defineProps({
     default: () => []
   }
 })
-const emit = defineEmits(["onColumnListChange"])
+const emit = defineEmits(["onListChange", "onTaskCreate"])
 const columnsList = computed({
   get() {
     return props.columns
@@ -17,8 +17,11 @@ const columnsList = computed({
     emit("onColumnChange", updatedColumns)
   }
 })
-function handleColumnListChange(data) {
-  emit("onColumnListChange", data)
+function handleColumnListChange(updatedList, columnId) {
+  emit("onListChange", { updatedList, columnId })
+}
+function handleColumnTaskCreation(columnId) {
+  emit("onTaskCreate", columnId)
 }
 </script>
 
@@ -31,7 +34,12 @@ function handleColumnListChange(data) {
       itemKey="id"
     >
       <template #item="{ index }">
-        <CanbanTableColumn :key="columns[index].id" :column="columns[index]" @onListChange="handleColumnListChange({ updatedList: $event, columnId: columns[index].id })"/>
+        <CanbanTableColumn 
+          :key="columns[index].id" 
+          :column="columns[index]" 
+          @onListChange="handleColumnListChange($event, columns[index].id)"
+          @onCreateTask="handleColumnTaskCreation"
+        />
       </template>
     </draggable>
   </section>

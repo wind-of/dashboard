@@ -20,27 +20,23 @@ const tasks = computed({
 </script>
  
 <template>
-  <section class="list">
-    <draggable
-      class="list-group"
-      v-model="tasks" 
-      group="tasks"
-      itemKey="id"
-    >
-      <template #item="{ index }">
-        <CanbanTableColumnListItem :key="tasks[index].id" :task="tasks[index]" />
-      </template>
-    </draggable>
-  </section>
+  <draggable
+    class="list-group"
+    v-model="tasks" 
+    group="tasks"
+    itemKey="id"
+  >
+    <template #item="{ index }">
+      <CanbanTableColumnListItem :key="tasks[index].id" :task="tasks[index]" />
+    </template>
+  </draggable>
 </template>
 
 <style scoped>
-.list {
+.list-group {
+  min-height: 20px;
   display: flex;
   flex-direction: column;
   gap: 14px;
-}
-.list-group {
-  min-height: 20px;
 }
 </style>
