@@ -16,7 +16,7 @@ import AppHeader from "./components/AppHeader.vue"
   </section>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .app {
   display: flex;
 }
@@ -25,7 +25,8 @@ import AppHeader from "./components/AppHeader.vue"
   min-height: 100vh;
 }
 .body {
-  padding: 30px;
   overflow: scroll;
+  width: calc(100vw - var(--navigation-width));
+  height: calc(100vh - var(--header-height));
 }
 </style>

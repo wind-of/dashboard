@@ -46,6 +46,12 @@ function handleColumnTaskCreation(columnId) {
 </template>
 
 <style lang="scss" scoped>
+.wrapper {
+  @include flex-row;
+  width: calc(var(--canban-width) - var(--canban-drawer-width) - var(--canban-padding));
+  padding-bottom: 20px;
+  overflow: scroll;
+}
 .columns {
   @include flex-row;
   width: 100%;

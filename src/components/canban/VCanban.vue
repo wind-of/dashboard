@@ -27,13 +27,25 @@ function handleTaskCreation(columnId) {
       @onListChange="handleListChange" 
       @onTaskCreate="handleTaskCreation"
     />
+    <section class="drawer"></section>
   </section>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .canban {
+  width: var(--canban-width);
   display: flex;
   flex-direction: column;
+  padding: var(--canban-padding);
   gap: 40px;
+}
+.drawer {
+  width: var(--canban-drawer-width);
+  height: calc(100vh - var(--header-height));
+  position: absolute;
+  
+  background: white;
+  right: 0;
+  top: var(--header-height);
 }
 </style>
