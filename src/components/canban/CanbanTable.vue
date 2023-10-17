@@ -8,7 +8,7 @@ const props = defineProps({
     default: () => []
   }
 })
-const emit = defineEmits(["onListChange", "onTaskCreate"])
+const emit = defineEmits(["onListChange", "onTaskCreate", "onColumnChange"])
 const columnsList = computed({
   get() {
     return props.columns
@@ -33,11 +33,11 @@ function handleColumnTaskCreation(columnId) {
       group="columns"
       itemKey="id"
     >
-      <template #item="{ index }">
+      <template #item="{ element }">
         <CanbanTableColumn 
-          :key="columns[index].id" 
-          :column="columns[index]" 
-          @onListChange="handleColumnListChange($event, columns[index].id)"
+          :key="element.id" 
+          :column="element" 
+          @onListChange="handleColumnListChange($event, element.id)"
           @onCreateTask="handleColumnTaskCreation"
         />
       </template>

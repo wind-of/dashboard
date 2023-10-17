@@ -26,8 +26,8 @@ const tasks = computed({
     group="tasks"
     itemKey="id"
   >
-    <template #item="{ index }">
-      <CanbanTableColumnListItem :key="tasks[index].id" :task="tasks[index]" />
+    <template #item="{ element }">
+      <CanbanTableColumnListItem :key="element.id" :task="element" />
     </template>
   </draggable>
 </template>
