@@ -25,6 +25,12 @@
   --blue: #5051f9;
   --blue-soft: #e8eaff;
   --subtitle: var(--vt-c-text-light-2);
+
+  --header-height: 76px;
+  --navigation-width: min(10vw, 80px);
+  --canban-drawer-width: min(20vw, 305px);
+  --canban-width: calc(100vw - var(--navigation-width));
+  --canban-padding: 30px;
 }
 
 /* semantic color variables for this project */
