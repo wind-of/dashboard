@@ -2,6 +2,7 @@
 import { reactive } from "vue";
 import CanbanHeader from "./CanbanHeader.vue"
 import CanbanTable from "./CanbanTable.vue"
+import CanbanDrawer from "./CanbanDrawer.vue"
 import { project as mockProject } from "../../mock"
 import { task as initializeTask } from "../../utils/template"
 
@@ -27,25 +28,15 @@ function handleTaskCreation(columnId) {
       @onListChange="handleListChange" 
       @onTaskCreate="handleTaskCreation"
     />
-    <section class="drawer"></section>
+    <CanbanDrawer :task="project.columns[0].tasks[0]"/>
   </section>
 </template>
 
 <style lang="scss" scoped>
 .canban {
+  @include flex-column;
   width: var(--canban-width);
-  display: flex;
-  flex-direction: column;
   padding: var(--canban-padding);
   gap: 40px;
-}
-.drawer {
-  width: var(--canban-drawer-width);
-  height: calc(100vh - var(--header-height));
-  position: absolute;
-  
-  background: white;
-  right: 0;
-  top: var(--header-height);
 }
 </style>
