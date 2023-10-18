@@ -4,7 +4,7 @@ import CanbanTableColumnListItem from "./CanbanTableColumnListItem.vue"
 import { computed } from "vue"
 const props = defineProps({
   tasks: {
-    type: Array, 
+    type: Array,
     default: () => []
   }
 })
@@ -18,14 +18,9 @@ const tasks = computed({
   }
 })
 </script>
- 
+
 <template>
-  <draggable
-    class="list-group"
-    v-model="tasks" 
-    group="tasks"
-    itemKey="id"
-  >
+  <draggable class="list-group" v-model="tasks" group="tasks" itemKey="id">
     <template #item="{ element }">
       <CanbanTableColumnListItem :key="element.id" :task="element" />
     </template>
