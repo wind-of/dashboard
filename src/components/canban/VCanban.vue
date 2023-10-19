@@ -29,7 +29,7 @@ const isDrawerOpen = ref(false)
       @onListChange="handleListChange"
       @onTaskCreate="handleTaskCreation"
     />
-    <Teleport to="html">
+    <Teleport to="body">
       <CanbanDrawer :task="project.columns[0].tasks[0]" :isOpen="isDrawerOpen" />
     </Teleport>
   </section>
