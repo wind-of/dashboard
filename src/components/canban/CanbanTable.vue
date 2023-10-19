@@ -27,16 +27,11 @@ function handleColumnTaskCreation(columnId) {
 
 <template>
   <section class="wrapper">
-    <draggable
-      class="columns"
-      v-model="columnsList"
-      group="columns"
-      itemKey="id"
-    >
+    <draggable class="columns" v-model="columnsList" group="columns" itemKey="id">
       <template #item="{ element }">
-        <CanbanTableColumn 
-          :key="element.id" 
-          :column="element" 
+        <CanbanTableColumn
+          :key="element.id"
+          :column="element"
           @onListChange="handleColumnListChange($event, element.id)"
           @onCreateTask="handleColumnTaskCreation"
         />
@@ -48,8 +43,7 @@ function handleColumnTaskCreation(columnId) {
 <style lang="scss" scoped>
 .wrapper {
   @include flex-row;
-  width: calc(var(--canban-width) - var(--canban-drawer-width) - var(--canban-padding));
-  padding-bottom: 20px;
+  width: calc(var(--canban-width) - var(--canban-padding));
   overflow: scroll;
 }
 .columns {

@@ -1,34 +1,35 @@
 <script setup>
 import { computed } from "vue"
-defineProps({
+const props = defineProps({
   task: {
     type: Object,
     required: true
   },
   isOpen: {
-    type: Boolean
+    type: Boolean,
+    default: false
   }
 })
-const drawerStyles = computed(() => ({}))
+const drawerStyles = computed(() => ({
+  [props.isOpen && "transform"]: "none"
+}))
 </script>
 
 <template>
-	<section class="drawer" :style="drawerStyles"></section>
+  <section class="drawer" :style="drawerStyles"></section>
 </template>
 
-<style>
-
-</style>
+<style></style>
 <style lang="scss" scoped>
 .drawer {
   position: absolute;
   width: var(--canban-drawer-width);
   height: calc(100vh - var(--header-height));
-  // transform: translateX(min(var(--canban-drawer-width)));
+  transform: translateX(var(--canban-drawer-width));
 
   background: white;
-  right: 0;
   top: var(--header-height);
-  transition: transform .2s ease-in-out;
+  right: 0;
+  transition: transform 0.2s ease-in-out;
 }
 </style>

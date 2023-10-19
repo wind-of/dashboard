@@ -26,7 +26,6 @@ import AppHeader from "./components/AppHeader.vue"
 }
 .body {
   overflow: scroll;
-  width: calc(100vw - var(--navigation-width));
   height: calc(100vh - var(--header-height));
 }
 </style>
