@@ -21,21 +21,29 @@
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
 
   --white: #ffffff;
-  --soft-white: #fbfaff;
+  --white-soft: #fbfaff;
+  --white-lite: #E5E5ED;
+  --black: var(--vt-c-black);
+  --black-mute: var(--vt-c-black-mute);
+  --grey-light: #c0c0c0;
   --blue: #5051f9;
   --blue-soft: #e8eaff;
   --subtitle: var(--vt-c-text-light-2);
 
   --header-height: 76px;
   --navigation-width: min(10vw, 80px);
-  --canban-drawer-width: min(20vw, 305px);
+  --canban-drawer-width: min(30vw, 560px);
   --canban-width: calc(100vw - var(--navigation-width));
   --canban-padding: 30px;
+
+  --input-max-width: 308px;
+  --textarea-max-width: 508px;
+  --textarea-min-height: 128px;
 }
 
 /* semantic color variables for this project */
 :root {
-  --color-background: var(--soft-white);
+  --color-background: var(--white-soft);
   --color-background-soft: var(--vt-c-white-soft);
   --color-background-mute: var(--vt-c-white-mute);
 
