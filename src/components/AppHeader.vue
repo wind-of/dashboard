@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import IconArrowDown from "./icons/IconArrowDown.vue"
 import IconNotification from "./icons/IconNotification.vue"
 </script>

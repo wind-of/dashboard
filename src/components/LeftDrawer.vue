@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import IconLogo from "./icons/IconLogo.vue"
 import IconButton from "./common/IconButton.vue"
 import IconHome from "./icons/IconHome.vue"

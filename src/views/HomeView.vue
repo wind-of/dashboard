@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import VCanban from "../components/canban/VCanban.vue"
 </script>
 

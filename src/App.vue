@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { RouterView } from "vue-router"
 import LeftDrawer from "./components/LeftDrawer.vue"
 import AppHeader from "./components/AppHeader.vue"
