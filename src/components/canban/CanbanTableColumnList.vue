@@ -25,7 +25,9 @@ const tasks = computed({
 
 <style scoped>
 .list-group {
-  min-height: 20px;
+  min-height: 200px;
+  height: 100%;
+
   display: flex;
   flex-direction: column;
   gap: 14px;
