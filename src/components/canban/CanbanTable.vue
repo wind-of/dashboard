@@ -1,13 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue"
 import draggable from "vuedraggable"
 import CanbanTableColumn from "./CanbanTableColumn.vue"
-const props = defineProps({
-  columns: {
-    type: Array,
-    default: () => []
-  }
-})
+import { Column } from "../../types"
+const props = defineProps<{ columns: Column[] }>()
 const emit = defineEmits(["onListChange", "onTaskCreate", "onColumnChange"])
 const columnsList = computed({
   get() {
@@ -17,10 +13,10 @@ const columnsList = computed({
     emit("onColumnChange", updatedColumns)
   }
 })
-function handleColumnListChange(updatedList, columnId) {
+function handleColumnListChange(updatedList: Column[], columnId: string) {
   emit("onListChange", { updatedList, columnId })
 }
-function handleColumnTaskCreation(columnId) {
+function handleColumnTaskCreation(columnId: string) {
   emit("onTaskCreate", columnId)
 }
 </script>

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import IconOptions from "../icons/IconOptions.vue"
 import IconPlus from "../icons/IconPlus.vue"
 defineProps({

@@ -1,13 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import draggable from "vuedraggable"
 import CanbanTableColumnListItem from "./CanbanTableColumnListItem.vue"
 import { computed } from "vue"
-const props = defineProps({
-  tasks: {
-    type: Array,
-    default: () => []
-  }
-})
+import { Task } from "../../types"
+const props = defineProps<{ tasks: Task[] }>()
 const emit = defineEmits(["onListChange"])
 const tasks = computed({
   get() {

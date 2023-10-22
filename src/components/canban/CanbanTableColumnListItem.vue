@@ -1,10 +1,7 @@
-<script setup>
-defineProps({
-  task: {
-    type: Object,
-    requried: true
-  }
-})
+<script setup lang="ts">
+import { Task } from "@/types"
+
+defineProps<{ task: Task }>()
 </script>
 
 <template>

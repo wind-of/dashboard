@@ -1,7 +1,5 @@
-<script setup>
-defineProps({
-  title: { type: String, default: "Tasks" }
-})
+<script setup lang="ts">
+withDefaults(defineProps<{ title: string }>(), { title: "Tasks" })
 </script>
 
 <template>

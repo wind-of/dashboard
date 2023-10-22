@@ -1,4 +1,5 @@
-<script setup>
+<script setup lang="ts">
+import { Task } from "../../types"
 import CanbanTableColumnHeader from "./CanbanTableColumnHeader.vue"
 import CanbanTableColumnList from "./CanbanTableColumnList.vue"
 defineProps({
@@ -8,18 +9,18 @@ defineProps({
   }
 })
 const emit = defineEmits(["onListChange", "onCreateTask"])
-function handleListChange(message) {
-  emit("onListChange", message)
+function handleListChange(updatedTasks: Task[]) {
+  emit("onListChange", updatedTasks)
 }
-function handleTaskCreation(columnId) {
+function handleTaskCreation(columnId: string) {
   emit("onCreateTask", columnId)
 }
 </script>
 
 <template>
   <section class="column">
-    <CanbanTableColumnHeader :title="column.title" @onCreateTask="handleTaskCreation(column.id)"/>
-    <CanbanTableColumnList :tasks="column.tasks" @onListChange="handleListChange"/>
+    <CanbanTableColumnHeader :title="column.title" @onCreateTask="handleTaskCreation(column.id)" />
+    <CanbanTableColumnList :tasks="column.tasks" @onListChange="handleListChange" />
   </section>
 </template>
 

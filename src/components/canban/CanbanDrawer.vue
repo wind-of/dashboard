@@ -1,20 +1,12 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue"
 import VInput from "../form/VInput.vue"
 import VTextarea from "../form/VTextarea.vue"
+import { Task } from "../../types"
 
-const props = defineProps({
-  task: {
-    type: Object,
-    required: true
-  },
-  isOpen: {
-    type: Boolean,
-    default: false
-  }
-})
+const props = defineProps<{ task: Task; isOpen: boolean }>()
 const drawerStyles = computed(() => ({
-  [props.isOpen && "transform"]: "none"
+  [props.isOpen ? "transform" : ""]: "none"
 }))
 </script>
 
