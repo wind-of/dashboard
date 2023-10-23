@@ -22,7 +22,9 @@
 
   --white: #ffffff;
   --white-soft: #fbfaff;
-  --white-lite: #E5E5ED;
+  --white-background: var(var(--vt-c-white-soft));
+  --white-lite-1: #E5E5ED;
+  --white-lite-2: #D9DADE;
   --black: var(--vt-c-black);
   --black-mute: var(--vt-c-black-mute);
   --grey-light: #c0c0c0;
@@ -113,4 +115,20 @@ ol {
   padding-inline-start: 0;
   margin-block-start: 0;
   margin-block-end: 0;
+}
+
+button {
+  background: none;
+	border: none;
+	outline: none;
+  cursor: pointer;
+  
+  min-width: 60px; 
+	padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  
+  border-radius: 8px;
+	border: 1px solid var(--white-lite-2);
+	background-color: var(--white-background);
 }

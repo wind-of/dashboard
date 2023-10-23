@@ -1,32 +1,49 @@
 <script setup lang="ts">
-import { computed } from "vue"
-import VInput from "../form/VInput.vue"
-import VTextarea from "../form/VTextarea.vue"
-import { Task } from "../../types"
+import { computed, reactive, toValue } from "vue"
+import VInput from "~/form/VInput.vue"
+import VTextarea from "~/form/VTextarea.vue"
+import VButton from "~/form/VButton.vue"
+import { useCopyReactive } from "@/composables/copy.reactive"
+import { Task } from "@/types"
 
-const props = defineProps<{ task: Task; isOpen: boolean }>()
+const props = defineProps<{ task: Task; columnId: string; isOpen: boolean }>()
+const emit = defineEmits(["onCommitChanges", "onCancelChanges"])
 const drawerStyles = computed(() => ({
   [props.isOpen ? "transform" : ""]: "none"
 }))
+const form = reactive({ state: useCopyReactive(props.task) })
+const state = computed(() => form.state)
+
+function handleSave() {
+  emit("onCommitChanges", useCopyReactive(toValue(state)), props.columnId)
+}
+function handleCancel() {
+  form.state = useCopyReactive(props.task)
+  emit("onCancelChanges")
+}
 </script>
 
 <template>
   <section class="drawer" :style="drawerStyles">
     <header class="header">
-      <h2 class="header-title">Task Modification</h2>
+      <h2 class="header-title">Task</h2>
     </header>
-    <form class="form">
+    <form class="form" @submit.prevent>
       <section class="input-block">
         <label class="input-label">
           <p class="input-title">Title</p>
-          <VInput />
+          <VInput v-model="state.title" />
         </label>
       </section>
       <section class="input-block">
         <label class="input-label">
           <p class="input-title">Description</p>
-          <VTextarea />
+          <VTextarea v-model="state.description" />
         </label>
+      </section>
+      <section class="form-buttons">
+        <VButton @click="handleSave" isPrimary>Save</VButton>
+        <VButton @click="handleCancel">Cancel</VButton>
       </section>
     </form>
   </section>
@@ -64,5 +81,11 @@ const drawerStyles = computed(() => ({
 }
 .input-title {
   padding-right: 10px;
+}
+.form-buttons {
+  @include flex-row;
+  padding-right: 30px;
+  gap: 15px;
+  align-self: flex-end;
 }
 </style>

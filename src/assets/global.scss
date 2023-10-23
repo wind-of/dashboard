@@ -17,7 +17,7 @@
 	
 	border: none;
 	border-radius: 6px;
-	outline: 1px solid var(--white-lite);
+	outline: 1px solid var(--white-lite-1);
 	transition: outline .2s;
 	&:focus {
 		outline-color: var(--grey-light);
@@ -30,3 +30,4 @@
 	min-height: var(--textarea-min-height);
 	resize: none;
 }
+
