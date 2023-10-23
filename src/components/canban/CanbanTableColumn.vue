@@ -26,7 +26,7 @@ function handleTaskCreation(columnId: string) {
 
 <style scoped>
 .column {
-  min-width: 235px;
+  width: 235px;
   display: flex;
   flex-direction: column;
   gap: 12px;

@@ -45,6 +45,12 @@ defineProps<{ task: Task }>()
   font-weight: 500;
   gap: 7px;
 }
+.title,
+.description {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
 .title {
   font-size: 13px;
 }
