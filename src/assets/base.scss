@@ -23,8 +23,8 @@
   --white: #ffffff;
   --white-soft: #fbfaff;
   --white-background: var(var(--vt-c-white-soft));
-  --white-lite-1: #E5E5ED;
-  --white-lite-2: #D9DADE;
+  --white-lite-1: #e5e5ed;
+  --white-lite-2: #d9dade;
   --black: var(--vt-c-black);
   --black-mute: var(--vt-c-black-mute);
   --grey-light: #c0c0c0;
@@ -119,16 +119,16 @@ ol {
 
 button {
   background: none;
-	border: none;
-	outline: none;
+  border: none;
+  outline: none;
   cursor: pointer;
-  
-  min-width: 60px; 
-	padding: 10px 16px;
+
+  min-width: 60px;
+  padding: 10px 16px;
   font-size: 14px;
   font-weight: 500;
-  
+
   border-radius: 8px;
-	border: 1px solid var(--white-lite-2);
-	background-color: var(--white-background);
+  border: 1px solid var(--white-lite-2);
+  background-color: var(--white-background);
 }
