@@ -4,7 +4,8 @@ import CanbanHeader from "~/canban/CanbanHeader.vue"
 import CanbanTable from "~/canban/CanbanTable.vue"
 import CanbanDrawer from "~/canban/CanbanDrawer.vue"
 import { project as mockProject } from "@/mock"
-import { task as initializeTask, column as initializeColumn } from "@/utils/template"
+import { task as initializeTask, column as initializeColumn } from "@/utils"
+import { isTaskInList } from "@/utils"
 import type { Project, Column, Task } from "@/types"
 
 const binTask = initializeTask()
@@ -20,6 +21,9 @@ const task = (taskId: string, columnId: string) =>
 
 function handleListChange(columnId: string, updatedList: Task[]) {
   const currentColumn = column(columnId)
+  if (isTaskInList(updatedList, selected.task.id)) {
+    selected.columnId = columnId
+  }
   currentColumn.tasks = updatedList
 }
 function handleColumnList(updatedColumns: Column[]) {
