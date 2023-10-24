@@ -16,14 +16,14 @@ const drawerStyles = computed(() => ({
 const form = computed(() => ({ state: reactive(useCopyReactive(props.task)) }))
 const state = computed(() => form.value.state)
 
-function handleSave() {
-  emit("onCommitChanges", useCopyReactive(toValue(state)), props.columnId)
+function handleCommitChanges() {
+  emit("onCommitChanges", useCopyReactive(toValue(state)))
 }
 function handleCancel() {
   emit("onCancelChanges")
 }
 function handleDelete() {
-  emit("onTaskDelete", props.task.id, props.columnId)
+  emit("onTaskDelete")
 }
 </script>
 
@@ -46,7 +46,7 @@ function handleDelete() {
         </label>
       </section>
       <section class="form-buttons">
-        <VButton @click="handleSave" isPrimary>Save</VButton>
+        <VButton @click="handleCommitChanges" isPrimary>Save</VButton>
         <VButton @click="handleCancel">Cancel</VButton>
         <VButton @click="handleDelete" isDanger>Delete</VButton>
       </section>

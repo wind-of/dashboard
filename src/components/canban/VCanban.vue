@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref, computed } from "vue"
+import { reactive, ref } from "vue"
 import CanbanHeader from "~/canban/CanbanHeader.vue"
 import CanbanTable from "~/canban/CanbanTable.vue"
 import CanbanDrawer from "~/canban/CanbanDrawer.vue"
@@ -13,14 +13,12 @@ const binColumn = initializeColumn()
 const project: Project = reactive(mockProject)
 const isDrawerOpen = ref(false)
 const selected = reactive({ task: initializeTask({ title: "", description: "" }), columnId: "" })
-const selectedTask = computed(() => selected.task)
-const selectedColumnId = computed(() => selected.columnId)
 
 const column = (columnId: string) => project.columns.find(({ id }) => id === columnId) || binColumn
 const task = (taskId: string, columnId: string) =>
-  column(columnId)?.tasks.find(({ id }) => id === taskId) || binTask
+  column(columnId).tasks.find(({ id }) => id === taskId) || binTask
 
-function handleListChange({ columnId, updatedList }: { columnId: string; updatedList: Task[] }) {
+function handleListChange(columnId: string, updatedList: Task[]) {
   const currentColumn = column(columnId)
   currentColumn.tasks = updatedList
 }
@@ -28,10 +26,10 @@ function handleColumnList(updatedColumns: Column[]) {
   project.columns = updatedColumns
 }
 function handleTaskCreation(columnId: string) {
-  column(columnId)?.tasks.push(initializeTask({}))
+  column(columnId).tasks.push(initializeTask())
 }
-function handleTaskChange(updatedTask: Task, columnId: string) {
-  const targetTask = task(updatedTask.id, columnId)
+function handleTaskChange(updatedTask: Task) {
+  const targetTask = task(selected.task.id, selected.columnId)
   targetTask.title = updatedTask.title
   targetTask.description = updatedTask.description
   targetTask.tags = updatedTask.tags
@@ -41,9 +39,9 @@ function handleTaskChangeCancel() {
   selected.task = initializeTask({ title: "", description: "" })
   selected.columnId = ""
 }
-function handleTaskDelete(taskId: string, columnId: string) {
-  const currentColumn = column(columnId)
-  currentColumn.tasks = currentColumn.tasks.filter(({ id }) => id !== taskId)
+function handleTaskDelete() {
+  const currentColumn = column(selected.columnId)
+  currentColumn.tasks = currentColumn.tasks.filter(({ id }) => id !== selected.task.id)
   isDrawerOpen.value = false
 }
 function handleTaskSelection(taskId: string, columnId: string) {
@@ -65,8 +63,8 @@ function handleTaskSelection(taskId: string, columnId: string) {
     />
     <Teleport to="body">
       <CanbanDrawer
-        :task="selectedTask"
-        :columnId="selectedColumnId"
+        :task="selected.task"
+        :columnId="selected.columnId"
         :isOpen="isDrawerOpen"
         @onCommitChanges="handleTaskChange"
         @onCancelChanges="handleTaskChangeCancel"

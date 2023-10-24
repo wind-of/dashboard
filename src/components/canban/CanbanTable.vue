@@ -13,8 +13,8 @@ const columnsList = computed({
     emit("onColumnChange", updatedColumns)
   }
 })
-function handleColumnListChange(updatedList: Column[], columnId: string) {
-  emit("onListChange", { updatedList, columnId })
+function handleColumnListChange(columnId: string, updatedList: Column[]) {
+  emit("onListChange", columnId, updatedList)
 }
 function handleColumnTaskCreation(columnId: string) {
   emit("onTaskCreate", columnId)
@@ -31,7 +31,7 @@ function handleTaskSelection(taskId: string, columnId: string) {
         <CanbanTableColumn
           :key="element.id"
           :column="element"
-          @onListChange="handleColumnListChange($event, element.id)"
+          @onListChange="handleColumnListChange(element.id, $event)"
           @onCreateTask="handleColumnTaskCreation"
           @onTaskSelection="handleTaskSelection"
         />
