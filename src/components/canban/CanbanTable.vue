@@ -4,7 +4,7 @@ import draggable from "vuedraggable"
 import CanbanTableColumn from "./CanbanTableColumn.vue"
 import { Column } from "../../types"
 const props = defineProps<{ columns: Column[] }>()
-const emit = defineEmits(["onListChange", "onTaskCreate", "onColumnChange"])
+const emit = defineEmits(["onListChange", "onTaskCreate", "onColumnChange", "onTaskSelection"])
 const columnsList = computed({
   get() {
     return props.columns
@@ -19,6 +19,9 @@ function handleColumnListChange(updatedList: Column[], columnId: string) {
 function handleColumnTaskCreation(columnId: string) {
   emit("onTaskCreate", columnId)
 }
+function handleTaskSelection(taskId: string, columnId: string) {
+  emit("onTaskSelection", taskId, columnId)
+}
 </script>
 
 <template>
@@ -30,6 +33,7 @@ function handleColumnTaskCreation(columnId: string) {
           :column="element"
           @onListChange="handleColumnListChange($event, element.id)"
           @onCreateTask="handleColumnTaskCreation"
+          @onTaskSelection="handleTaskSelection"
         />
       </template>
     </draggable>

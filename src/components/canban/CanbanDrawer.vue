@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive, toValue } from "vue"
+import { computed, toValue, reactive } from "vue"
 import VInput from "~/form/VInput.vue"
 import VTextarea from "~/form/VTextarea.vue"
 import VButton from "~/form/VButton.vue"
@@ -7,19 +7,23 @@ import { useCopyReactive } from "@/composables/copy.reactive"
 import { Task } from "@/types"
 
 const props = defineProps<{ task: Task; columnId: string; isOpen: boolean }>()
-const emit = defineEmits(["onCommitChanges", "onCancelChanges"])
+const emit = defineEmits(["onCommitChanges", "onCancelChanges", "onTaskDelete"])
+
 const drawerStyles = computed(() => ({
   [props.isOpen ? "transform" : ""]: "none"
 }))
-const form = reactive({ state: useCopyReactive(props.task) })
-const state = computed(() => form.state)
+
+const form = computed(() => ({ state: reactive(useCopyReactive(props.task)) }))
+const state = computed(() => form.value.state)
 
 function handleSave() {
   emit("onCommitChanges", useCopyReactive(toValue(state)), props.columnId)
 }
 function handleCancel() {
-  form.state = useCopyReactive(props.task)
   emit("onCancelChanges")
+}
+function handleDelete() {
+  emit("onTaskDelete", props.task.id, props.columnId)
 }
 </script>
 
@@ -44,12 +48,12 @@ function handleCancel() {
       <section class="form-buttons">
         <VButton @click="handleSave" isPrimary>Save</VButton>
         <VButton @click="handleCancel">Cancel</VButton>
+        <VButton @click="handleDelete" isDanger>Delete</VButton>
       </section>
     </form>
   </section>
 </template>
 
-<style></style>
 <style lang="scss" scoped>
 .drawer {
   @include flex-column;

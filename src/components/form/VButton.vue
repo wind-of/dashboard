@@ -1,17 +1,28 @@
 <script setup lang="ts">
 import { computed } from "vue"
-const props = defineProps<{ isPrimary?: boolean }>()
-const primaryClass = computed(() => (props.isPrimary ? "primary-button-class" : ""))
+const props = defineProps<{ isPrimary?: boolean; isDanger?: boolean }>()
+
+const classList = computed(() => {
+  return [props.isPrimary && "primary-button-class", props.isDanger && "danger-button-class"]
+})
 </script>
 
 <template>
-  <button :class="primaryClass"><slot /></button>
+  <button :class="classList"><slot /></button>
 </template>
 
-<style>
+<style lang="scss">
 .primary-button-class {
   border: none;
+  color: var(--white);
   background-color: var(--blue);
-  color: white;
+}
+.danger-button-class {
+  color: var(--red);
+  border-color: var(--red);
+  &:hover {
+    background-color: var(--red);
+    color: var(--white);
+  }
 }
 </style>
