@@ -35,6 +35,7 @@ defineProps<{ task: Task }>()
 }
 .tags {
   @include flex-row;
+  flex-wrap: wrap;
   gap: 6px;
 }
 .tag {
