@@ -4,7 +4,7 @@ import VInput from "~/form/VInput.vue"
 import VTextarea from "~/form/VTextarea.vue"
 import VButton from "~/form/VButton.vue"
 import { useCopyReactive } from "@/composables/copy.reactive"
-import { Task } from "@/types"
+import { Tag, Task } from "@/types"
 import { TAGS } from "@/constants"
 
 const props = defineProps<{ task: Task; columnId: string; isOpen: boolean }>()
@@ -30,6 +30,19 @@ function handleDelete() {
 function isActiveTag(tagId: string) {
   return state.value.tags.some(({ id }) => id === tagId)
 }
+function computeTagStyles(backgroundColor: string, tagId: string) {
+  return {
+    "background-color": backgroundColor,
+    "--active-tag-scale": Number(isActiveTag(tagId))
+  }
+}
+function handleTagClick(tag: Tag) {
+  if (isActiveTag(tag.id)) {
+    state.value.tags = state.value.tags.filter(({ id }) => id !== tag.id)
+  } else {
+    state.value.tags.push(tag)
+  }
+}
 </script>
 
 <template>
@@ -41,11 +54,12 @@ function isActiveTag(tagId: string) {
       <section class="tags">
         <div
           class="tag"
-          v-for="{ title, color, id } in TAGS"
-          :key="id"
-          :style="{ 'background-color': color, '--active-tag-scale': Number(isActiveTag(id)) }"
+          v-for="tag in TAGS"
+          :key="tag.id"
+          :style="computeTagStyles(tag.color, tag.id)"
+          @click="handleTagClick(tag)"
         >
-          {{ title }}
+          {{ tag.title }}
         </div>
       </section>
       <section class="input-block">
