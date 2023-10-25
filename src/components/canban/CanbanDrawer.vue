@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, toValue, reactive } from "vue"
+import { computed, reactive, toRaw } from "vue"
 import VInput from "~/form/VInput.vue"
 import VTextarea from "~/form/VTextarea.vue"
 import VButton from "~/form/VButton.vue"
@@ -18,7 +18,8 @@ const form = computed(() => ({ state: reactive(useCopyReactive(props.task)) }))
 const state = computed(() => form.value.state)
 
 function handleCommitChanges() {
-  emit("onCommitChanges", useCopyReactive(toValue(state)))
+  console.log(state.value)
+  emit("onCommitChanges", useCopyReactive(state.value))
 }
 function handleCancel() {
   emit("onCancelChanges")
@@ -38,10 +39,10 @@ function computeTagStyles(backgroundColor: string, tagId: string) {
 }
 function handleTagClick(tag: Tag) {
   if (isActiveTag(tag.id)) {
-    state.value.tags = state.value.tags.filter(({ id }) => id !== tag.id)
-  } else {
-    state.value.tags.push(tag)
+    state.value.tags = toRaw(state.value.tags).filter(({ id }) => id !== tag.id)
+    return
   }
+  state.value.tags.push(tag)
 }
 </script>
 
