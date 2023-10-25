@@ -8,7 +8,14 @@ defineProps<{ task: Task }>()
   <section class="item">
     <header class="header">
       <section class="tags">
-        <div class="tag" v-for="tag in task.tags" :key="tag.id">{{ tag.title }}</div>
+        <div
+          class="tag"
+          v-for="{ id, title, color } in task.tags"
+          :key="id"
+          :style="{ 'background-color': color }"
+        >
+          {{ title }}
+        </div>
       </section>
     </header>
     <section class="item-content">
@@ -34,7 +41,6 @@ defineProps<{ task: Task }>()
   display: inline-block;
   padding: 3px 9px;
   border-radius: 4px;
-  background-color: var(--blue);
   font-size: 12px;
   font-weight: 500;
   color: var(--white);

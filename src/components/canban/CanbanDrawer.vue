@@ -5,6 +5,7 @@ import VTextarea from "~/form/VTextarea.vue"
 import VButton from "~/form/VButton.vue"
 import { useCopyReactive } from "@/composables/copy.reactive"
 import { Task } from "@/types"
+import { TAGS } from "@/constants"
 
 const props = defineProps<{ task: Task; columnId: string; isOpen: boolean }>()
 const emit = defineEmits(["onCommitChanges", "onCancelChanges", "onTaskDelete"])
@@ -25,6 +26,10 @@ function handleCancel() {
 function handleDelete() {
   emit("onTaskDelete")
 }
+
+function isActiveTag(tagId: string) {
+  return state.value.tags.some(({ id }) => id === tagId)
+}
 </script>
 
 <template>
@@ -33,6 +38,16 @@ function handleDelete() {
       <h2 class="header-title">Task</h2>
     </header>
     <form class="form" @submit.prevent>
+      <section class="tags">
+        <div
+          class="tag"
+          v-for="{ title, color, id } in TAGS"
+          :key="id"
+          :style="{ 'background-color': color, '--active-tag-scale': Number(isActiveTag(id)) }"
+        >
+          {{ title }}
+        </div>
+      </section>
       <section class="input-block">
         <label class="input-label">
           <p class="input-title">Title</p>
@@ -54,6 +69,11 @@ function handleDelete() {
   </section>
 </template>
 
+<style lang="scss">
+.active::after {
+  transform: scale(1);
+}
+</style>
 <style lang="scss" scoped>
 .drawer {
   @include flex-column;
@@ -77,6 +97,32 @@ function handleDelete() {
 .form {
   @include flex-column;
   gap: 20px;
+}
+.tags {
+  @include flex-row;
+  gap: 6px;
+}
+.tag {
+  position: relative;
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--white);
+  cursor: pointer;
+  &::after {
+    transform: scale(var(--active-tag-scale));
+    position: absolute;
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 6px;
+    background-color: rgb(0, 231, 116);
+    top: -3px;
+    right: -3px;
+    transition: transform 0.1s;
+  }
 }
 .input-label {
   @include flex-column;
