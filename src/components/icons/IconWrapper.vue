@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue"
 import { LIGHT_THEME } from "@/constants"
 const props = defineProps({
