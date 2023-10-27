@@ -29,7 +29,7 @@ function handleTaskSelection(taskId: string) {
 
 <style scoped>
 .column {
-  width: 235px;
+  min-width: 235px;
   display: flex;
   flex-direction: column;
   gap: 12px;
