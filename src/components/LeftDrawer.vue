@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import IconLogo from "./icons/IconLogo.vue"
-import IconButton from "./common/IconButton.vue"
-import IconHome from "./icons/IconHome.vue"
-import IconStorage from "./icons/IconStorage.vue"
-import IconKanban from "./icons/IconKanban.vue"
-import IconSettings from "./icons/IconSettings.vue"
-import IconChat from "./icons/IconChat.vue"
-import IconVisual from "./icons/IconVisual.vue"
+import IconLogo from "~/icons/IconLogo.vue"
+import IconButton from "~/common/IconButton.vue"
+import IconHome from "~/icons/IconHome.vue"
+import IconStorage from "~/icons/IconStorage.vue"
+import IconCanban from "~/icons/IconCanban.vue"
+import IconSettings from "~/icons/IconSettings.vue"
+import IconChat from "~/icons/IconChat.vue"
+import IconVisual from "~/icons/IconVisual.vue"
 </script>
 
 <template>
@@ -18,34 +18,46 @@ import IconVisual from "./icons/IconVisual.vue"
     <nav class="navigation">
       <ul class="navigation-list">
         <li class="navigation-item">
-          <IconButton v-slot="{ theme }" :isActive="true">
-            <IconHome :theme="theme" />
-          </IconButton>
+          <RouterLink to="/" v-slot="{ isActive }">
+            <IconButton v-slot="{ theme }" :isActive="isActive">
+              <IconHome :theme="theme" />
+            </IconButton>
+          </RouterLink>
         </li>
         <li class="navigation-item">
-          <IconButton v-slot="{ theme }">
-            <IconStorage :theme="theme" />
-          </IconButton>
+          <RouterLink to="/miw" v-slot="{ isActive }">
+            <IconButton v-slot="{ theme }" :isActive="isActive">
+              <IconStorage :theme="theme" />
+            </IconButton>
+          </RouterLink>
         </li>
         <li class="navigation-item">
-          <IconButton v-slot="{ theme }">
-            <IconKanban :theme="theme" />
-          </IconButton>
+          <RouterLink to="/canban" v-slot="{ isActive }">
+            <IconButton v-slot="{ theme }" :isActive="isActive">
+              <IconCanban :theme="theme" />
+            </IconButton>
+          </RouterLink>
         </li>
         <li class="navigation-item">
-          <IconButton v-slot="{ theme }">
-            <IconVisual :theme="theme" />
-          </IconButton>
+          <RouterLink to="/mew" v-slot="{ isActive }">
+            <IconButton v-slot="{ theme }" :isActive="isActive">
+              <IconVisual :theme="theme" />
+            </IconButton>
+          </RouterLink>
         </li>
         <li class="navigation-item">
-          <IconButton v-slot="{ theme }">
-            <IconChat :theme="theme" />
-          </IconButton>
+          <RouterLink to="/meow" v-slot="{ isActive }">
+            <IconButton v-slot="{ theme }" :isActive="isActive">
+              <IconChat :theme="theme" />
+            </IconButton>
+          </RouterLink>
         </li>
         <li class="navigation-item">
-          <IconButton v-slot="{ theme }">
-            <IconSettings :theme="theme" />
-          </IconButton>
+          <RouterLink to="/404" v-slot="{ isActive }">
+            <IconButton v-slot="{ theme }" :isActive="isActive">
+              <IconSettings :theme="theme" />
+            </IconButton>
+          </RouterLink>
         </li>
       </ul>
     </nav>
@@ -54,7 +66,6 @@ import IconVisual from "./icons/IconVisual.vue"
 
 <style scoped>
 .drawer {
-  width: 10vw;
   height: 100vh;
   max-width: 80px;
   padding: 20px 15px;
@@ -77,6 +88,6 @@ import IconVisual from "./icons/IconVisual.vue"
 .navigation-list {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 24px;
 }
 </style>

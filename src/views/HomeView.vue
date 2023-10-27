@@ -1,9 +1,5 @@
-<script setup lang="ts">
-import VCanban from "../components/canban/VCanban.vue"
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <main class="main">
-    <VCanban />
-  </main>
+  <main class="main">Mainpage</main>
 </template>
