@@ -1,3 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import VTimeline from "~/timeline/VTimeline.vue"
+</script>
 
-<template>Timeline</template>
+<template>
+  <VTimeline />
+</template>
