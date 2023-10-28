@@ -81,9 +81,10 @@ function handleTaskSelection(taskId: string, columnId: string) {
 <style lang="scss" scoped>
 .canban {
   @include flex-column;
-  width: var(--view-width);
-  overflow: hidden;
-  padding: var(--canban-padding);
+  width: calc(var(--view-width) + 3 * var(--canban-padding));
+  height: var(--view-height);
+  overflow: scroll;
+  padding: var(--canban-padding) calc(2 * var(--canban-padding)) 0 var(--canban-padding);
   gap: 40px;
 }
 </style>

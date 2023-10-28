@@ -44,11 +44,11 @@ function handleTaskSelection(taskId: string, columnId: string) {
 .wrapper {
   @include flex-row;
   width: calc(var(--view-width) - var(--canban-padding));
+  height: 100%;
   overflow: scroll;
 }
 .columns {
   @include flex-row;
-  width: 100%;
   gap: 16px;
 }
 </style>
