@@ -37,8 +37,9 @@
   --header-height: 76px;
   --navigation-width: min(10vw, 80px);
   --canban-drawer-width: min(30vw, 560px);
-  --canban-width: calc(100vw - var(--navigation-width));
   --canban-padding: 30px;
+  
+  --view-width: calc(100vw - var(--navigation-width));
 
   --input-max-width: 308px;
   --textarea-max-width: 508px;

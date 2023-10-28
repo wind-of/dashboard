@@ -43,7 +43,7 @@ function handleTaskSelection(taskId: string, columnId: string) {
 <style lang="scss" scoped>
 .wrapper {
   @include flex-row;
-  width: calc(var(--canban-width) - var(--canban-padding));
+  width: calc(var(--view-width) - var(--canban-padding));
   overflow: scroll;
 }
 .columns {
