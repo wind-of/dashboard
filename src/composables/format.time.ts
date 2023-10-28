@@ -1,4 +1,4 @@
-export function useDateFormat(date: Date) {
+export function useTimeFormat(date: Date) {
   return new Intl.DateTimeFormat("en-EN", {
     year: "numeric",
     month: "short",

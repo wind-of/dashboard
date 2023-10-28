@@ -1,18 +1,23 @@
 import { TAGS } from "@/constants"
 import type { Column, Tag, Task } from "@/types"
 
-export const rn = () => (Math.random() * 1000) | 0
+export const rn = (max = 1000) => (Math.random() * max) | 0
 export const rs = () =>
   rn()
     .toString()
     .padStart(4, String((Math.random() * 10) | 0))
 export const uid = (prefix: string) => `${prefix}-${rs()}-${rs()}-${rs()}-${rs()}`
 
+const now = new Date()
+export const randomFutureDate = () =>
+  new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDay() + rn(50)))
+
 export const task = ({
   title = "Task #" + rn(),
   description = "Description",
-  tags = generateTags()
-} = {}): Task => ({ id: uid("task"), title, description, tags })
+  tags = generateTags(),
+  expirationDate = randomFutureDate()
+} = {}): Task => ({ id: uid("task"), title, description, tags, expirationDate })
 export const column = ({ title = "Column #" + rn(), tasks = generateTasks() } = {}): Column => ({
   id: uid("table"),
   title,

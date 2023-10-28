@@ -1,7 +1,13 @@
 <script setup lang="ts">
-import { Task } from "@/types"
+import { computed } from "vue"
+import { useTimeFormat } from "@/composables/format.time"
+import type { Task } from "@/types"
 
-defineProps<{ task: Task }>()
+const props = defineProps<{ task: Task }>()
+
+const expirationDate = computed(() => {
+  return useTimeFormat(props.task.expirationDate)
+})
 </script>
 
 <template>
@@ -21,6 +27,9 @@ defineProps<{ task: Task }>()
     <section class="item-content">
       <h3 class="title">{{ task.title }}</h3>
       <p class="description">{{ task.description }}</p>
+    </section>
+    <section class="item-date">
+      {{ expirationDate }}
     </section>
   </section>
 </template>
@@ -64,5 +73,13 @@ defineProps<{ task: Task }>()
 .description {
   font-size: 12px;
   color: var(--subtitle);
+}
+
+.item-date {
+  align-self: flex-start;
+  padding: 3px 9px;
+  font-size: 12px;
+  border: 1px solid #e2e2e2;
+  border-radius: 4px;
 }
 </style>
