@@ -25,9 +25,9 @@ import IconVisual from "~/icons/IconVisual.vue"
           </RouterLink>
         </li>
         <li class="navigation-item">
-          <RouterLink to="/miw" v-slot="{ isActive }">
+          <RouterLink to="/timeline" v-slot="{ isActive }">
             <IconButton v-slot="{ theme }" :isActive="isActive">
-              <IconStorage :theme="theme" />
+              <IconVisual :theme="theme" />
             </IconButton>
           </RouterLink>
         </li>
@@ -41,7 +41,7 @@ import IconVisual from "~/icons/IconVisual.vue"
         <li class="navigation-item">
           <RouterLink to="/mew" v-slot="{ isActive }">
             <IconButton v-slot="{ theme }" :isActive="isActive">
-              <IconVisual :theme="theme" />
+              <IconStorage :theme="theme" />
             </IconButton>
           </RouterLink>
         </li>
