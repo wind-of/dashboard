@@ -79,12 +79,13 @@ function handleTaskSelection(taskId: string, columnId: string) {
 </template>
 
 <style lang="scss" scoped>
+// FIX: Перенос тасков с "высоких" колонок в низкие не происходит из-за высоты колонки
 .canban {
   @include flex-column;
-  width: calc(var(--view-width) + 3 * var(--canban-padding));
+  width: var(--view-width);
   height: var(--view-height);
   overflow: scroll;
-  padding: var(--canban-padding) calc(2 * var(--canban-padding)) 0 var(--canban-padding);
+  padding-bottom: 30px;
   gap: 40px;
 }
 </style>

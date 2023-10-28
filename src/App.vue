@@ -28,5 +28,6 @@ import AppHeader from "./components/AppHeader.vue"
   overflow: hidden;
   height: calc(100vh - var(--header-height));
   width: calc(100vw - var(--navigation-width));
+  padding: var(--view-padding);
 }
 </style>
