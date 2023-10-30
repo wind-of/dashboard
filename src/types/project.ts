@@ -10,6 +10,7 @@ export interface Task {
   description: string
   tags: Tag[]
   expirationDate: Date
+  startDate: Date
 }
 
 export interface Column {

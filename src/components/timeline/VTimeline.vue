@@ -1,12 +1,16 @@
 <script setup lang="ts">
+import { reactive } from "vue"
 import TimelineHeader from "~/timeline/TimelineHeader.vue"
 import TimelineTable from "~/timeline/TimelineTable.vue"
+
+import { project as mockProject } from "@/mock"
+const tasks = reactive(mockProject.columns.flatMap(({ tasks }) => tasks))
 </script>
 
 <template>
   <section class="timeline">
     <TimelineHeader />
-    <TimelineTable />
+    <TimelineTable :tasks="tasks" />
   </section>
 </template>
 

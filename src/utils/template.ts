@@ -10,14 +10,17 @@ export const uid = (prefix: string) => `${prefix}-${rs()}-${rs()}-${rs()}-${rs()
 
 const now = new Date()
 export const randomFutureDate = () =>
-  new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDay() + rn(50)))
+  new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDay() + rn(10)))
+export const randomPastDate = () =>
+  new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDay() - rn(30)))
 
 export const task = ({
   title = "Task #" + rn(),
   description = "Description",
   tags = generateTags(),
-  expirationDate = randomFutureDate()
-} = {}): Task => ({ id: uid("task"), title, description, tags, expirationDate })
+  expirationDate = randomFutureDate(),
+  startDate = randomPastDate()
+} = {}): Task => ({ id: uid("task"), title, description, tags, expirationDate, startDate })
 export const column = ({ title = "Column #" + rn(), tasks = generateTasks() } = {}): Column => ({
   id: uid("table"),
   title,
