@@ -82,8 +82,8 @@ function handleTaskSelection(taskId: string, columnId: string) {
 // FIX: Перенос тасков с "высоких" колонок в низкие не происходит из-за высоты колонки
 .canban {
   @include flex-column;
-  width: var(--view-width);
-  height: var(--view-height);
+  width: calc(var(--view-width) - var(--view-padding));
+  height: calc(var(--view-height) - var(--view-padding));
   overflow: scroll;
   padding-bottom: 30px;
   gap: 40px;
