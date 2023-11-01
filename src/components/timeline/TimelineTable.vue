@@ -9,7 +9,8 @@ import { useFilterTasksByMonth } from "@/composables/filter.tasks.by.month"
 const props = defineProps<{ tasks: Task[] }>()
 const levels = useTasksToLeveledTablets(useFilterTasksByMonth(toRaw(props.tasks)))
 
-// TODO: обработка слишком длинных плашек
+// TODO: обработка случая, когда таска начинается в текущем месяце и заканчивается в следующем
+// TODO: обработка случая, когда таска начинается в прошлом месяце и заканчивается в текущем
 
 function computeTabletStyles({ top, left, width }) {
   return {
