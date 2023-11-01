@@ -4,11 +4,11 @@ import { Task } from "@/types"
 import { TIMELINE_TABLET_WIDTH } from "@/constants"
 import { randomRGB } from "@/utils"
 import { useTasksToLeveledTablets } from "@/composables/tasks.to.levels"
+import { useFilterTasksByMonth } from "@/composables/filter.tasks.by.month"
 
 const props = defineProps<{ tasks: Task[] }>()
-const levels = useTasksToLeveledTablets(toRaw(props.tasks))
+const levels = useTasksToLeveledTablets(useFilterTasksByMonth(toRaw(props.tasks)))
 
-// TODO: фильтрация тасков по месяцу
 // TODO: обработка слишком длинных плашек
 
 function computeTabletStyles({ top, left, width }) {

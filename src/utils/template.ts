@@ -10,9 +10,9 @@ export const uid = (prefix: string) => `${prefix}-${rs()}-${rs()}-${rs()}-${rs()
 
 const now = new Date()
 export const randomFutureDate = () =>
-  new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDay() + rn(10)))
+  new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDay() + rn(15)))
 export const randomPastDate = () =>
-  new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDay() - rn(30)))
+  new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDay() - rn(15)))
 
 export const task = ({
   title = "Task #" + rn(),
