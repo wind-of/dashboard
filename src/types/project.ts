@@ -12,6 +12,9 @@ export interface Task {
   expirationDate: Date
   startDate: Date
 }
+export interface ColumnTask extends Task {
+  columnId: string
+}
 
 export interface Column {
   id: string

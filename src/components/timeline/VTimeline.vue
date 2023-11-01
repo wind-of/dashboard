@@ -1,16 +1,37 @@
 <script setup lang="ts">
 import { reactive } from "vue"
+import type { Project } from "@/types"
 import TimelineHeader from "~/timeline/TimelineHeader.vue"
 import TimelineTable from "~/timeline/TimelineTable.vue"
+import TaskDrawer from "~/TaskDrawer.vue"
+import { useTaskDrawer } from "@/composables/task.drawer"
+import { project as project_ } from "@/mock"
 
-import { project as mockProject } from "@/mock"
-const tasks = reactive(mockProject.columns.flatMap(({ tasks }) => tasks))
+const project: Project = reactive(project_)
+const {
+  handleTaskChange,
+  handleTaskChangeCancel,
+  handleTaskDelete,
+  handleTaskSelection,
+  isDrawerOpen,
+  selected
+} = useTaskDrawer(project)
 </script>
 
 <template>
   <section class="timeline">
     <TimelineHeader />
-    <TimelineTable :tasks="tasks" />
+    <TimelineTable :columns="project.columns" @onTaskSelection="handleTaskSelection" />
+    <Teleport to="body">
+      <TaskDrawer
+        :task="selected.task"
+        :columnId="selected.columnId"
+        :isOpen="isDrawerOpen"
+        @onCommitChanges="handleTaskChange"
+        @onCancelChanges="handleTaskChangeCancel"
+        @onTaskDelete="handleTaskDelete"
+      />
+    </Teleport>
   </section>
 </template>
 

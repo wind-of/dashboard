@@ -1,31 +1,23 @@
 <script setup lang="ts">
-import { toRaw } from "vue"
-import { Task } from "@/types"
+import { computed } from "vue"
+import { Column } from "@/types"
 import { TIMELINE_TABLET_WIDTH } from "@/constants"
-import { randomRGB, computeBorderRadiusStyle } from "@/utils"
 import { useTasksToLeveledTablets } from "@/composables/tasks.to.levels"
 import { useFilterTasksByMonth } from "@/composables/filter.tasks.by.month"
-import { useTabletEdgesCheck } from "@/composables/tablet.edges"
+import { useComputedTimelineTabletStyles } from "@/composables/timeline.tablet.styles"
 
-const props = defineProps<{ tasks: Task[] }>()
-const levels = useTasksToLeveledTablets(useFilterTasksByMonth(toRaw(props.tasks)))
+const props = defineProps<{ columns: Column[] }>()
+const emit = defineEmits(["onTaskSelection"])
 
-function computeTabletStyles({ task, top, left, width }) {
-  const { left: doStartsThisMonth, right: doEndsThisMonth } = useTabletEdgesCheck(task)
-  const leftBorderRadius = doStartsThisMonth ? {} : computeBorderRadiusStyle("left", 0)
-  const rightBorderRadius = doEndsThisMonth ? {} : computeBorderRadiusStyle("right", 0)
-  return {
-    left: `${left}px`,
-    top: `${top}px`,
-    width: `${width}px`,
-    background: randomRGB(),
-    ...leftBorderRadius,
-    ...rightBorderRadius
-  }
-}
+const levels = computed(() => useTasksToLeveledTablets(useFilterTasksByMonth(props.columns)))
+
 const unitStyles = {
   "max-width": `${TIMELINE_TABLET_WIDTH}px`,
   "min-width": `${TIMELINE_TABLET_WIDTH}px`
+}
+
+function handleSelection(taskId: string, columnId: string) {
+  emit("onTaskSelection", taskId, columnId)
 }
 </script>
 
@@ -42,8 +34,9 @@ const unitStyles = {
         <div
           class="tablet"
           v-for="tablet in tablets"
-          :style="computeTabletStyles(tablet)"
+          :style="useComputedTimelineTabletStyles(tablet)"
           :key="tablet.task.id"
+          @click="handleSelection(tablet.task.id, tablet.task.columnId)"
         >
           {{ tablet.task.startDate }} - {{ tablet.task.expirationDate }}
         </div>

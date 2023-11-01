@@ -3,7 +3,7 @@ import {
   TIMELINE_TABLET_HEIGHT,
   TIMELINE_TABLET_PROPORTION
 } from "@/constants"
-import type { Tablet, Task } from "@/types"
+import type { Column, ColumnTask, Tablet } from "@/types"
 import { getClosestMonths } from "@/utils"
 
 function tabletLevelToTopOffset(levelIndex: number) {
@@ -25,7 +25,7 @@ function shouldInsertTablet(previousTablet: Tablet, newTablet: Tablet) {
     newTablet.left + newTablet.width <= previousTablet.left
   )
 }
-function initializeNewTablet(task: Task, tabletLevel: number) {
+function initializeNewTablet(task: ColumnTask, tabletLevel: number) {
   return {
     task: task,
     top: tabletLevelToTopOffset(tabletLevel),
@@ -33,8 +33,10 @@ function initializeNewTablet(task: Task, tabletLevel: number) {
   }
 }
 
-export function useTasksToLeveledTablets(tasks_: Task[]) {
-  const tasks = [...tasks_].sort((a, b) => +a.startDate - +b.startDate)
+export function useTasksToLeveledTablets(columns: Column[]) {
+  const tasks: ColumnTask[] = columns
+    .flatMap(({ tasks, id }) => tasks.map((task) => ({ ...task, columnId: id })))
+    .sort((a, b) => +a.startDate - +b.startDate)
   const levels: Tablet[][] = []
 
   for (let i = 0, currentTask = tasks[i]; i < tasks.length; currentTask = tasks[++i]) {
@@ -44,7 +46,7 @@ export function useTasksToLeveledTablets(tasks_: Task[]) {
       }
       const currentTabletLevel = levels[tabletsLevelIndex]
       const previousTablet = currentTabletLevel.findLast(
-        ({ task }: { task: Task }) => task.startDate <= currentTask.startDate
+        ({ task }: { task: ColumnTask }) => task.startDate <= currentTask.startDate
       )
       const newTablet = initializeNewTablet(currentTask, tabletsLevelIndex)
       if (shouldInsertTablet(previousTablet, newTablet)) {
