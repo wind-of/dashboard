@@ -10,7 +10,7 @@ export const uid = (prefix: string) => `${prefix}-${rs()}-${rs()}-${rs()}-${rs()
 
 const now = new Date()
 export const randomFutureDate = () =>
-  new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDay() + rn(15)))
+  new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDay() + rn(30)))
 export const randomPastDate = () =>
   new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDay() - rn(15)))
 

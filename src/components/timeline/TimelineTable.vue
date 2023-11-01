@@ -2,22 +2,25 @@
 import { toRaw } from "vue"
 import { Task } from "@/types"
 import { TIMELINE_TABLET_WIDTH } from "@/constants"
-import { randomRGB } from "@/utils"
+import { randomRGB, computeBorderRadiusStyle } from "@/utils"
 import { useTasksToLeveledTablets } from "@/composables/tasks.to.levels"
 import { useFilterTasksByMonth } from "@/composables/filter.tasks.by.month"
+import { useTabletEdgesCheck } from "@/composables/tablet.edges"
 
 const props = defineProps<{ tasks: Task[] }>()
 const levels = useTasksToLeveledTablets(useFilterTasksByMonth(toRaw(props.tasks)))
 
-// TODO: обработка случая, когда таска начинается в текущем месяце и заканчивается в следующем
-// TODO: обработка случая, когда таска начинается в прошлом месяце и заканчивается в текущем
-
-function computeTabletStyles({ top, left, width }) {
+function computeTabletStyles({ task, top, left, width }) {
+  const { left: doStartsThisMonth, right: doEndsThisMonth } = useTabletEdgesCheck(task)
+  const leftBorderRadius = doStartsThisMonth ? {} : computeBorderRadiusStyle("left", 0)
+  const rightBorderRadius = doEndsThisMonth ? {} : computeBorderRadiusStyle("right", 0)
   return {
     left: `${left}px`,
     top: `${top}px`,
     width: `${width}px`,
-    background: randomRGB()
+    background: randomRGB(),
+    ...leftBorderRadius,
+    ...rightBorderRadius
   }
 }
 const unitStyles = {

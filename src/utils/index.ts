@@ -7,3 +7,23 @@ export function randomRGB() {
   const r = () => (Math.random() * 255) | 0
   return `rgb(${r()}, ${r()}, ${r()})`
 }
+
+export function getClosestMonths() {
+  const date = new Date()
+  const [year, month] = [date.getFullYear(), date.getMonth()]
+  const previous = new Date(date.getFullYear(), date.getMonth() - 1, 1, 0, 0, 0, 0)
+  const current = new Date(date.getFullYear(), date.getMonth(), 1, 0, 0, 0, 0)
+  const next = new Date(year, month + 1, 1, 0, 0, 0, 0)
+  return {
+    previous,
+    current,
+    next
+  }
+}
+
+export function computeBorderRadiusStyle(side: "left" | "right", size: number) {
+  return {
+    [`border-top-${side}-radius`]: `${size}px`,
+    [`border-bottom-${side}-radius`]: `${size}px`
+  }
+}

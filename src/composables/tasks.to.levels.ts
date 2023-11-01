@@ -4,14 +4,18 @@ import {
   TIMELINE_TABLET_PROPORTION
 } from "@/constants"
 import type { Tablet, Task } from "@/types"
+import { getClosestMonths } from "@/utils"
 
 function tabletLevelToTopOffset(levelIndex: number) {
   return levelIndex * TIMELINE_TABLET_HEIGHT
 }
 function taskDateToTabletOffset(start: Date, end: Date) {
+  const { current: currentMonth, next: nextMonth } = getClosestMonths()
+  start = start < currentMonth ? currentMonth : start
+  end = end >= nextMonth ? nextMonth : end
+
   const width = ((+end - +start) / MILLISECONDS_PER_DAY) * TIMELINE_TABLET_PROPORTION
-  const currentMonthStart = new Date(`${start.getFullYear()}.${start.getMonth() + 1}.1`)
-  const left = ((+start - +currentMonthStart) / MILLISECONDS_PER_DAY) * TIMELINE_TABLET_PROPORTION
+  const left = ((+start - +currentMonth) / MILLISECONDS_PER_DAY) * TIMELINE_TABLET_PROPORTION
   return { width, left }
 }
 function shouldInsertTablet(previousTablet: Tablet, newTablet: Tablet) {
