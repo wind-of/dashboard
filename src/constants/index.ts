@@ -1,6 +1,8 @@
 import type { Tag } from "@/types"
 import { uid } from "@/utils"
 
+export const NOW = new Date()
+
 export const DARK_THEME = "dark-theme" as const
 export const LIGHT_THEME = "light-theme" as const
 
@@ -12,7 +14,8 @@ export const TAGS: Tag[] = [
 ].map(([title, color]) => ({ title, color, id: uid("tag") }))
 
 export const HOURS_PER_DAY = 24
-export const MILLISECONDS_PER_DAY = 3600000
+export const MILLISECONDS_PER_DAY = 86_400_000
+export const MILLISECONDS_PER_HOUR = 3_600_000
 
 export const TIMELINE_TABLET_WIDTH = 120
 export const TIMELINE_TABLET_HEIGHT = 46

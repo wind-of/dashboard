@@ -1,5 +1,5 @@
 import {
-  MILLISECONDS_PER_DAY,
+  MILLISECONDS_PER_HOUR,
   TIMELINE_TABLET_HEIGHT,
   TIMELINE_TABLET_PROPORTION
 } from "@/constants"
@@ -11,11 +11,12 @@ function tabletLevelToTopOffset(levelIndex: number) {
 }
 function taskDateToTabletOffset(start: Date, end: Date) {
   const { current: currentMonth, next: nextMonth } = getClosestMonths()
-  start = start < currentMonth ? currentMonth : start
-  end = end >= nextMonth ? nextMonth : end
+  const startMS = +(start < currentMonth ? currentMonth : start)
+  const endMS = +(end >= nextMonth ? nextMonth : end)
+  const currentMonthMS = +currentMonth
 
-  const width = ((+end - +start) / MILLISECONDS_PER_DAY) * TIMELINE_TABLET_PROPORTION
-  const left = ((+start - +currentMonth) / MILLISECONDS_PER_DAY) * TIMELINE_TABLET_PROPORTION
+  const width = ((endMS - startMS) / MILLISECONDS_PER_HOUR) * TIMELINE_TABLET_PROPORTION
+  const left = ((startMS - currentMonthMS) / MILLISECONDS_PER_HOUR) * TIMELINE_TABLET_PROPORTION
   return { width, left }
 }
 function shouldInsertTablet(previousTablet: Tablet, newTablet: Tablet) {
@@ -50,6 +51,7 @@ export function useTasksToLeveledTablets(columns: Column[]) {
       )
       const newTablet = initializeNewTablet(currentTask, tabletsLevelIndex)
       if (shouldInsertTablet(previousTablet, newTablet)) {
+        console.log(previousTablet?.task, newTablet?.task)
         currentTabletLevel.push(newTablet)
         break
       }
