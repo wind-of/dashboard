@@ -19,6 +19,9 @@ const unitStyles = {
 function handleSelection(taskId: string, columnId: string) {
   emit("onTaskSelection", taskId, columnId)
 }
+function getColumnTitle(columnId: string) {
+  return props.columns.find(({ id }) => id === columnId)?.title || ""
+}
 </script>
 
 <template>
@@ -39,6 +42,7 @@ function handleSelection(taskId: string, columnId: string) {
           @click="handleSelection(tablet.task.id, tablet.task.columnId)"
         >
           {{ tablet.task.title }}
+          <sub class="column-title">[{{ getColumnTitle(tablet.task.columnId) }}]</sub>
         </div>
       </template>
     </div>
@@ -70,6 +74,14 @@ function handleSelection(taskId: string, columnId: string) {
   border-radius: 40px;
   background: grey;
   color: white;
+  cursor: pointer;
+  font-weight: 600;
+
+  .column-title {
+    margin-left: 4px;
+    color: #e9e9e9;
+    font-size: 12px;
+  }
 }
 .unit {
   @include flex-column;
