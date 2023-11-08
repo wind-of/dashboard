@@ -38,7 +38,7 @@ function handleSelection(taskId: string, columnId: string) {
           :key="tablet.task.id"
           @click="handleSelection(tablet.task.id, tablet.task.columnId)"
         >
-          {{ tablet.task.startDate }} - {{ tablet.task.expirationDate }}
+          {{ tablet.task.title }}
         </div>
       </template>
     </div>
@@ -61,10 +61,15 @@ function handleSelection(taskId: string, columnId: string) {
 }
 .tablet {
   position: absolute;
+  @include flex-row;
+  align-items: center;
   margin-top: 36px;
+  padding: 0 16px;
   height: 46px;
+
   border-radius: 40px;
   background: grey;
+  color: white;
 }
 .unit {
   @include flex-column;

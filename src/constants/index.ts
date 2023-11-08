@@ -13,6 +13,9 @@ export const TAGS: Tag[] = [
 
 export const HOURS_PER_DAY = 24
 export const MILLISECONDS_PER_DAY = 3600000
+
 export const TIMELINE_TABLET_WIDTH = 120
 export const TIMELINE_TABLET_HEIGHT = 46
 export const TIMELINE_TABLET_PROPORTION = TIMELINE_TABLET_WIDTH / HOURS_PER_DAY
+
+export const DEFAULT_TABLET_COLOR = "#5051f9"
