@@ -5,7 +5,7 @@ import { TIMELINE_TABLET_SECTION_WIDTH } from "@/constants"
 import { useTasksToLeveledTablets } from "@/composables/tasks.to.levels"
 import { useFilterTasksByMonth } from "@/composables/filter.tasks.by.month"
 import { useCssVar } from "@vueuse/core"
-import TImelineTableTablet from "./TImelineTableTablet.vue"
+import TimelineTableTablet from "./TimelineTableTablet.vue"
 
 const props = defineProps<{ columns: Column[] }>()
 const emit = defineEmits(["onTaskSelection"])
@@ -35,7 +35,7 @@ function handleSelection(taskId: string, columnId: string) {
     <div class="blocks-container">
       <template v-for="(tablets, i) in levels" :key="i">
         <template v-for="tablet in tablets" :key="tablet.task.id || tablet.task[0].id">
-          <TImelineTableTablet
+          <TimelineTableTablet
             :columns="columns"
             :tablet="tablet"
             @onTaskSelection="handleSelection"
