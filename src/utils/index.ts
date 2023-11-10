@@ -3,11 +3,6 @@ import type { Task } from "@/types"
 
 export const isTaskInList = (list: Task[], taskId: string) => list.find(({ id }) => id === taskId)
 
-export function randomRGB() {
-  const r = () => (Math.random() * 255) | 0
-  return `rgb(${r()}, ${r()}, ${r()})`
-}
-
 export function getClosestMonths() {
   const date = new Date()
   const [year, month] = [date.getFullYear(), date.getMonth()]
