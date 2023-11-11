@@ -27,7 +27,7 @@ export function useTasksToLeveledTablets(columns: Column[], period = PERIODS.mon
 
   const levels: Tablet[][] = []
   for (let i = 0; i < singleTasks.length; i++)
-    insertNewTablet(levels, initializeNewTablet(singleTasks[i]))
+    insertNewTablet(levels, initializeNewTablet(singleTasks[i], period))
   for (const [key, value] of Object.entries(groupedTasks))
     insertNewTablet(levels, initializeNewTabletWithList(value, +key))
 

@@ -1,10 +1,11 @@
+import { PERIODS } from "@/constants"
 import type { Column } from "@/types"
-import { getClosestMonths } from "@/utils"
+import { getNearbyPeriods } from "@/utils"
 
-export function useFilterTasksByMonth(columns: Column[]) {
-  const { next: nextMonth } = getClosestMonths()
+export function useFilterTasksByPeriod(columns: Column[], period: PERIODS = PERIODS.month) {
+  const { next } = getNearbyPeriods(period)
   columns.forEach(
-    (column) => (column.tasks = column.tasks.filter(({ startDate }) => startDate < nextMonth))
+    (column) => (column.tasks = column.tasks.filter(({ startDate }) => startDate < next))
   )
   return columns
 }

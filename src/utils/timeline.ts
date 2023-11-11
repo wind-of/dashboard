@@ -6,8 +6,8 @@ import {
   TIMELINE_TABLET_PROPORTION,
   TIMELINE_TABLET_SECTION_WIDTH
 } from "@/constants"
-import type { ColumnTask, Tablet, TabletList } from "@/types"
-import { getClosestMonths } from "@/utils"
+import type { ColumnTask, Tablet, TabletList, TabletSignle } from "@/types"
+import { getNearbyPeriods } from "@/utils"
 
 export const timelineUnitStyles = {
   "max-width": `${TIMELINE_TABLET_SECTION_WIDTH}px`,
@@ -36,14 +36,21 @@ export function tabletLevelToTopOffset(levelIndex: number) {
   return levelIndex * TIMELINE_TABLET_HEIGHT
 }
 
-export function taskDateToTabletOffset(start: Date, end: Date) {
-  const { current: currentMonth, next: nextMonth } = getClosestMonths()
-  const startMS = +(start < currentMonth ? currentMonth : start)
-  const endMS = +(end >= nextMonth ? nextMonth : end)
-  const currentMonthMS = +currentMonth
+export function taskDateToTabletOffset(start: Date, end: Date, period: PERIODS = PERIODS.month) {
+  let width = 0,
+    left = 0
+  if (period === PERIODS.month) {
+    const { current: currentMonth, next: nextMonth } = getNearbyPeriods(period)
+    const startMS = +(start < currentMonth ? currentMonth : start)
+    const endMS = +(end >= nextMonth ? nextMonth : end)
+    const currentMonthMS = +currentMonth
 
-  const width = ((endMS - startMS) / MILLISECONDS_PER_HOUR) * TIMELINE_TABLET_PROPORTION
-  const left = ((startMS - currentMonthMS) / MILLISECONDS_PER_HOUR) * TIMELINE_TABLET_PROPORTION
+    width = ((endMS - startMS) / MILLISECONDS_PER_HOUR) * TIMELINE_TABLET_PROPORTION
+    left = ((startMS - currentMonthMS) / MILLISECONDS_PER_HOUR) * TIMELINE_TABLET_PROPORTION
+  }
+  // if(period === PERIODS.year) {
+
+  // }
   return { width, left }
 }
 
@@ -55,11 +62,14 @@ export function doesTabletsIntersect(firstTablet: Tablet, secondTablet: Tablet) 
   )
 }
 
-export function initializeNewTablet(task: ColumnTask) {
+export function initializeNewTablet(
+  task: ColumnTask,
+  period: PERIODS = PERIODS.month
+): TabletSignle {
   return {
     task,
     top: 0,
-    ...taskDateToTabletOffset(task.startDate, task.expirationDate)
+    ...taskDateToTabletOffset(task.startDate, task.expirationDate, period)
   }
 }
 

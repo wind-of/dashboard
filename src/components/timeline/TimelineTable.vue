@@ -3,7 +3,7 @@ import { computed } from "vue"
 import { Column } from "@/types"
 import { PERIODS, TIMELINE_TABLET_SECTION_WIDTH } from "@/constants"
 import { useTasksToLeveledTablets } from "@/composables/tasks.to.levels"
-import { useFilterTasksByMonth } from "@/composables/filter.tasks.by.month"
+import { useFilterTasksByPeriod } from "@/composables/filter.tasks.by.month"
 import { useCssVar } from "@vueuse/core"
 import { timelineUnitStyles, unitsCountInPeriod } from "@/utils/timeline"
 import TimelineTableTablet from "~/timeline/TimelineTableTablet.vue"
@@ -12,7 +12,7 @@ const props = defineProps<{ columns: Column[]; period: PERIODS }>()
 const emit = defineEmits(["onTaskSelection"])
 
 const levels = computed(() =>
-  useTasksToLeveledTablets(useFilterTasksByMonth(props.columns), props.period)
+  useTasksToLeveledTablets(useFilterTasksByPeriod(props.columns, props.period), props.period)
 )
 
 useCssVar("--timeline-tablet-section-width").value = TIMELINE_TABLET_SECTION_WIDTH + "px"
@@ -36,6 +36,7 @@ function handleSelection(taskId: string, columnId: string) {
           <TimelineTableTablet
             :columns="columns"
             :tablet="tablet"
+            :period="period"
             @onTaskSelection="handleSelection"
           />
         </template>

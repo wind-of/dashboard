@@ -1,10 +1,13 @@
 import { useTabletEdgesCheck } from "@/composables/tablet.edges"
-import { DEFAULT_GROUPED_TABLET_COLOR, DEFAULT_SINGLE_TABLET_COLOR } from "@/constants"
+import { DEFAULT_GROUPED_TABLET_COLOR, DEFAULT_SINGLE_TABLET_COLOR, PERIODS } from "@/constants"
 import type { TabletList, TabletSignle } from "@/types"
 import { computeBorderRadiusStyle } from "@/utils"
 
-export function useComputedTimelineTabletStyles({ task, top, left, width }: TabletSignle) {
-  const { left: doStartsThisMonth, right: doEndsThisMonth } = useTabletEdgesCheck(task)
+export function useComputedTimelineTabletStyles(
+  { task, top, left, width }: TabletSignle,
+  period: PERIODS
+) {
+  const { left: doStartsThisMonth, right: doEndsThisMonth } = useTabletEdgesCheck(task, period)
   const leftBorderRadius = doStartsThisMonth ? {} : computeBorderRadiusStyle("left", 0)
   const rightBorderRadius = doEndsThisMonth ? {} : computeBorderRadiusStyle("right", 0)
   const background = task.tags[0]?.color || DEFAULT_SINGLE_TABLET_COLOR
