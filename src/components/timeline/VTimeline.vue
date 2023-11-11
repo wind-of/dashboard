@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { reactive } from "vue"
+import { reactive, ref } from "vue"
 import type { Project } from "@/types"
 import TimelineHeader from "~/timeline/TimelineHeader.vue"
 import TimelineTable from "~/timeline/TimelineTable.vue"
 import TaskDrawer from "~/TaskDrawer.vue"
 import { useTaskDrawer } from "@/composables/task.drawer"
 import { project as project_ } from "@/mock"
+import { DEFAULT_PERIOD } from "@/constants"
 
 const project: Project = reactive(project_)
 const {
@@ -16,12 +17,17 @@ const {
   isDrawerOpen,
   selected
 } = useTaskDrawer(project)
+const currentPeriod = ref(DEFAULT_PERIOD)
 </script>
 
 <template>
   <section class="timeline">
-    <TimelineHeader />
-    <TimelineTable :columns="project.columns" @onTaskSelection="handleTaskSelection" />
+    <TimelineHeader :activePeriod="currentPeriod" />
+    <TimelineTable
+      :columns="project.columns"
+      :period="currentPeriod"
+      @onTaskSelection="handleTaskSelection"
+    />
     <Teleport to="body">
       <TaskDrawer
         :task="selected.task"

@@ -1,23 +1,21 @@
 <script setup lang="ts">
 import { computed } from "vue"
 import { Column } from "@/types"
-import { TIMELINE_TABLET_SECTION_WIDTH } from "@/constants"
+import { PERIODS, TIMELINE_TABLET_SECTION_WIDTH } from "@/constants"
 import { useTasksToLeveledTablets } from "@/composables/tasks.to.levels"
 import { useFilterTasksByMonth } from "@/composables/filter.tasks.by.month"
 import { useCssVar } from "@vueuse/core"
-import TimelineTableTablet from "./TimelineTableTablet.vue"
+import { timelineUnitStyles, unitsCountInPeriod } from "@/utils/timeline"
+import TimelineTableTablet from "~/timeline/TimelineTableTablet.vue"
 
-const props = defineProps<{ columns: Column[] }>()
+const props = defineProps<{ columns: Column[]; period: PERIODS }>()
 const emit = defineEmits(["onTaskSelection"])
 
-const levels = computed(() => useTasksToLeveledTablets(useFilterTasksByMonth(props.columns)))
+const levels = computed(() =>
+  useTasksToLeveledTablets(useFilterTasksByMonth(props.columns), props.period)
+)
 
 useCssVar("--timeline-tablet-section-width").value = TIMELINE_TABLET_SECTION_WIDTH + "px"
-
-const unitStyles = {
-  "max-width": `${TIMELINE_TABLET_SECTION_WIDTH}px`,
-  "min-width": `${TIMELINE_TABLET_SECTION_WIDTH}px`
-}
 
 function handleSelection(taskId: string, columnId: string) {
   emit("onTaskSelection", taskId, columnId)
@@ -26,9 +24,9 @@ function handleSelection(taskId: string, columnId: string) {
 
 <template>
   <section class="table">
-    <template v-for="i in 30" :key="i">
-      <div class="unit" :style="unitStyles">
-        <h3 class="unit-title">S {{ i }}</h3>
+    <template v-for="i in unitsCountInPeriod(period)" :key="i">
+      <div class="unit" :style="timelineUnitStyles">
+        <h3 class="unit-title">{{ i }}</h3>
         <div class="unit-body"></div>
       </div>
     </template>

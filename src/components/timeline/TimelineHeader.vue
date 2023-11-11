@@ -1,11 +1,24 @@
 <script setup lang="ts">
-withDefaults(defineProps<{ title?: string }>(), { title: "Timeline" })
+import { PERIODS } from "@/constants"
+withDefaults(defineProps<{ title?: string; activePeriod?: PERIODS }>(), {
+  title: "Timeline",
+  activePeriod: PERIODS.month
+})
 </script>
 
 <template>
   <header class="header">
     <h1 class="title">{{ title }}</h1>
-    <div class="table-format" tabindex="0">Month</div>
+    <div class="periods">
+      <button
+        v-for="period in PERIODS"
+        :key="period"
+        class="period"
+        :class="{ active: period === activePeriod }"
+      >
+        {{ period }}
+      </button>
+    </div>
   </header>
 </template>
 
@@ -20,11 +33,16 @@ withDefaults(defineProps<{ title?: string }>(), { title: "Timeline" })
   align-items: center;
   gap: 150px;
 }
-.table-format {
+.periods {
+  @include flex-row;
+  gap: 10px;
+}
+.period {
   padding: 5px 20px;
   justify-self: flex-start;
 
   font-size: 14px;
+  font-weight: 400;
   color: var(--blue);
   border: 1px solid var(--blue);
   border-radius: 18px;
@@ -35,7 +53,7 @@ withDefaults(defineProps<{ title?: string }>(), { title: "Timeline" })
   transition-duration: 0.15s;
   &:hover,
   &:active,
-  &:focus {
+  &.active {
     background: var(--blue);
     color: var(--white);
   }

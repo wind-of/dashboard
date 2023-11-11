@@ -1,3 +1,4 @@
+import { PERIODS, PERIOD_UNITS } from "@/constants"
 import type { Column, ColumnTask, Tablet } from "@/types"
 import {
   doEndAtTheSamePeriod,
@@ -6,11 +7,10 @@ import {
   insertNewTablet
 } from "@/utils/timeline"
 
-export function useTasksToLeveledTablets(columns: Column[]) {
+export function useTasksToLeveledTablets(columns: Column[], period = PERIODS.month) {
   const tasks: ColumnTask[] = columns
     .flatMap(({ tasks, id }) => tasks.map((task) => ({ ...task, columnId: id })))
     .sort((a, b) => +a.startDate - +b.startDate)
-  const levels: Tablet[][] = []
 
   const groupedTasks: { [key: number]: ColumnTask[] } = {}
   const singleTasks: ColumnTask[] = []
@@ -20,10 +20,12 @@ export function useTasksToLeveledTablets(columns: Column[]) {
       singleTasks.push(currentTask)
       continue
     }
-    const day = currentTask.startDate.getDate()
-    ;(groupedTasks[day] || (groupedTasks[day] = [])).push(currentTask)
+    // @ts-ignore
+    const unitIndex = currentTask.startDate[PERIOD_UNITS[period]]()
+    ;(groupedTasks[unitIndex] || (groupedTasks[unitIndex] = [])).push(currentTask)
   }
 
+  const levels: Tablet[][] = []
   for (let i = 0; i < singleTasks.length; i++)
     insertNewTablet(levels, initializeNewTablet(singleTasks[i]))
   for (const [key, value] of Object.entries(groupedTasks))
