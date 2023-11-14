@@ -1,4 +1,6 @@
-export function getNearbyWeeks() {
+import type { NearbyDatesResult } from "@/types/utils"
+
+export function getNearbyWeeks(): NearbyDatesResult {
   const date = new Date()
   const [year, month, day, weekDay] = [
     date.getFullYear(),
@@ -14,7 +16,7 @@ export function getNearbyWeeks() {
   return { previous, current, next }
 }
 
-export function getNearbyMonth() {
+export function getNearbyMonth(): NearbyDatesResult {
   const date = new Date()
   const [year, month] = [date.getFullYear(), date.getMonth()]
   const previous = new Date(year, month - 1, 1, 0, 0, 0, 0)
@@ -24,7 +26,7 @@ export function getNearbyMonth() {
   return { previous, current, next }
 }
 
-export function getNearbyYears() {
+export function getNearbyYears(): NearbyDatesResult {
   const date = new Date()
   const [year] = [date.getFullYear()]
   const previous = new Date(year - 1, 0, 1, 0, 0, 0, 0)
@@ -34,7 +36,7 @@ export function getNearbyYears() {
   return { previous, current, next }
 }
 
-export function getNearbyDays() {
+export function getNearbyDays(): NearbyDatesResult {
   const date = new Date()
   const [year, month, day] = [date.getFullYear(), date.getMonth(), date.getDate()]
   const previous = new Date(year, month, day - 1, 0, 0, 0, 0)

@@ -12,8 +12,9 @@ function randomDate({ period = "day", side = "future", half = true }) {
   const now = new Date(NOW)
   const millisecondMultiplier = { day: 1, week: 7, month: 30, year: 360 }[period] as number
   const sign = { future: 1, past: -1 }[side] as number
+  // TODO: ведёт себя странно при period = "year"
   now.setMilliseconds(
-    (now.getMilliseconds() +
+    (+now +
       sign * (Math.random() * MILLISECONDS_PER_DAY * millisecondMultiplier * (half ? 0.5 : 1))) |
       0
   )
@@ -24,8 +25,8 @@ export const task = ({
   title = "Task #" + rn(),
   description = "Description",
   tags = generateTags(),
-  expirationDate = randomDate({ side: "future", period: "week" }),
-  startDate = randomDate({ side: "past", period: "week" })
+  expirationDate = randomDate({ side: "future", period: "month" }),
+  startDate = randomDate({ side: "past", period: "month" })
 } = {}): Task => ({ id: uid("task"), title, description, tags, expirationDate, startDate })
 export const column = ({ title = "Column #" + rn(), tasks = generateTasks() } = {}): Column => ({
   id: uid("table"),

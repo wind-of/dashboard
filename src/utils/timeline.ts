@@ -1,9 +1,13 @@
 import {
+  MILLISECONDS_PER_DAY,
   MILLISECONDS_PER_HOUR,
+  MILLISECONDS_PER_MINUTE,
   NOW,
   PERIODS,
+  TIMELINE_DAILY_TABLET_PROPORTION,
+  TIMELINE_HOURLY_TABLET_PROPORTION,
+  TIMELINE_MONTHLY_TABLET_PROPORTION,
   TIMELINE_TABLET_HEIGHT,
-  TIMELINE_TABLET_PROPORTION,
   TIMELINE_TABLET_SECTION_WIDTH
 } from "@/constants"
 import type { ColumnTask, Tablet, TabletList, TabletSignle } from "@/types"
@@ -14,9 +18,15 @@ export const timelineUnitStyles = {
   "min-width": `${TIMELINE_TABLET_SECTION_WIDTH}px`
 }
 
-export function doEndAtTheSamePeriod(start: Date, end: Date) {
+export function doEndAtTheSamePeriod(start: Date, end: Date, period: PERIODS) {
+  const methods = {
+    [PERIODS.day]: ["getFullYear", "getMonth", "getDate", "getHours"],
+    [PERIODS.week]: ["getFullYear", "getMonth", "getDate"],
+    [PERIODS.month]: ["getFullYear", "getMonth", "getDate"],
+    [PERIODS.year]: ["getFullYear", "getMonth"]
+  }[period]
   // @ts-ignore
-  return ["getFullYear", "getMonth", "getDate"].every((method) => start[method]() === end[method]())
+  return methods.every((method) => start[method]() === end[method]())
 }
 
 export function getDaysCountInCurrentMonth() {
@@ -37,20 +47,32 @@ export function tabletLevelToTopOffset(levelIndex: number) {
 }
 
 export function taskDateToTabletOffset(start: Date, end: Date, period: PERIODS = PERIODS.month) {
-  let width = 0,
-    left = 0
-  if (period === PERIODS.month) {
-    const { current: currentMonth, next: nextMonth } = getNearbyPeriods(period)
-    const startMS = +(start < currentMonth ? currentMonth : start)
-    const endMS = +(end >= nextMonth ? nextMonth : end)
-    const currentMonthMS = +currentMonth
+  const { current, next } = getNearbyPeriods(period)
+  const { milliseconds, proportion } = {
+    [PERIODS.day]: {
+      milliseconds: MILLISECONDS_PER_MINUTE,
+      proportion: TIMELINE_HOURLY_TABLET_PROPORTION
+    },
+    [PERIODS.week]: {
+      milliseconds: MILLISECONDS_PER_HOUR,
+      proportion: TIMELINE_DAILY_TABLET_PROPORTION
+    },
+    [PERIODS.month]: {
+      milliseconds: MILLISECONDS_PER_HOUR,
+      proportion: TIMELINE_DAILY_TABLET_PROPORTION
+    },
+    [PERIODS.year]: {
+      milliseconds: MILLISECONDS_PER_DAY,
+      proportion: TIMELINE_MONTHLY_TABLET_PROPORTION
+    }
+  }[period]
+  const startMS = +(start < current ? current : start)
+  const endMS = +(end >= next ? next : end)
+  const currentMS = +current
 
-    width = ((endMS - startMS) / MILLISECONDS_PER_HOUR) * TIMELINE_TABLET_PROPORTION
-    left = ((startMS - currentMonthMS) / MILLISECONDS_PER_HOUR) * TIMELINE_TABLET_PROPORTION
-  }
-  // if(period === PERIODS.year) {
+  const width = ((endMS - startMS) / milliseconds) * proportion
+  const left = ((startMS - currentMS) / milliseconds) * proportion
 
-  // }
   return { width, left }
 }
 

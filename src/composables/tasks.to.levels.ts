@@ -16,7 +16,7 @@ export function useTasksToLeveledTablets(columns: Column[], period = PERIODS.mon
   const singleTasks: ColumnTask[] = []
 
   for (let i = 0, currentTask = tasks[i]; i < tasks.length; currentTask = tasks[++i]) {
-    if (!doEndAtTheSamePeriod(currentTask.startDate, currentTask.expirationDate)) {
+    if (!doEndAtTheSamePeriod(currentTask.startDate, currentTask.expirationDate, period)) {
       singleTasks.push(currentTask)
       continue
     }
