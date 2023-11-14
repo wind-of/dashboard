@@ -18,7 +18,6 @@ const form = computed(() => ({ state: reactive(useCopyReactive(props.task)) }))
 const state = computed(() => form.value.state)
 
 function handleCommitChanges() {
-  console.log(state.value)
   emit("onCommitChanges", useCopyReactive(state.value))
 }
 function handleCancel() {
