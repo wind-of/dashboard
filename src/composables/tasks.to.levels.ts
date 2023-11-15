@@ -1,4 +1,4 @@
-import { PERIODS, PERIOD_UNITS } from "@/constants"
+import { DEFAULT_PERIOD, PERIOD_UNITS } from "@/constants"
 import type { Column, ColumnTask, Tablet } from "@/types"
 import {
   doEndAtTheSamePeriod,
@@ -7,7 +7,7 @@ import {
   insertNewTablet
 } from "@/utils/timeline"
 
-export function useTasksToLeveledTablets(columns: Column[], period = PERIODS.month) {
+export function useTasksToLeveledTablets(columns: Column[], period = DEFAULT_PERIOD) {
   const tasks: ColumnTask[] = columns
     .flatMap(({ tasks, id }) => tasks.map((task) => ({ ...task, columnId: id })))
     .sort((a, b) => +a.startDate - +b.startDate)

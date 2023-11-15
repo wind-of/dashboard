@@ -1,4 +1,5 @@
 import {
+  DEFAULT_PERIOD,
   MILLISECONDS_PER_DAY,
   MILLISECONDS_PER_HOUR,
   MILLISECONDS_PER_MINUTE,
@@ -46,7 +47,7 @@ export function tabletLevelToTopOffset(levelIndex: number) {
   return levelIndex * TIMELINE_TABLET_HEIGHT
 }
 
-export function taskDateToTabletOffset(start: Date, end: Date, period: PERIODS = PERIODS.month) {
+export function taskDateToTabletOffset(start: Date, end: Date, period: PERIODS = DEFAULT_PERIOD) {
   const { current, next } = getNearbyPeriods(period)
   const { milliseconds, proportion } = {
     [PERIODS.day]: {
@@ -76,7 +77,7 @@ export function taskDateToTabletOffset(start: Date, end: Date, period: PERIODS =
   return { width, left }
 }
 
-export function doesTabletsIntersect(firstTablet: Tablet, secondTablet: Tablet) {
+export function doesTabletsIntersect(firstTablet: Tablet | undefined, secondTablet: Tablet) {
   return (
     !firstTablet ||
     firstTablet.left + firstTablet.width <= secondTablet.left ||
@@ -86,7 +87,7 @@ export function doesTabletsIntersect(firstTablet: Tablet, secondTablet: Tablet) 
 
 export function initializeNewTablet(
   task: ColumnTask,
-  period: PERIODS = PERIODS.month
+  period: PERIODS = DEFAULT_PERIOD
 ): TabletSignle {
   return {
     task,
@@ -111,7 +112,9 @@ export function insertNewTablet(levels: Tablet[][], tablet: Tablet) {
     }
     const currentTabletLevel = levels[tabletsLevelIndex]
     // @ts-ignore
-    const previousTablet = currentTabletLevel.findLast((item: Tablet) => item.left <= tablet.left)
+    const previousTablet = currentTabletLevel.at(-1)
+    // console.log(currentTabletLevel)
+    console.log(previousTablet?.left, tablet?.left)
     if (doesTabletsIntersect(previousTablet, tablet)) {
       tablet.top = tabletLevelToTopOffset(tabletsLevelIndex)
       currentTabletLevel.push(tablet)

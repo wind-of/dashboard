@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { PERIODS } from "@/constants"
+import { DEFAULT_PERIOD, PERIODS } from "@/constants"
 withDefaults(defineProps<{ title?: string; activePeriod?: PERIODS }>(), {
   title: "Timeline",
-  activePeriod: PERIODS.month
+  activePeriod: DEFAULT_PERIOD
 })
 </script>
 
