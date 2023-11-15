@@ -1,9 +1,17 @@
 <script setup lang="ts">
 import { DEFAULT_PERIOD, PERIODS } from "@/constants"
-withDefaults(defineProps<{ title?: string; activePeriod?: PERIODS }>(), {
+const props = withDefaults(defineProps<{ title?: string; activePeriod?: PERIODS }>(), {
   title: "Timeline",
   activePeriod: DEFAULT_PERIOD
 })
+const emit = defineEmits(["onActivePeriodUpdate"])
+
+function handlePeriodUpdate(period: PERIODS) {
+  if (period === props.activePeriod) {
+    return
+  }
+  emit("onActivePeriodUpdate", period)
+}
 </script>
 
 <template>
@@ -15,6 +23,7 @@ withDefaults(defineProps<{ title?: string; activePeriod?: PERIODS }>(), {
         :key="period"
         class="period"
         :class="{ active: period === activePeriod }"
+        @click="handlePeriodUpdate(period)"
       >
         {{ period }}
       </button>

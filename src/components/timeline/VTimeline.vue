@@ -6,7 +6,7 @@ import TimelineTable from "~/timeline/TimelineTable.vue"
 import TaskDrawer from "~/TaskDrawer.vue"
 import { useTaskDrawer } from "@/composables/task.drawer"
 import { project as project_ } from "@/mock"
-import { DEFAULT_PERIOD } from "@/constants"
+import { DEFAULT_PERIOD, PERIODS } from "@/constants"
 
 const project: Project = reactive(project_)
 const {
@@ -18,11 +18,15 @@ const {
   selected
 } = useTaskDrawer(project)
 const currentPeriod = ref(DEFAULT_PERIOD)
+
+function handlePeriodUpdate(period: PERIODS) {
+  currentPeriod.value = period
+}
 </script>
 
 <template>
   <section class="timeline">
-    <TimelineHeader :activePeriod="currentPeriod" />
+    <TimelineHeader :activePeriod="currentPeriod" @onActivePeriodUpdate="handlePeriodUpdate" />
     <TimelineTable
       :columns="project.columns"
       :period="currentPeriod"
