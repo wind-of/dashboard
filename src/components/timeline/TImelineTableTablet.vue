@@ -1,17 +1,14 @@
 <script setup lang="ts">
 import type { Tablet } from "@/types"
 import { Column, TabletSignle, TabletList } from "@/types"
-import { PERIODS, TIMELINE_TABLET_SECTION_WIDTH } from "@/constants"
+import { PERIODS } from "@/constants"
 import {
   useComputedTimelineTabletStyles,
   useComputedTimelineTabletListStyles
 } from "@/composables/timeline.tablet.styles"
-import { useCssVar } from "@vueuse/core"
 
 const props = defineProps<{ tablet: Tablet; columns: Column[]; period: PERIODS }>()
 const emit = defineEmits(["onTaskSelection"])
-
-useCssVar("--timeline-tablet-section-width").value = TIMELINE_TABLET_SECTION_WIDTH + "px"
 
 function handleSelection(taskId: string, columnId: string) {
   emit("onTaskSelection", taskId, columnId)

@@ -11,6 +11,8 @@ import TimelineTableTablet from "~/timeline/TimelineTableTablet.vue"
 const props = defineProps<{ columns: Column[]; period: PERIODS }>()
 const emit = defineEmits(["onTaskSelection"])
 
+// TODO: возможность менять TIMELINE_TABLET_SECTION_WIDTH
+
 const levels = computed(() =>
   useTasksToLeveledTablets(useFilterTasksByPeriod(props.columns, props.period), props.period)
 )
