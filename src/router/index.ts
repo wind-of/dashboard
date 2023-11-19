@@ -1,3 +1,4 @@
+import TimelineViewVue from "@/views/TimelineView.vue"
 import { createRouter, createWebHistory } from "vue-router"
 import HomeView from "../views/HomeView.vue"
 
@@ -22,7 +23,7 @@ const router = createRouter({
     {
       path: "/timeline",
       name: "timeline",
-      component: () => import("../views/TimelineView.vue")
+      component: TimelineViewVue
     }
   ]
 })
