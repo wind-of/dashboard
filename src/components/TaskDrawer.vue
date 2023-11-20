@@ -5,10 +5,15 @@ import VTextarea from "~/form/VTextarea.vue"
 import VButton from "~/form/VButton.vue"
 import { useCopyReactive } from "@/composables/copy.reactive"
 import { useTimeFormat } from "@/composables/format.time"
-import { Tag, Task } from "@/types"
+import { Tag, Task, ColumnProto } from "@/types"
 import { TAGS } from "@/constants"
 
-const props = defineProps<{ task: Task; columnId: string; isOpen: boolean }>()
+const props = defineProps<{
+  task: Task
+  columnId: string
+  columns: ColumnProto[]
+  isOpen: boolean
+}>()
 const emit = defineEmits(["onCommitChanges", "onCancelChanges", "onTaskDelete"])
 
 const drawerStyles = computed(() => ({
@@ -75,6 +80,16 @@ function handleTagClick(tag: Tag) {
           <VTextarea v-model="state.description" />
         </label>
       </section>
+      <select class="columns-select">
+        <option
+          v-for="{ id, title } in columns"
+          :key="id"
+          :value="title"
+          :selected="id === columnId"
+        >
+          {{ title }}
+        </option>
+      </select>
       <section class="date">Конец: {{ useTimeFormat(state.expirationDate, true) }}</section>
       <section class="form-buttons">
         <VButton @click="handleCommitChanges" isPrimary>Save</VButton>
@@ -147,6 +162,15 @@ function handleTagClick(tag: Tag) {
 }
 .input-title {
   padding-right: 10px;
+}
+
+.columns-select {
+  align-self: flex-start;
+  padding: 10px 6em 10px 10px;
+  border: 1px solid #eee;
+  color: #777;
+  border-radius: 0.25rem;
+  outline: none;
 }
 .date {
   @include taskDateTag;

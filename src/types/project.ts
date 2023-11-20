@@ -16,9 +16,11 @@ export interface ColumnTask extends Task {
   columnId: string
 }
 
-export interface Column {
+export interface ColumnProto {
   id: string
   title: string
+}
+export interface Column extends ColumnProto {
   tasks: Task[]
 }
 

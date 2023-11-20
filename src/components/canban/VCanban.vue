@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive } from "vue"
+import { reactive, computed } from "vue"
 
 import CanbanHeader from "~/canban/CanbanHeader.vue"
 import CanbanTable from "~/canban/CanbanTable.vue"
@@ -23,6 +23,7 @@ const {
 const binColumn = initializeColumn()
 
 const column = (columnId: string) => project.columns.find(({ id }) => id === columnId) || binColumn
+const columnsWithoutTasks = computed(() => project.columns.map(({ tasks, ...rest }) => rest))
 
 function handleListChange(columnId: string, updatedList: Task[]) {
   const currentColumn = column(columnId)
@@ -54,6 +55,7 @@ function handleTaskCreation(columnId: string) {
         :task="selected.task"
         :columnId="selected.columnId"
         :isOpen="isDrawerOpen"
+        :columns="columnsWithoutTasks"
         @onCommitChanges="handleTaskChange"
         @onCancelChanges="handleTaskChangeCancel"
         @onTaskDelete="handleTaskDelete"
