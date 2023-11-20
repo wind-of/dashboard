@@ -76,10 +76,6 @@ const expirationDate = computed(() => {
 }
 
 .item-date {
-  align-self: flex-start;
-  padding: 3px 9px;
-  font-size: 12px;
-  border: 1px solid #e2e2e2;
-  border-radius: 4px;
+  @include taskDateTag;
 }
 </style>

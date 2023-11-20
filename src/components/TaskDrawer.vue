@@ -4,6 +4,7 @@ import VInput from "~/form/VInput.vue"
 import VTextarea from "~/form/VTextarea.vue"
 import VButton from "~/form/VButton.vue"
 import { useCopyReactive } from "@/composables/copy.reactive"
+import { useTimeFormat } from "@/composables/format.time"
 import { Tag, Task } from "@/types"
 import { TAGS } from "@/constants"
 
@@ -74,6 +75,7 @@ function handleTagClick(tag: Tag) {
           <VTextarea v-model="state.description" />
         </label>
       </section>
+      <section class="date">Конец: {{ useTimeFormat(state.expirationDate, true) }}</section>
       <section class="form-buttons">
         <VButton @click="handleCommitChanges" isPrimary>Save</VButton>
         <VButton @click="handleCancel">Cancel</VButton>
@@ -145,6 +147,11 @@ function handleTagClick(tag: Tag) {
 }
 .input-title {
   padding-right: 10px;
+}
+.date {
+  @include taskDateTag;
+  font-size: 14px;
+  cursor: pointer;
 }
 .form-buttons {
   @include flex-row;
