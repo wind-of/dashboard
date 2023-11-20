@@ -1,23 +1,34 @@
 <script setup lang="ts">
-import { computed } from "vue"
+import { computed, ref } from "vue"
 import { Column } from "@/types"
-import { PERIODS, TIMELINE_TABLET_SECTION_WIDTH } from "@/constants"
+import { PERIODS, DEFAULT_TIMELINE_TABLET_UNIT_WIDTH } from "@/constants"
 import { useTasksToLeveledTablets } from "@/composables/tasks.to.levels"
 import { useFilterTasksByPeriod } from "@/composables/filter.tasks.by.month"
 import { useCssVar } from "@vueuse/core"
-import { timelineUnitStyles, unitsCountInPeriod } from "@/utils/timeline"
+import { computedTimelineUnitStyles, unitsCountInPeriod } from "@/utils/timeline"
 import TimelineTableTablet from "~/timeline/TimelineTableTablet.vue"
 
 const props = defineProps<{ columns: Column[]; period: PERIODS }>()
 const emit = defineEmits(["onTaskSelection"])
 
-// TODO: возможность менять TIMELINE_TABLET_SECTION_WIDTH
-
-const levels = computed(() =>
-  useTasksToLeveledTablets(useFilterTasksByPeriod(props.columns, props.period), props.period)
+const timelineTable = ref()
+const timelineUnitsCount = computed(() => unitsCountInPeriod(props.period))
+const timelineSectionWidth = computed(() =>
+  Math.max(
+    DEFAULT_TIMELINE_TABLET_UNIT_WIDTH,
+    (timelineTable?.value?.clientWidth - 30 || 0) / timelineUnitsCount.value
+  )
 )
 
-useCssVar("--timeline-tablet-section-width").value = TIMELINE_TABLET_SECTION_WIDTH + "px"
+const levels = computed(() =>
+  useTasksToLeveledTablets(
+    useFilterTasksByPeriod(props.columns, props.period),
+    props.period,
+    timelineSectionWidth.value
+  )
+)
+
+useCssVar("--timeline-tablet-section-width").value = timelineSectionWidth.value + "px"
 
 function handleSelection(taskId: string, columnId: string) {
   emit("onTaskSelection", taskId, columnId)
@@ -25,9 +36,9 @@ function handleSelection(taskId: string, columnId: string) {
 </script>
 
 <template>
-  <section class="table">
+  <section class="table" ref="timelineTable">
     <template v-for="i in unitsCountInPeriod(period)" :key="i">
-      <div class="unit" :style="timelineUnitStyles">
+      <div class="unit" :style="computedTimelineUnitStyles(timelineSectionWidth)">
         <h3 class="unit-title">{{ i }}</h3>
         <div class="unit-body"></div>
       </div>

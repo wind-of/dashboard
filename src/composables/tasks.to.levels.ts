@@ -1,4 +1,4 @@
-import { DEFAULT_PERIOD, PERIOD_UNITS } from "@/constants"
+import { DEFAULT_PERIOD, DEFAULT_TIMELINE_TABLET_UNIT_WIDTH, PERIOD_UNITS } from "@/constants"
 import type { Column, ColumnTask, Tablet } from "@/types"
 import {
   doEndAtTheSamePeriod,
@@ -7,7 +7,11 @@ import {
   insertNewTablet
 } from "@/utils/timeline"
 
-export function useTasksToLeveledTablets(columns: Column[], period = DEFAULT_PERIOD) {
+export function useTasksToLeveledTablets(
+  columns: Column[],
+  period = DEFAULT_PERIOD,
+  timelineUnitWidth: number = DEFAULT_TIMELINE_TABLET_UNIT_WIDTH
+) {
   const tasks: ColumnTask[] = columns
     .flatMap(({ tasks, id }) => tasks.map((task) => ({ ...task, columnId: id })))
     .sort((a, b) => +a.startDate - +b.startDate)
@@ -27,9 +31,9 @@ export function useTasksToLeveledTablets(columns: Column[], period = DEFAULT_PER
 
   const levels: Tablet[][] = []
   for (let i = 0; i < singleTasks.length; i++)
-    insertNewTablet(levels, initializeNewTablet(singleTasks[i], period))
+    insertNewTablet(levels, initializeNewTablet(singleTasks[i], period, timelineUnitWidth))
   for (const [key, value] of Object.entries(groupedTasks))
-    insertNewTablet(levels, initializeNewTabletWithList(value, +key))
+    insertNewTablet(levels, initializeNewTabletWithList(value, +key, timelineUnitWidth))
 
   return levels
 }

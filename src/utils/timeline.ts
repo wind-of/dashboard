@@ -1,23 +1,23 @@
 import {
+  DAYS_PER_MONTH,
   DEFAULT_PERIOD,
+  DEFAULT_TIMELINE_TABLET_UNIT_WIDTH,
+  HOURS_PER_DAY,
   MILLISECONDS_PER_DAY,
   MILLISECONDS_PER_HOUR,
   MILLISECONDS_PER_MINUTE,
+  MINUTES_PER_HOUR,
   NOW,
   PERIODS,
-  TIMELINE_DAILY_TABLET_PROPORTION,
-  TIMELINE_HOURLY_TABLET_PROPORTION,
-  TIMELINE_MONTHLY_TABLET_PROPORTION,
-  TIMELINE_TABLET_HEIGHT,
-  TIMELINE_TABLET_SECTION_WIDTH
+  TIMELINE_TABLET_HEIGHT
 } from "@/constants"
 import type { ColumnTask, Tablet, TabletList, TabletSignle } from "@/types"
 import { getNearbyPeriods } from "@/utils"
 
-export const timelineUnitStyles = {
-  "max-width": `${TIMELINE_TABLET_SECTION_WIDTH}px`,
-  "min-width": `${TIMELINE_TABLET_SECTION_WIDTH}px`
-}
+export const computedTimelineUnitStyles = (width: number) => ({
+  "max-width": `${width}px`,
+  "min-width": `${width}px`
+})
 
 export function doEndAtTheSamePeriod(start: Date, end: Date, period: PERIODS) {
   const methods = {
@@ -47,24 +47,29 @@ export function tabletLevelToTopOffset(levelIndex: number) {
   return levelIndex * TIMELINE_TABLET_HEIGHT
 }
 
-export function taskDateToTabletOffset(start: Date, end: Date, period: PERIODS = DEFAULT_PERIOD) {
+export function taskDateToTabletOffset(
+  start: Date,
+  end: Date,
+  period: PERIODS = DEFAULT_PERIOD,
+  timelineUnitWidth: number = DEFAULT_TIMELINE_TABLET_UNIT_WIDTH
+) {
   const { current, next } = getNearbyPeriods(period)
   const { milliseconds, proportion } = {
     [PERIODS.day]: {
       milliseconds: MILLISECONDS_PER_MINUTE,
-      proportion: TIMELINE_HOURLY_TABLET_PROPORTION
+      proportion: timelineUnitWidth / MINUTES_PER_HOUR
     },
     [PERIODS.week]: {
       milliseconds: MILLISECONDS_PER_HOUR,
-      proportion: TIMELINE_DAILY_TABLET_PROPORTION
+      proportion: timelineUnitWidth / HOURS_PER_DAY
     },
     [PERIODS.month]: {
       milliseconds: MILLISECONDS_PER_HOUR,
-      proportion: TIMELINE_DAILY_TABLET_PROPORTION
+      proportion: timelineUnitWidth / HOURS_PER_DAY
     },
     [PERIODS.year]: {
       milliseconds: MILLISECONDS_PER_DAY,
-      proportion: TIMELINE_MONTHLY_TABLET_PROPORTION
+      proportion: timelineUnitWidth / DAYS_PER_MONTH
     }
   }[period]
   const startMS = +(start < current ? current : start)
@@ -87,21 +92,27 @@ export function doesTabletsIntersect(firstTablet: Tablet | undefined, secondTabl
 
 export function initializeNewTablet(
   task: ColumnTask,
-  period: PERIODS = DEFAULT_PERIOD
+  period: PERIODS = DEFAULT_PERIOD,
+  timelineUnitWidth: number
 ): TabletSignle {
   return {
     task,
     top: 0,
-    ...taskDateToTabletOffset(task.startDate, task.expirationDate, period)
+    ...taskDateToTabletOffset(task.startDate, task.expirationDate, period, timelineUnitWidth)
   }
 }
 
-export function initializeNewTabletWithList(list: ColumnTask[], offsetIndex: number): TabletList {
+export function initializeNewTabletWithList(
+  list: ColumnTask[],
+  offsetIndex: number,
+  timelineUnitWidth: number
+): TabletList {
+  const unitWidth = Math.max(timelineUnitWidth, DEFAULT_TIMELINE_TABLET_UNIT_WIDTH)
   return {
     task: list,
     top: tabletLevelToTopOffset(0),
-    width: TIMELINE_TABLET_SECTION_WIDTH,
-    left: offsetIndex * TIMELINE_TABLET_SECTION_WIDTH
+    width: unitWidth,
+    left: offsetIndex * unitWidth
   }
 }
 
@@ -113,8 +124,6 @@ export function insertNewTablet(levels: Tablet[][], tablet: Tablet) {
     const currentTabletLevel = levels[tabletsLevelIndex]
     // @ts-ignore
     const previousTablet = currentTabletLevel.at(-1)
-    // console.log(currentTabletLevel)
-    console.log(previousTablet?.left, tablet?.left)
     if (doesTabletsIntersect(previousTablet, tablet)) {
       tablet.top = tabletLevelToTopOffset(tabletsLevelIndex)
       currentTabletLevel.push(tablet)
