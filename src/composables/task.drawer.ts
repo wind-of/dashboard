@@ -1,4 +1,4 @@
-import type { Project, Task } from "@/types"
+import type { Project, TaskUpdate } from "@/types"
 import { column as initializeColumn, task as initializeTask } from "@/utils"
 import { reactive, ref } from "vue"
 
@@ -11,16 +11,31 @@ export function useTaskDrawer(project: Project) {
   const task = (taskId: string, columnId: string) =>
     column(columnId).tasks.find(({ id }) => id === taskId) || binTask
 
+  const insertTaskToColumn = (taskId: string, columnId: string, oldColumnId: string) =>
+    column(columnId).tasks.push(task(taskId, oldColumnId))
+  const removeTaskFromColumn = (taskId: string, columnId: string) => {
+    const currentColumn = column(columnId)
+    return (currentColumn.tasks = currentColumn.tasks.filter(({ id }) => id !== taskId))
+  }
+
+  function handleTaskColumnUpdate(newColumnId: string) {
+    insertTaskToColumn(selected.task.id, newColumnId, selected.columnId)
+    removeTaskFromColumn(selected.task.id, selected.columnId)
+    selected.columnId = newColumnId
+  }
+
   const isDrawerOpen = ref(false)
   const selected = reactive({ task: initializeTask({ title: "", description: "" }), columnId: "" })
 
   return {
-    handleTaskChange(updatedTask: Task) {
+    handleTaskChange({ updatedTask, updatedColumnId }: TaskUpdate) {
       const targetTask = task(selected.task.id, selected.columnId)
-      // TODO: не обновлять, если ничего не изменилось?
       targetTask.title = updatedTask.title
       targetTask.description = updatedTask.description
       targetTask.tags = updatedTask.tags
+      if (updatedColumnId !== selected.columnId) {
+        handleTaskColumnUpdate(updatedColumnId)
+      }
     },
     handleTaskChangeCancel() {
       isDrawerOpen.value = false
@@ -37,6 +52,7 @@ export function useTaskDrawer(project: Project) {
       selected.task = task(taskId, columnId)
       isDrawerOpen.value = true
     },
+    handleTaskColumnUpdate,
     isDrawerOpen,
     selected
   }

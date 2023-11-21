@@ -9,6 +9,7 @@ import { project as project_ } from "@/mock"
 import { DEFAULT_PERIOD, PERIODS } from "@/constants"
 
 const project: Project = reactive(project_)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const columnsWithoutTasks = computed(() => project.columns.map(({ tasks, ...rest }) => rest))
 const {
   handleTaskChange,

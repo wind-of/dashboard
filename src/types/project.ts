@@ -29,3 +29,8 @@ export interface Project {
   title: string
   columns: Column[]
 }
+
+export interface TaskUpdate {
+  updatedColumnId: string
+  updatedTask: Task
+}
