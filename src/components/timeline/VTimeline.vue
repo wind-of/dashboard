@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref } from "vue"
+import { reactive, ref, computed } from "vue"
 import type { Project } from "@/types"
 import TimelineHeader from "~/timeline/TimelineHeader.vue"
 import TimelineTable from "~/timeline/TimelineTable.vue"
@@ -9,6 +9,7 @@ import { project as project_ } from "@/mock"
 import { DEFAULT_PERIOD, PERIODS } from "@/constants"
 
 const project: Project = reactive(project_)
+const columnsWithoutTasks = computed(() => project.columns.map(({ tasks, ...rest }) => rest))
 const {
   handleTaskChange,
   handleTaskChangeCancel,
@@ -17,8 +18,8 @@ const {
   isDrawerOpen,
   selected
 } = useTaskDrawer(project)
-const currentPeriod = ref(DEFAULT_PERIOD)
 
+const currentPeriod = ref(DEFAULT_PERIOD)
 function handlePeriodUpdate(period: PERIODS) {
   currentPeriod.value = period
 }
@@ -37,6 +38,7 @@ function handlePeriodUpdate(period: PERIODS) {
         :task="selected.task"
         :columnId="selected.columnId"
         :isOpen="isDrawerOpen"
+        :columns="columnsWithoutTasks"
         @onCommitChanges="handleTaskChange"
         @onCancelChanges="handleTaskChangeCancel"
         @onTaskDelete="handleTaskDelete"
