@@ -1,4 +1,4 @@
-import type { Project, TaskUpdate } from "@/types"
+import type { Project, UpdatedTask } from "@/types"
 import { column as initializeColumn, task as initializeTask } from "@/utils"
 import { reactive, ref } from "vue"
 
@@ -28,13 +28,13 @@ export function useTaskDrawer(project: Project) {
   const selected = reactive({ task: initializeTask({ title: "", description: "" }), columnId: "" })
 
   return {
-    handleTaskChange({ updatedTask, updatedColumnId }: TaskUpdate) {
+    handleTaskChange({ title, description, tags, columnId }: UpdatedTask) {
       const targetTask = task(selected.task.id, selected.columnId)
-      targetTask.title = updatedTask.title
-      targetTask.description = updatedTask.description
-      targetTask.tags = updatedTask.tags
-      if (updatedColumnId !== selected.columnId) {
-        handleTaskColumnUpdate(updatedColumnId)
+      targetTask.title = title
+      targetTask.description = description
+      targetTask.tags = tags
+      if (columnId && columnId !== selected.columnId) {
+        handleTaskColumnUpdate(columnId)
       }
     },
     handleTaskChangeCancel() {

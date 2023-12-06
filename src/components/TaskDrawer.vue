@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive, toRaw, ref } from "vue"
+import { computed, reactive, toRaw } from "vue"
 import VInput from "~/form/VInput.vue"
 import VTextarea from "~/form/VTextarea.vue"
 import VButton from "~/form/VButton.vue"
@@ -20,15 +20,13 @@ const drawerStyles = computed(() => ({
   [props.isOpen ? "transform" : ""]: "none"
 }))
 
-const form = computed(() => ({ state: reactive(useCopyReactive(props.task)) }))
+const form = computed(() => ({
+  state: reactive({ ...useCopyReactive(props.task), columnId: props.columnId })
+}))
 const state = computed(() => form.value.state)
-const selectedColumnId = ref("")
 
 function handleCommitChanges() {
-  emit("onCommitChanges", {
-    updatedColumnId: selectedColumnId.value,
-    updatedTask: useCopyReactive(state.value)
-  })
+  emit("onCommitChanges", useCopyReactive(state.value))
 }
 function handleCancel() {
   emit("onCancelChanges")
@@ -93,7 +91,7 @@ function handleTagClick(tag: Tag) {
           <VTextarea v-model="state.description" />
         </label>
       </section>
-      <select class="columns-select" v-model="selectedColumnId">
+      <select class="columns-select" v-model="state.columnId">
         <option value="" selected disabled hidden>{{ getColumnTitleById(columnId) }}</option>
         <option v-for="{ id, title } in columns" :key="id" :value="id">
           {{ title }}

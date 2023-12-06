@@ -31,7 +31,6 @@ export interface Project {
   columns: Column[]
 }
 
-export interface TaskUpdate {
-  updatedColumnId: string
-  updatedTask: Task
+export interface UpdatedTask extends Task {
+  columnId: string
 }
