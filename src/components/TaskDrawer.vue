@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { computed, reactive, toRaw } from "vue"
+import VueDatePicker from "@vuepic/vue-datepicker"
+import "@vuepic/vue-datepicker/dist/main.css"
+
 import VInput from "~/form/VInput.vue"
 import VTextarea from "~/form/VTextarea.vue"
 import VButton from "~/form/VButton.vue"
 import { useCopyReactive } from "@/composables/copy.reactive"
-import { useTimeFormat } from "@/composables/format.time"
 import { Tag, Task, ColumnProto } from "@/types"
 import { TAGS } from "@/constants"
 
@@ -102,7 +104,10 @@ function handleTagClick(tag: Tag) {
             {{ title }}
           </option>
         </select>
-        <section class="date">Конец: {{ useTimeFormat(state.expirationDate, true) }}</section>
+        <sectino class="dates">
+          <VueDatePicker v-model="state.startDate" locale="en" /> —
+          <VueDatePicker v-model="state.expirationDate" locale="en" />
+        </sectino>
         <section class="form-buttons">
           <VButton @click="handleCommitChanges" isPrimary>Save</VButton>
           <VButton @click="handleCancel">Cancel</VButton>
@@ -220,6 +225,11 @@ function handleTagClick(tag: Tag) {
   color: #777;
   border-radius: 0.25rem;
   outline: none;
+}
+.dates {
+  @include flex-row;
+  gap: 10px;
+  align-items: center;
 }
 .date {
   @include taskDateTag;

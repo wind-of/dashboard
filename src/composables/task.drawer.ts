@@ -28,11 +28,20 @@ export function useTaskDrawer(project: Project) {
   const selected = reactive({ task: initializeTask({ title: "", description: "" }), columnId: "" })
 
   return {
-    handleTaskChange({ title, description, tags, columnId }: UpdatedTask) {
+    handleTaskChange({
+      title,
+      description,
+      tags,
+      columnId,
+      startDate,
+      expirationDate
+    }: UpdatedTask) {
       const targetTask = task(selected.task.id, selected.columnId)
       targetTask.title = title
       targetTask.description = description
       targetTask.tags = tags
+      targetTask.startDate = startDate
+      targetTask.expirationDate = expirationDate
       if (columnId && columnId !== selected.columnId) {
         handleTaskColumnUpdate(columnId)
       }

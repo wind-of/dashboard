@@ -6,7 +6,7 @@ import type { Task } from "@/types"
 const props = defineProps<{ task: Task }>()
 
 const expirationDate = computed(() => {
-  return useTimeFormat(props.task.expirationDate)
+  return useTimeFormat({ date: props.task.expirationDate })
 })
 </script>
 
