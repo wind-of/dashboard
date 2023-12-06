@@ -51,7 +51,7 @@ function handlePeriodUpdate(period: PERIODS) {
   justify-self: flex-start;
 
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 500;
   color: var(--blue);
   border: 1px solid var(--blue);
   border-radius: 18px;
