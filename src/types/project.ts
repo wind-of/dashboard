@@ -7,6 +7,7 @@ export interface Tag {
 export interface Task {
   id: string
   title: string
+  shortDescription: string
   description: string
   tags: Tag[]
   expirationDate: Date

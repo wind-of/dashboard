@@ -83,6 +83,12 @@ function handleTagClick(tag: Tag) {
       </section>
       <section class="input-block">
         <label class="input-label">
+          <p class="input-title">Short Description</p>
+          <VInput v-model="state.shortDescription" />
+        </label>
+      </section>
+      <section class="input-block">
+        <label class="input-label">
           <p class="input-title">Description</p>
           <VTextarea v-model="state.description" />
         </label>

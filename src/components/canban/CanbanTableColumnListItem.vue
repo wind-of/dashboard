@@ -26,7 +26,7 @@ const expirationDate = computed(() => {
     </header>
     <section class="item-content">
       <h3 class="title">{{ task.title }}</h3>
-      <p class="description">{{ task.description }}</p>
+      <p class="description">{{ task.shortDescription }}</p>
     </section>
     <section class="item-date">
       {{ expirationDate }}

@@ -18,11 +18,20 @@ function randomDate({ period = "day", side = "future", part = 0.5 }) {
 
 export const task = ({
   title = "Task #" + rn(),
+  shortDescription = "Short description",
   description = "Description",
   tags = generateTags(),
   expirationDate = randomDate({ side: "future", period: "month" }),
   startDate = randomDate({ side: "past", period: "month" })
-} = {}): Task => ({ id: uid("task"), title, description, tags, expirationDate, startDate })
+} = {}): Task => ({
+  id: uid("task"),
+  title,
+  shortDescription,
+  description,
+  tags,
+  expirationDate,
+  startDate
+})
 export const column = ({ title = "Column #" + rn(), tasks = generateTasks() } = {}): Column => ({
   id: uid("table"),
   title,
