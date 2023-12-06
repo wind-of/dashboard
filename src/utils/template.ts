@@ -1,6 +1,9 @@
 import { MILLISECONDS_PER_DAY, NOW, TAGS } from "@/constants"
 import type { Column, Tag, Task } from "@/types"
 
+const randomURL =
+  "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/c84a28d6-25cb-4bb5-80a0-c780a9c982b2/d256hvc-551d4bd0-071b-440a-a33d-d28cad14a33b.jpg/v1/fit/w_700,h_467,q_70,strp/enchantment_by_thomas_koidhis_d256hvc-375w-2x.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NDY3IiwicGF0aCI6IlwvZlwvYzg0YTI4ZDYtMjVjYi00YmI1LTgwYTAtYzc4MGE5Yzk4MmIyXC9kMjU2aHZjLTU1MWQ0YmQwLTA3MWItNDQwYS1hMzNkLWQyOGNhZDE0YTMzYi5qcGciLCJ3aWR0aCI6Ijw9NzAwIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.nUdXokjPqtXIOXS2yNaOQLs05MTIkaHTPwq84vkLQB4"
+
 export const rn = (max = 1000) => (Math.random() * max) | 0
 export const rs = () =>
   rn()
@@ -21,6 +24,7 @@ export const task = ({
   shortDescription = "Short description",
   description = "Description",
   tags = generateTags(),
+  preview = Math.random() > 0.8 ? randomURL : "",
   expirationDate = randomDate({ side: "future", period: "month" }),
   startDate = randomDate({ side: "past", period: "month" })
 } = {}): Task => ({
@@ -29,6 +33,7 @@ export const task = ({
   shortDescription,
   description,
   tags,
+  preview,
   expirationDate,
   startDate
 })

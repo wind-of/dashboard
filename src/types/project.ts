@@ -9,6 +9,7 @@ export interface Task {
   title: string
   shortDescription: string
   description: string
+  preview?: string
   tags: Tag[]
   expirationDate: Date
   startDate: Date

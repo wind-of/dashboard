@@ -58,52 +58,58 @@ function handleTagClick(tag: Tag) {
 
 <template>
   <section class="drawer" :style="drawerStyles">
-    <header class="header">
-      <h2 class="header-title">Task</h2>
-    </header>
-    <form class="form" @submit.prevent>
-      <section class="tags">
-        <div
-          class="tag"
-          v-for="tag in TAGS"
-          :key="tag.id"
-          :style="computeTagStyles(tag.color, tag.id)"
-          @click="handleTagClick(tag)"
-        >
-          {{ tag.title }}
-        </div>
-      </section>
-      <section class="input-block">
-        <label class="input-label">
-          <p class="input-title">Title</p>
-          <VInput v-model="state.title" />
-        </label>
-      </section>
-      <section class="input-block">
-        <label class="input-label">
-          <p class="input-title">Short Description</p>
-          <VInput v-model="state.shortDescription" />
-        </label>
-      </section>
-      <section class="input-block">
-        <label class="input-label">
-          <p class="input-title">Description</p>
-          <VTextarea v-model="state.description" />
-        </label>
-      </section>
-      <select class="columns-select" v-model="state.columnId">
-        <option value="" selected disabled hidden>{{ getColumnTitleById(columnId) }}</option>
-        <option v-for="{ id, title } in columns" :key="id" :value="id">
-          {{ title }}
-        </option>
-      </select>
-      <section class="date">Конец: {{ useTimeFormat(state.expirationDate, true) }}</section>
-      <section class="form-buttons">
-        <VButton @click="handleCommitChanges" isPrimary>Save</VButton>
-        <VButton @click="handleCancel">Cancel</VButton>
-        <VButton @click="handleDelete" isDanger>Delete</VButton>
-      </section>
-    </form>
+    <div class="preview-wrapper">
+      <img :src="state.preview" alt="preview image" class="preview-image" v-if="task.preview" />
+      <div class="preview-button">Update preview</div>
+    </div>
+    <div class="drawer-content">
+      <header class="header">
+        <h2 class="header-title">Task</h2>
+      </header>
+      <form class="form" @submit.prevent>
+        <section class="tags">
+          <div
+            class="tag"
+            v-for="tag in TAGS"
+            :key="tag.id"
+            :style="computeTagStyles(tag.color, tag.id)"
+            @click="handleTagClick(tag)"
+          >
+            {{ tag.title }}
+          </div>
+        </section>
+        <section class="input-block">
+          <label class="input-label">
+            <p class="input-title">Title</p>
+            <VInput v-model="state.title" />
+          </label>
+        </section>
+        <section class="input-block">
+          <label class="input-label">
+            <p class="input-title">Short Description</p>
+            <VInput v-model="state.shortDescription" />
+          </label>
+        </section>
+        <section class="input-block">
+          <label class="input-label">
+            <p class="input-title">Description</p>
+            <VTextarea v-model="state.description" />
+          </label>
+        </section>
+        <select class="columns-select" v-model="state.columnId">
+          <option value="" selected disabled hidden>{{ getColumnTitleById(columnId) }}</option>
+          <option v-for="{ id, title } in columns" :key="id" :value="id">
+            {{ title }}
+          </option>
+        </select>
+        <section class="date">Конец: {{ useTimeFormat(state.expirationDate, true) }}</section>
+        <section class="form-buttons">
+          <VButton @click="handleCommitChanges" isPrimary>Save</VButton>
+          <VButton @click="handleCancel">Cancel</VButton>
+          <VButton @click="handleDelete" isDanger>Delete</VButton>
+        </section>
+      </form>
+    </div>
   </section>
 </template>
 
@@ -115,7 +121,6 @@ function handleTagClick(tag: Tag) {
 <style lang="scss" scoped>
 .drawer {
   @include flex-column;
-  gap: 30px;
 
   position: absolute;
   width: var(--canban-drawer-width);
@@ -123,15 +128,52 @@ function handleTagClick(tag: Tag) {
   transform: translateX(var(--canban-drawer-width));
   box-shadow: -5px 0px 10px 0px rgba(34, 60, 80, 0.05);
   background: white;
+  overflow: scroll;
 
   top: var(--header-height);
   right: 0;
-  padding: 20px;
   transition: transform 0.2s ease-out;
+}
+.preview-wrapper,
+.preview-image {
+  width: 100%;
+  height: 18vh;
+}
+.preview-wrapper {
+  position: relative;
+  background: #ddd;
+  overflow: hidden;
+  &:hover .preview-button {
+    margin-bottom: 0;
+  }
+}
+.preview-image {
+  object-fit: cover;
+  object-position: center;
+}
+.preview-button {
+  @include flex-row;
+  width: 100%;
+  justify-content: space-around;
+  position: absolute;
+  bottom: 0;
+  padding: 10px;
+  color: rgba(255, 255, 255, 1);
+  background-color: rgba(84, 84, 84, 0.7);
+  cursor: pointer;
+
+  margin-bottom: -8vh;
+  transition: margin 0.5s;
+}
+.drawer-content {
+  @include flex-column;
+  gap: 30px;
+  padding: 20px;
 }
 .header-title {
   font-size: 28px;
 }
+
 .form {
   @include flex-column;
   gap: 20px;

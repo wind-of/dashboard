@@ -23,6 +23,9 @@ const expirationDate = computed(() => {
           {{ title }}
         </div>
       </section>
+      <div class="preview-wrapper" v-if="task.preview">
+        <img :src="task.preview" alt="preview image" class="preview-image" />
+      </div>
     </header>
     <section class="item-content">
       <h3 class="title">{{ task.title }}</h3>
@@ -37,10 +40,14 @@ const expirationDate = computed(() => {
 <style lang="scss" scoped>
 .item {
   @include flex-column;
-  gap: 15px;
+  gap: 12px;
   padding: 16px;
   border-radius: 12px;
   background-color: var(--white);
+}
+.header {
+  @include flex-column;
+  gap: 15px;
 }
 .tags {
   @include flex-row;
@@ -55,6 +62,12 @@ const expirationDate = computed(() => {
   font-weight: 500;
   color: var(--white);
   cursor: pointer;
+}
+.preview-image {
+  width: 100%;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 12px;
 }
 .item-content {
   @include flex-column;
