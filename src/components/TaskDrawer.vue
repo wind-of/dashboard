@@ -104,10 +104,10 @@ function handleTagClick(tag: Tag) {
             {{ title }}
           </option>
         </select>
-        <sectino class="dates">
+        <section class="dates">
           <VueDatePicker v-model="state.startDate" locale="en" /> —
           <VueDatePicker v-model="state.expirationDate" locale="en" />
-        </sectino>
+        </section>
         <section class="form-buttons">
           <VButton @click="handleCommitChanges" isPrimary>Save</VButton>
           <VButton @click="handleCancel">Cancel</VButton>
