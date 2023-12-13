@@ -48,6 +48,9 @@ function getColumnTitle(columnId: string) {
   font-weight: 600;
   cursor: pointer;
   user-select: none;
+
+  transition-property: top, left, width;
+  transition-duration: 0.2s;
 }
 .tablet-list {
   justify-content: center;
