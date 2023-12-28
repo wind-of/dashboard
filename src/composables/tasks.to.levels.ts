@@ -14,6 +14,7 @@ export function useTasksToLeveledTablets(
 ) {
   const tasks: ColumnTask[] = columns
     .flatMap(({ tasks, id }) => tasks.map((task) => ({ ...task, columnId: id })))
+    .filter(({ startDate, expirationDate }) => startDate && expirationDate)
     .sort((a, b) => +a.startDate - +b.startDate)
 
   const groupedTasks: { [key: number]: ColumnTask[] } = {}
