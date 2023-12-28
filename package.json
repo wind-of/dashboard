@@ -16,6 +16,7 @@
     "@vue/eslint-config-typescript": "^12.0.0",
     "@vuepic/vue-datepicker": "^7.3.0",
     "@vueuse/core": "^10.5.0",
+    "axios": "^1.6.3",
     "pinia": "^2.1.6",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4",
