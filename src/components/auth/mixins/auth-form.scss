@@ -1,0 +1,50 @@
+
+.form-wrapper {
+	padding-top: 10vh;
+	background-color: white;
+}
+.form-inner-wrapper {
+	@include flex-column;
+	width: 60%;
+	gap: 50px;
+	margin: 0 auto;
+}
+.form-header {
+	@include flex-column;
+	h2 {
+		font-size: 28px;
+		font-weight: 600;
+	}
+	p {
+		font-weight: 500;
+		font-size: 16px;
+	}
+}
+.form {
+	@include flex-column;
+	gap: 30px;
+	input, button {
+		max-width: 500px;
+	}
+	button {
+		margin: 20px 0;
+	}
+}
+.input-label {
+	@include flex-column;
+	gap: 8.5px;
+}
+.password-hint {
+	font-size: 14px;
+	margin-top: -5px;
+	color: #718096;
+}
+.checkbox-wrapper {
+	@include flex-row;
+	align-items: flex-start;
+	max-width: 60%;
+	gap: 8.5px;
+	input {
+		margin-top: 5px;
+	}
+}
