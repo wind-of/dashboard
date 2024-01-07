@@ -1,5 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import ViewWrapper from "~/ViewWrapper.vue"
+</script>
 
 <template>
-  <main class="main">Mainpage</main>
+  <ViewWrapper>
+    <main class="main">Mainpage</main>
+  </ViewWrapper>
 </template>

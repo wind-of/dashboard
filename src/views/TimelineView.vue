@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import VTimeline from "~/timeline/VTimeline.vue"
+import ViewWrapper from "~/ViewWrapper.vue"
 </script>
 
 <template>
-  <VTimeline />
+  <ViewWrapper>
+    <VTimeline />
+  </ViewWrapper>
 </template>

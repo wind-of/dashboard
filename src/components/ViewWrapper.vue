@@ -1,15 +1,22 @@
 <script setup lang="ts">
-import { RouterView } from "vue-router"
+import LeftDrawer from "~/LeftDrawer.vue"
+import AppHeader from "~/AppHeader.vue"
 </script>
 
 <template>
-  <section class="app">
-    <RouterView />
-  </section>
+  <div class="wrapper">
+    <LeftDrawer />
+    <section class="content">
+      <AppHeader />
+      <section class="body">
+        <slot></slot>
+      </section>
+    </section>
+  </div>
 </template>
 
 <style scoped lang="scss">
-.app {
+.wrapper {
   display: flex;
 }
 .content {
