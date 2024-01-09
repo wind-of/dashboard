@@ -1,15 +1,27 @@
 <script setup lang="ts">
-import { reactive } from "vue"
+import { reactive, ref, toRaw } from "vue"
 import VInput from "~/form/VInput.vue"
 import VButton from "~/form/VButton.vue"
+import { useUserStore } from "@/stores/user"
+import { signInUser } from "@/api"
+import { useRouter } from "vue-router"
 
+const error = ref(false)
 const state = reactive({
   email: "",
   password: ""
 })
+const router = useRouter()
+const userStore = useUserStore()
 
 function handleSubmit() {
-  console.log(state)
+  error.value = false
+  signInUser(toRaw(state))
+    .then(({ data }) => {
+      userStore.saveUser(data)
+      router.push({ name: "home" })
+    })
+    .catch(() => (error.value = true))
 }
 </script>
 
@@ -31,6 +43,7 @@ function handleSubmit() {
         </label>
         <VButton class="form-button" @click="handleSubmit">Sign in</VButton>
         <p>Don't have an account? <RouterLink to="/auth/sign-up">Sign up!</RouterLink></p>
+        <p v-if="error">Something went wrong. Check credentials.</p>
       </form>
     </div>
   </section>
