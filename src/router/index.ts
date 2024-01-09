@@ -1,6 +1,8 @@
+import { isUserAuthenticated } from "@/api"
 import HomeView from "@/views/HomeView.vue"
 import { createRouter, createWebHistory } from "vue-router"
 
+// TODO: route names should be constant
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -45,12 +47,15 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach(async (to, from, next) => {
-  if (to.path === "/auth") {
-    return next()
-  }
-  next()
-  // next({ name: "auth", replace: true })
+router.beforeEach(async (to) => {
+  const isAuthPage = /\/auth\/*/.test(to.path)
+  const isAuthenticated = await isUserAuthenticated()
+    .then((res) => res.data)
+    .catch(() => false)
+  const home = { name: "home", replace: true }
+  const auth = { name: "auth", replace: true }
+  if (isAuthPage && isAuthenticated) return home
+  if (!isAuthPage && !isAuthenticated) return auth
 })
 
 export default router
