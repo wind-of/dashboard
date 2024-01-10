@@ -16,3 +16,11 @@ export async function signInUser(user: LoginUser) {
 export async function isUserAuthenticated() {
   return axios.get(`auth/authenticated`)
 }
+
+export async function getUserProjects() {
+  return axios.get(`projects`)
+}
+
+export async function getParticipatingProjects() {
+  return axios.get(`projects/participating`)
+}

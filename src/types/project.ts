@@ -1,3 +1,5 @@
+import type { User } from "@/types"
+
 export interface Tag {
   id: string
   title: string
@@ -30,6 +32,9 @@ export interface Project {
   id: string
   title: string
   columns: Column[]
+}
+export interface ProjectWithParticipants extends Omit<Project, "columns"> {
+  participants: User[]
 }
 
 export interface UpdatedTask extends Task {
