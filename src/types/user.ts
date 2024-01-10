@@ -6,6 +6,12 @@ export interface User {
   avatar?: string
 }
 
+export interface SignUpUser {
+  firstname: string
+  email: string
+  password: string
+}
+
 export interface LoginUser {
   email: string
   password: string

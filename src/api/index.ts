@@ -1,11 +1,11 @@
-import type { LoginUser, User } from "@/types"
+import type { LoginUser, SignUpUser } from "@/types"
 import axios from "axios"
 const { VITE_SERVER_URL: BASE_URL } = import.meta.env
 
 axios.defaults.baseURL = BASE_URL
 axios.defaults.withCredentials = true
 
-export async function signUpUser(user: User) {
+export async function signUpUser(user: SignUpUser) {
   return axios.post(`auth/register`, user)
 }
 

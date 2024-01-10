@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import { reactive, ref } from "vue"
+import { reactive, ref, toRaw } from "vue"
+import { useRouter } from "vue-router"
 import VInput from "~/form/VInput.vue"
 import VButton from "~/form/VButton.vue"
+import { signUpUser } from "@/api"
 
+const router = useRouter()
+const error = ref(false)
 const doAgreedWithTerms = ref(false)
 const state = reactive({
   email: "",
@@ -11,7 +15,13 @@ const state = reactive({
 })
 
 function handleSubmit() {
-  console.log(state)
+  error.value = !doAgreedWithTerms.value
+  if (error.value) {
+    return
+  }
+  signUpUser(toRaw(state))
+    .then(() => router.push({ name: "login" }))
+    .catch(() => (error.value = true))
 }
 </script>
 
@@ -45,6 +55,7 @@ function handleSubmit() {
         </label>
         <VButton class="form-button" @click="handleSubmit">Sign up</VButton>
         <p>Already have an account? <RouterLink to="/auth/login">Sign in!</RouterLink></p>
+        <p v-if="error">Something went wrong. Check credentials.</p>
       </form>
     </div>
   </section>
