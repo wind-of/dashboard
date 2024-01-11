@@ -33,6 +33,7 @@ async function handleProjectClick(partialProject: ProjectWithoutColumns) {
         v-for="project in projects"
         :key="project.id"
         class="project-card"
+        :class="{ 'active-project': project.id === projectStore.project?.id }"
         @click="handleProjectClick(project)"
       >
         <h3 class="project-card-title">{{ project.title }}</h3>
@@ -74,9 +75,12 @@ async function handleProjectClick(partialProject: ProjectWithoutColumns) {
   min-width: 250px;
   border-radius: 20px;
   padding: 20px;
+  border: 1px solid transparent;
   background-color: white;
   cursor: pointer;
-  transition: box-shadow 0.2s ease-out;
+  transition-property: box-shadow, border;
+  transition-timing-function: ease-out;
+  transition-duration: 0.2s;
   &-title {
     font-size: 18px;
     font-weight: 600;
@@ -84,6 +88,9 @@ async function handleProjectClick(partialProject: ProjectWithoutColumns) {
   &:hover {
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
   }
+}
+.active-project {
+  border-color: var(--blue);
 }
 
 .participants-list {
