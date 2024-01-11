@@ -32,10 +32,9 @@ export interface Project {
   id: number
   title: string
   columns: Column[]
-}
-export interface ProjectWithParticipants extends Omit<Project, "columns"> {
   participants: User[]
 }
+export interface ProjectWithoutColumns extends Omit<Project, "columns"> {}
 
 export interface UpdatedTask extends Task {
   columnId: number

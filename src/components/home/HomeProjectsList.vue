@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import type { ProjectWithParticipants } from "@/types"
 import { reactive, watchEffect } from "vue"
-import { getParticipatingProjects } from "@/api"
-const projects = reactive<ProjectWithParticipants[]>([])
+import type { ProjectWithoutColumns } from "@/types"
+import { getParticipatingProjects, getWholeProjectById } from "@/api"
+import { useProjectStore } from "@/stores/project"
+import { useRouter } from "vue-router"
+
+const projects = reactive<ProjectWithoutColumns[]>([])
+const projectStore = useProjectStore()
+const router = useRouter()
 
 watchEffect(() => {
   getParticipatingProjects()
@@ -11,13 +16,24 @@ watchEffect(() => {
     })
     .catch(console.log)
 })
+
+async function handleProjectClick(partialProject: ProjectWithoutColumns) {
+  const { data: project } = await getWholeProjectById(partialProject.id)
+  projectStore.saveProject(project)
+  router.push({ name: "canban" })
+}
 </script>
 
 <template>
   <section class="projects">
     <h2>Projects</h2>
     <ul class="projects-list">
-      <li v-for="project in projects" :key="project.id" class="project-card">
+      <li
+        v-for="project in projects"
+        :key="project.id"
+        class="project-card"
+        @click="handleProjectClick(project)"
+      >
         <h3 class="project-card-title">{{ project.title }}</h3>
         <ul class="participants-list">
           <li

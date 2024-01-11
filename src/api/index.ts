@@ -24,3 +24,7 @@ export async function getUserProjects() {
 export async function getParticipatingProjects() {
   return axios.get(`projects/participating`)
 }
+
+export async function getWholeProjectById(id: number) {
+  return axios.get(`projects/${id}`)
+}
