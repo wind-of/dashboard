@@ -30,7 +30,7 @@ const levels = computed(() =>
 
 useCssVar("--timeline-tablet-section-width").value = timelineSectionWidth.value + "px"
 
-function handleSelection(taskId: string, columnId: string) {
+function handleSelection(taskId: number, columnId: number) {
   emit("onTaskSelection", taskId, columnId)
 }
 </script>

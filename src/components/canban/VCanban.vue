@@ -22,10 +22,10 @@ const {
 
 const binColumn = initializeColumn()
 
-const column = (columnId: string) => project.columns.find(({ id }) => id === columnId) || binColumn
+const column = (columnId: number) => project.columns.find(({ id }) => id === columnId) || binColumn
 const columnsWithoutTasks = computed(() => project.columns.map(({ tasks, ...rest }) => rest))
 
-function handleListChange(columnId: string, updatedList: Task[]) {
+function handleListChange(columnId: number, updatedList: Task[]) {
   const currentColumn = column(columnId)
   if (isTaskInList(updatedList, selected.task.id)) {
     selected.columnId = columnId
@@ -35,7 +35,7 @@ function handleListChange(columnId: string, updatedList: Task[]) {
 function handleColumnList(updatedColumns: Column[]) {
   project.columns = updatedColumns
 }
-function handleTaskCreation(columnId: string) {
+function handleTaskCreation(columnId: number) {
   column(columnId).tasks.push(initializeTask())
 }
 </script>

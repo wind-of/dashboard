@@ -12,7 +12,7 @@ import { TAGS } from "@/constants"
 
 const props = defineProps<{
   task: Task
-  columnId: string
+  columnId: number
   columns: ColumnProto[]
   isOpen: boolean
 }>()
@@ -37,13 +37,13 @@ function handleDelete() {
   emit("onTaskDelete")
 }
 
-function getColumnTitleById(columnId: string) {
+function getColumnTitleById(columnId: number) {
   return props.columns.find(({ id }) => id === columnId)?.title
 }
-function isActiveTag(tagId: string) {
+function isActiveTag(tagId: number) {
   return state.value.tags.some(({ id }) => id === tagId)
 }
-function computeTagStyles(backgroundColor: string, tagId: string) {
+function computeTagStyles(backgroundColor: string, tagId: number) {
   return {
     "background-color": backgroundColor,
     "--active-tag-scale": Number(isActiveTag(tagId))

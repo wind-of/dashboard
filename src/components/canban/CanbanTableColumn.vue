@@ -8,10 +8,10 @@ const emit = defineEmits(["onListChange", "onCreateTask", "onTaskSelection"])
 function handleListChange(updatedTasks: Task[]) {
   emit("onListChange", updatedTasks)
 }
-function handleTaskCreation(columnId: string) {
+function handleTaskCreation(columnId: number) {
   emit("onCreateTask", columnId)
 }
-function handleTaskSelection(taskId: string) {
+function handleTaskSelection(taskId: number) {
   emit("onTaskSelection", taskId, props.column.id)
 }
 </script>

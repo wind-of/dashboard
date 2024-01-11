@@ -7,7 +7,7 @@ import { useCopyReactive } from "@/composables/copy.reactive"
 import { Tag, Task } from "@/types"
 import { TAGS } from "@/constants"
 
-const props = defineProps<{ task: Task; columnId: string; isOpen: boolean }>()
+const props = defineProps<{ task: Task; columnId: number; isOpen: boolean }>()
 const emit = defineEmits(["onCommitChanges", "onCancelChanges", "onTaskDelete"])
 
 const drawerStyles = computed(() => ({
@@ -27,10 +27,10 @@ function handleDelete() {
   emit("onTaskDelete")
 }
 
-function isActiveTag(tagId: string) {
+function isActiveTag(tagId: number) {
   return state.value.tags.some(({ id }) => id === tagId)
 }
-function computeTagStyles(backgroundColor: string, tagId: string) {
+function computeTagStyles(backgroundColor: string, tagId: number) {
   return {
     "background-color": backgroundColor,
     "--active-tag-scale": Number(isActiveTag(tagId))

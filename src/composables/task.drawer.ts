@@ -6,26 +6,26 @@ export function useTaskDrawer(project: Project) {
   const binTask = initializeTask()
   const binColumn = initializeColumn()
 
-  const column = (columnId: string) =>
+  const column = (columnId: number) =>
     project.columns.find(({ id }) => id === columnId) || binColumn
-  const task = (taskId: string, columnId: string) =>
+  const task = (taskId: number, columnId: number) =>
     column(columnId).tasks.find(({ id }) => id === taskId) || binTask
 
-  const insertTaskToColumn = (taskId: string, columnId: string, oldColumnId: string) =>
+  const insertTaskToColumn = (taskId: number, columnId: number, oldColumnId: number) =>
     column(columnId).tasks.push(task(taskId, oldColumnId))
-  const removeTaskFromColumn = (taskId: string, columnId: string) => {
+  const removeTaskFromColumn = (taskId: number, columnId: number) => {
     const currentColumn = column(columnId)
     return (currentColumn.tasks = currentColumn.tasks.filter(({ id }) => id !== taskId))
   }
 
-  function handleTaskColumnUpdate(newColumnId: string) {
+  function handleTaskColumnUpdate(newColumnId: number) {
     insertTaskToColumn(selected.task.id, newColumnId, selected.columnId)
     removeTaskFromColumn(selected.task.id, selected.columnId)
     selected.columnId = newColumnId
   }
 
   const isDrawerOpen = ref(false)
-  const selected = reactive({ task: initializeTask({ title: "", description: "" }), columnId: "" })
+  const selected = reactive({ task: initializeTask({ title: "", description: "" }), columnId: NaN })
 
   return {
     handleTaskChange({
@@ -49,14 +49,14 @@ export function useTaskDrawer(project: Project) {
     handleTaskChangeCancel() {
       isDrawerOpen.value = false
       selected.task = initializeTask({ title: "", description: "" })
-      selected.columnId = ""
+      selected.columnId = NaN
     },
     handleTaskDelete() {
       const currentColumn = column(selected.columnId)
       currentColumn.tasks = currentColumn.tasks.filter(({ id }) => id !== selected.task.id)
       isDrawerOpen.value = false
     },
-    handleTaskSelection(taskId: string, columnId: string) {
+    handleTaskSelection(taskId: number, columnId: number) {
       selected.columnId = columnId
       selected.task = task(taskId, columnId)
       isDrawerOpen.value = true

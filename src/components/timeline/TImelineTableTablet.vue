@@ -10,10 +10,10 @@ import {
 const props = defineProps<{ tablet: Tablet; columns: Column[]; period: PERIODS }>()
 const emit = defineEmits(["onTaskSelection"])
 
-function handleSelection(taskId: string, columnId: string) {
+function handleSelection(taskId: number, columnId: number) {
   emit("onTaskSelection", taskId, columnId)
 }
-function getColumnTitle(columnId: string) {
+function getColumnTitle(columnId: number) {
   return props.columns.find(({ id }) => id === columnId)?.title || ""
 }
 </script>

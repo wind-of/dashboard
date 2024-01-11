@@ -13,13 +13,13 @@ const columnsList = computed({
     emit("onColumnChange", updatedColumns)
   }
 })
-function handleColumnListChange(columnId: string, updatedList: Column[]) {
+function handleColumnListChange(columnId: number, updatedList: Column[]) {
   emit("onListChange", columnId, updatedList)
 }
-function handleColumnTaskCreation(columnId: string) {
+function handleColumnTaskCreation(columnId: number) {
   emit("onTaskCreate", columnId)
 }
-function handleTaskSelection(taskId: string, columnId: string) {
+function handleTaskSelection(taskId: number, columnId: number) {
   emit("onTaskSelection", taskId, columnId)
 }
 </script>

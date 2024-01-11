@@ -16,7 +16,7 @@ const tasks = computed({
   }
 })
 
-function handleTaskClick(taskId: string) {
+function handleTaskClick(taskId: number) {
   emit("onTaskSelection", taskId)
 }
 </script>
