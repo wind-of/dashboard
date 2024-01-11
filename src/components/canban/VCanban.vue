@@ -1,16 +1,17 @@
 <script setup lang="ts">
-import { reactive, computed } from "vue"
+import { computed } from "vue"
 
 import CanbanHeader from "~/canban/CanbanHeader.vue"
 import CanbanTable from "~/canban/CanbanTable.vue"
 import TaskDrawer from "~/TaskDrawer.vue"
 
-import { project as project_ } from "@/mock"
 import { task as initializeTask, column as initializeColumn, isTaskInList } from "@/utils"
 import type { Project, Column, Task } from "@/types"
 import { useTaskDrawer } from "@/composables/task.drawer"
+import { useProjectStore } from "@/stores/project"
 
-const project: Project = reactive(project_)
+const projectStore = useProjectStore()
+const project = computed(() => projectStore.project as Project)
 const {
   handleTaskChange,
   handleTaskChangeCancel,
@@ -18,12 +19,13 @@ const {
   handleTaskSelection,
   isDrawerOpen,
   selected
-} = useTaskDrawer(project)
+} = useTaskDrawer(project.value)
 
 const binColumn = initializeColumn()
 
-const column = (columnId: number) => project.columns.find(({ id }) => id === columnId) || binColumn
-const columnsWithoutTasks = computed(() => project.columns.map(({ tasks, ...rest }) => rest))
+const column = (columnId: number) =>
+  project.value.columns.find(({ id }) => id === columnId) || binColumn
+const columnsWithoutTasks = computed(() => project.value.columns.map(({ tasks, ...rest }) => rest))
 
 function handleListChange(columnId: number, updatedList: Task[]) {
   const currentColumn = column(columnId)
@@ -33,7 +35,7 @@ function handleListChange(columnId: number, updatedList: Task[]) {
   currentColumn.tasks = updatedList
 }
 function handleColumnList(updatedColumns: Column[]) {
-  project.columns = updatedColumns
+  project.value.columns = updatedColumns
 }
 function handleTaskCreation(columnId: number) {
   column(columnId).tasks.push(initializeTask())

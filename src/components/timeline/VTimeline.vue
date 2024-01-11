@@ -1,16 +1,17 @@
 <script setup lang="ts">
-import { reactive, ref, computed } from "vue"
+import { ref, computed } from "vue"
 import type { Project } from "@/types"
 import TimelineHeader from "~/timeline/TimelineHeader.vue"
 import TimelineTable from "~/timeline/TimelineTable.vue"
 import TaskDrawer from "~/TaskDrawer.vue"
 import { useTaskDrawer } from "@/composables/task.drawer"
-import { project as project_ } from "@/mock"
+import { useProjectStore } from "@/stores/project"
 import { DEFAULT_PERIOD, PERIODS } from "@/constants"
 
-const project: Project = reactive(project_)
+const projectStore = useProjectStore()
+const project = computed(() => projectStore.project as Project)
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const columnsWithoutTasks = computed(() => project.columns.map(({ tasks, ...rest }) => rest))
+const columnsWithoutTasks = computed(() => project.value.columns.map(({ tasks, ...rest }) => rest))
 const {
   handleTaskChange,
   handleTaskChangeCancel,
@@ -18,7 +19,7 @@ const {
   handleTaskSelection,
   isDrawerOpen,
   selected
-} = useTaskDrawer(project)
+} = useTaskDrawer(project.value)
 
 const currentPeriod = ref(DEFAULT_PERIOD)
 function handlePeriodUpdate(period: PERIODS) {
