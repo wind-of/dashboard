@@ -3,11 +3,12 @@ import { reactive, watchEffect } from "vue"
 import type { ProjectWithoutColumns } from "@/types"
 import { getParticipatingProjects, getWholeProjectById } from "@/api"
 import { useProjectStore } from "@/stores/project"
-import { useRouter } from "vue-router"
+
+withDefaults(defineProps<{ title?: string }>(), { title: "Projects" })
+const emit = defineEmits(["onProjectUpdate"])
 
 const projects = reactive<ProjectWithoutColumns[]>([])
 const projectStore = useProjectStore()
-const router = useRouter()
 
 watchEffect(() => {
   getParticipatingProjects()
@@ -20,13 +21,13 @@ watchEffect(() => {
 async function handleProjectClick(partialProject: ProjectWithoutColumns) {
   const { data: project } = await getWholeProjectById(partialProject.id)
   projectStore.saveProject(project)
-  router.push({ name: "canban" })
+  emit("onProjectUpdate")
 }
 </script>
 
 <template>
   <section class="projects">
-    <h2>Projects</h2>
+    <h2>{{ title }}</h2>
     <ul class="projects-list">
       <li
         v-for="project in projects"
