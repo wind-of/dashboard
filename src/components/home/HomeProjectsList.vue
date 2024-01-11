@@ -45,17 +45,27 @@ watchEffect(() => {
 .projects-list {
   @include flex-row;
   gap: 20px;
+  padding: 15px;
+  padding-left: 0;
+  max-width: 100%;
+  overflow-x: scroll;
 }
 .project-card {
   @include flex-column;
   gap: 10px;
   height: 150px;
-  width: 250px;
+  min-width: 250px;
   border-radius: 20px;
   padding: 20px;
   background-color: white;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease-out;
   &-title {
     font-size: 18px;
+    font-weight: 600;
+  }
+  &:hover {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
   }
 }
 
