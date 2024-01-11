@@ -1,13 +1,13 @@
 import type { User } from "@/types"
 
 export interface Tag {
-  id: string
+  id: number
   title: string
   color: string
 }
 
 export interface Task {
-  id: string
+  id: number
   title: string
   shortDescription: string
   description: string
@@ -17,11 +17,11 @@ export interface Task {
   startDate: Date
 }
 export interface ColumnTask extends Task {
-  columnId: string
+  columnId: number
 }
 
 export interface ColumnProto {
-  id: string
+  id: number
   title: string
 }
 export interface Column extends ColumnProto {
@@ -29,7 +29,7 @@ export interface Column extends ColumnProto {
 }
 
 export interface Project {
-  id: string
+  id: number
   title: string
   columns: Column[]
 }
@@ -38,5 +38,5 @@ export interface ProjectWithParticipants extends Omit<Project, "columns"> {
 }
 
 export interface UpdatedTask extends Task {
-  columnId: string
+  columnId: number
 }
