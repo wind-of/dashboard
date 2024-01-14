@@ -1,26 +1,47 @@
 <script setup lang="ts">
-import IconOptions from "../icons/IconOptions.vue"
-import IconPlus from "../icons/IconPlus.vue"
+import { ref } from "vue"
+import { vOnClickOutside } from "@vueuse/components"
+import IconOptions from "~/icons/IconOptions.vue"
+import IconPlus from "~/icons/IconPlus.vue"
+
 defineProps({
   title: {
     type: String,
     default: "Column Header"
   }
 })
-defineEmits(["onCreateTask"])
+const emit = defineEmits(["onCreateTask", "onDeleteColumn"])
+
+const isOptionsOpened = ref(false)
+
+function handleOptionsClick() {
+  isOptionsOpened.value = !isOptionsOpened.value
+}
+function closeOptions() {
+  isOptionsOpened.value = false
+}
+function handleColumnDeletion() {
+  closeOptions()
+  emit("onDeleteColumn")
+}
 </script>
 
 <template>
   <header class="header">
     <h3 class="title">{{ title }}</h3>
     <section class="settings">
-      <i class="options-icon"><IconOptions /></i>
-      <i class="add-icon" @click="$emit('onCreateTask')"><IconPlus /></i>
+      <i class="options-icon" @click="handleOptionsClick">
+        <IconOptions />
+        <ul class="options" v-if="isOptionsOpened" v-on-click-outside="closeOptions">
+          <li class="delete-option" @click.stop="handleColumnDeletion">Delete</li>
+        </ul>
+      </i>
+      <i class="add-icon" @click="emit('onCreateTask')"><IconPlus /></i>
     </section>
   </header>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .header {
   display: flex;
   justify-content: space-between;
@@ -38,6 +59,7 @@ defineEmits(["onCreateTask"])
   gap: 14px;
 }
 .settings > i {
+  position: relative;
   cursor: pointer;
 }
 .options-icon {
@@ -47,5 +69,22 @@ defineEmits(["onCreateTask"])
   padding: 3px 10px;
   border-radius: 10px;
   background-color: var(--blue-soft);
+}
+
+.options {
+  @include flex-column;
+  position: absolute;
+  left: -15px;
+  top: 30px;
+  background: white;
+  box-shadow: 0px 0px 5px 0px rgba(34, 60, 80, 0.2);
+  > li {
+    min-width: 80px;
+    padding: 5px 5px;
+    text-align: center;
+    &:not(:first-child) {
+      border-top: 1px solid var(--blue-soft);
+    }
+  }
 }
 </style>

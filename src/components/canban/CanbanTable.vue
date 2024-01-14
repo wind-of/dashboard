@@ -11,7 +11,8 @@ const emit = defineEmits([
   "onTaskCreate",
   "onColumnChange",
   "onTaskSelection",
-  "onColumnCreate"
+  "onColumnCreate",
+  "onColumnDelete"
 ])
 const columnsList = computed({
   get() {
@@ -35,6 +36,9 @@ function handleTaskSelection(taskId: number, columnId: number) {
 function handleColumnCreation() {
   emit("onColumnCreate")
 }
+function handleColumnDeletion(columnId: number) {
+  emit("onColumnDelete", columnId)
+}
 </script>
 
 <template>
@@ -47,6 +51,7 @@ function handleColumnCreation() {
           @onListChange="handleColumnListChange(element.id, $event)"
           @onCreateTask="handleColumnTaskCreation"
           @onTaskSelection="handleTaskSelection"
+          @onDeleteColumn="handleColumnDeletion(element.id)"
         />
       </template>
     </draggable>

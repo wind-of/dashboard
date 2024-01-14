@@ -9,7 +9,7 @@ import { task as initializeTask, column as initializeColumn, isTaskInList } from
 import type { Project, Column, Task } from "@/types"
 import { useTaskDrawer } from "@/composables/task.drawer"
 import { useProjectStore } from "@/stores/project"
-import { createColumnInProject } from "@/api"
+import { createColumnInProject, deleteColumnFromProject } from "@/api"
 
 const projectStore = useProjectStore()
 const project = computed(() => projectStore.project as Project)
@@ -45,6 +45,10 @@ async function handleColumnCreation() {
   await createColumnInProject(project.value.id)
   projectStore.updateProjectInStore(project.value.id)
 }
+async function handleColumnDeletion(columnId: number) {
+  await deleteColumnFromProject(project.value.id, columnId)
+  projectStore.updateProjectInStore(project.value.id)
+}
 </script>
 
 <template>
@@ -57,6 +61,7 @@ async function handleColumnCreation() {
       @onTaskCreate="handleTaskCreation"
       @onTaskSelection="handleTaskSelection"
       @onColumnCreate="handleColumnCreation"
+      @onColumnDelete="handleColumnDeletion"
     />
     <Teleport to="body">
       <TaskDrawer

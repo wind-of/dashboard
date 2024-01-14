@@ -32,3 +32,7 @@ export async function getWholeProjectById(id: number) {
 export async function createColumnInProject(projectId: number) {
   return axios.post(`columns/`, { projectId, title: "Column" })
 }
+
+export async function deleteColumnFromProject(projectId: number, columnId: number) {
+  return axios.delete(`columns/${columnId}`, { data: { projectId } })
+}

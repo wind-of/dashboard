@@ -4,7 +4,13 @@ import CanbanTableColumnHeader from "~/canban/CanbanTableColumnHeader.vue"
 import CanbanTableColumnList from "~/canban/CanbanTableColumnList.vue"
 import VButton from "~/form/VButton.vue"
 const props = defineProps<{ column: Column; isProtoColumn?: boolean }>()
-const emit = defineEmits(["onListChange", "onCreateTask", "onTaskSelection", "onCreateColumn"])
+const emit = defineEmits([
+  "onListChange",
+  "onCreateTask",
+  "onTaskSelection",
+  "onCreateColumn",
+  "onDeleteColumn"
+])
 
 function handleListChange(updatedTasks: Task[]) {
   emit("onListChange", updatedTasks)
@@ -19,6 +25,9 @@ function handleTaskSelection(taskId: number) {
 function handleColumnCreation() {
   emit("onCreateColumn")
 }
+function handleColumnDeletion() {
+  emit("onDeleteColumn")
+}
 </script>
 
 <template>
@@ -30,6 +39,7 @@ function handleColumnCreation() {
       <CanbanTableColumnHeader
         :title="column.title"
         @onCreateTask="handleTaskCreation(column.id)"
+        @onDeleteColumn="handleColumnDeletion"
       />
       <CanbanTableColumnList
         :tasks="column.tasks"

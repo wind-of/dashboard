@@ -11,6 +11,7 @@ const isChosen = computed(() => !!projectStore.project)
   <ProjectsList
     v-if="!isChosen"
     @onProjectClick="projectStore.updateProjectInStore"
+    @onProjectSelect="projectStore.updateProjectInStore"
     title="Choose project"
   />
   <slot v-else />
