@@ -28,3 +28,7 @@ export async function getParticipatingProjects() {
 export async function getWholeProjectById(id: number) {
   return axios.get(`projects/${id}`)
 }
+
+export async function createColumnInProject(projectId: number) {
+  return axios.post(`columns/`, { projectId, title: "Column" })
+}

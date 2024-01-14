@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import { computed } from "vue"
 import draggable from "vuedraggable"
-import CanbanTableColumn from "./CanbanTableColumn.vue"
-import { Column } from "../../types"
+import type { Column } from "@/types"
+import CanbanTableColumn from "~/canban/CanbanTableColumn.vue"
+import { mockColumn } from "@/mock"
+
 const props = defineProps<{ columns: Column[] }>()
-const emit = defineEmits(["onListChange", "onTaskCreate", "onColumnChange", "onTaskSelection"])
+const emit = defineEmits([
+  "onListChange",
+  "onTaskCreate",
+  "onColumnChange",
+  "onTaskSelection",
+  "onColumnCreate"
+])
 const columnsList = computed({
   get() {
     return props.columns
@@ -13,6 +21,7 @@ const columnsList = computed({
     emit("onColumnChange", updatedColumns)
   }
 })
+
 function handleColumnListChange(columnId: number, updatedList: Column[]) {
   emit("onListChange", columnId, updatedList)
 }
@@ -21,6 +30,10 @@ function handleColumnTaskCreation(columnId: number) {
 }
 function handleTaskSelection(taskId: number, columnId: number) {
   emit("onTaskSelection", taskId, columnId)
+}
+
+function handleColumnCreation() {
+  emit("onColumnCreate")
 }
 </script>
 
@@ -37,6 +50,7 @@ function handleTaskSelection(taskId: number, columnId: number) {
         />
       </template>
     </draggable>
+    <CanbanTableColumn isProtoColumn :column="mockColumn" @onCreateColumn="handleColumnCreation" />
   </section>
 </template>
 

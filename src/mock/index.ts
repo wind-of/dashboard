@@ -6,3 +6,9 @@ export const project: Project = {
   title: "Tasks",
   columns: generateColumns(3)
 }
+
+export const mockColumn = {
+  id: 999919191919.111,
+  title: "Create column",
+  tasks: []
+}

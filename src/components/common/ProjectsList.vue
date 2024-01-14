@@ -18,12 +18,12 @@ watchEffect(() => {
     .catch(console.log)
 })
 
-async function handleProjectClick(partialProject: ProjectWithoutColumns) {
-  emit("onProjectClick", partialProject)
+async function handleProjectClick(projectId: number) {
+  emit("onProjectClick", projectId)
 }
 
-async function handleProjectSelect(partialProject: ProjectWithoutColumns) {
-  emit("onProjectSelect", partialProject)
+async function handleProjectSelect(projectId: number) {
+  emit("onProjectSelect", projectId)
 }
 </script>
 
@@ -36,7 +36,7 @@ async function handleProjectSelect(partialProject: ProjectWithoutColumns) {
         :key="project.id"
         class="project-card"
         :class="{ 'active-project': project.id === projectStore.project?.id }"
-        @click="handleProjectClick(project)"
+        @click="handleProjectClick(project.id)"
       >
         <h3 class="project-card-title">{{ project.title }}</h3>
         <ul class="participants-list">
@@ -50,7 +50,7 @@ async function handleProjectSelect(partialProject: ProjectWithoutColumns) {
           </li>
         </ul>
         <div class="follow">
-          <span @click.stop="handleProjectSelect(project)">Follow →</span>
+          <span @click.stop="handleProjectSelect(project.id)">Follow →</span>
         </div>
       </li>
       <li class="project-card project-proto">

@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { Column, Task } from "../../types"
-import CanbanTableColumnHeader from "./CanbanTableColumnHeader.vue"
-import CanbanTableColumnList from "./CanbanTableColumnList.vue"
-const props = defineProps<{ column: Column }>()
-const emit = defineEmits(["onListChange", "onCreateTask", "onTaskSelection"])
+import { Column, Task } from "@/types"
+import CanbanTableColumnHeader from "~/canban/CanbanTableColumnHeader.vue"
+import CanbanTableColumnList from "~/canban/CanbanTableColumnList.vue"
+import VButton from "~/form/VButton.vue"
+const props = defineProps<{ column: Column; isProtoColumn?: boolean }>()
+const emit = defineEmits(["onListChange", "onCreateTask", "onTaskSelection", "onCreateColumn"])
 
 function handleListChange(updatedTasks: Task[]) {
   emit("onListChange", updatedTasks)
@@ -14,25 +15,40 @@ function handleTaskCreation(columnId: number) {
 function handleTaskSelection(taskId: number) {
   emit("onTaskSelection", taskId, props.column.id)
 }
+
+function handleColumnCreation() {
+  emit("onCreateColumn")
+}
 </script>
 
 <template>
   <section class="column">
-    <CanbanTableColumnHeader :title="column.title" @onCreateTask="handleTaskCreation(column.id)" />
-    <CanbanTableColumnList
-      :tasks="column.tasks"
-      @onListChange="handleListChange"
-      @onTaskSelection="handleTaskSelection"
-    />
+    <div class="proto-column" v-if="isProtoColumn">
+      <VButton @click="handleColumnCreation">Create column</VButton>
+    </div>
+    <template v-else>
+      <CanbanTableColumnHeader
+        :title="column.title"
+        @onCreateTask="handleTaskCreation(column.id)"
+      />
+      <CanbanTableColumnList
+        :tasks="column.tasks"
+        @onListChange="handleListChange"
+        @onTaskSelection="handleTaskSelection"
+      />
+    </template>
   </section>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .column {
   min-width: 235px;
   max-width: 235px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+.proto-column {
+  margin: 10px;
 }
 </style>

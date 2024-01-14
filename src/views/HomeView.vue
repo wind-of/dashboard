@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { getWholeProjectById } from "@/api"
 import { useProjectStore } from "@/stores/project"
-import { ProjectWithoutColumns } from "@/types"
 import { useRouter } from "vue-router"
 import ProjectsList from "~/common/ProjectsList.vue"
 import ViewWrapper from "~/ViewWrapper.vue"
@@ -9,13 +7,8 @@ import ViewWrapper from "~/ViewWrapper.vue"
 const router = useRouter()
 const projectStore = useProjectStore()
 
-async function handleProjectClick(partialProject: ProjectWithoutColumns) {
-  const { data: project } = await getWholeProjectById(partialProject.id)
-  projectStore.saveProject(project)
-}
-
-async function handleProjectSelect(partialProject: ProjectWithoutColumns) {
-  await handleProjectClick(partialProject)
+async function handleProjectSelect(projectId: number) {
+  await projectStore.updateProjectInStore(projectId)
   router.push({ name: "canban" })
 }
 </script>
@@ -23,7 +16,10 @@ async function handleProjectSelect(partialProject: ProjectWithoutColumns) {
 <template>
   <ViewWrapper>
     <main class="main">
-      <ProjectsList @onProjectClick="handleProjectClick" @onProjectSelect="handleProjectSelect" />
+      <ProjectsList
+        @onProjectClick="projectStore.updateProjectInStore"
+        @onProjectSelect="handleProjectSelect"
+      />
     </main>
   </ViewWrapper>
 </template>
