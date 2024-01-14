@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { reactive, watchEffect } from "vue"
 import type { ProjectWithoutColumns } from "@/types"
-import { getParticipatingProjects, getWholeProjectById } from "@/api"
+import { getParticipatingProjects } from "@/api"
 import { useProjectStore } from "@/stores/project"
 
 withDefaults(defineProps<{ title?: string }>(), { title: "Projects" })
-const emit = defineEmits(["onProjectUpdate"])
+const emit = defineEmits(["onProjectClick", "onProjectSelect"])
 
 const projects = reactive<ProjectWithoutColumns[]>([])
 const projectStore = useProjectStore()
@@ -19,9 +19,11 @@ watchEffect(() => {
 })
 
 async function handleProjectClick(partialProject: ProjectWithoutColumns) {
-  const { data: project } = await getWholeProjectById(partialProject.id)
-  projectStore.saveProject(project)
-  emit("onProjectUpdate")
+  emit("onProjectClick", partialProject)
+}
+
+async function handleProjectSelect(partialProject: ProjectWithoutColumns) {
+  emit("onProjectSelect", partialProject)
 }
 </script>
 
@@ -47,6 +49,9 @@ async function handleProjectClick(partialProject: ProjectWithoutColumns) {
             {{ project.participants.length - 3 }}
           </li>
         </ul>
+        <div class="follow">
+          <span @click.stop="handleProjectSelect(project)">Follow →</span>
+        </div>
       </li>
       <li class="project-card project-proto">
         <button>+ Add Project</button>
@@ -77,7 +82,6 @@ async function handleProjectClick(partialProject: ProjectWithoutColumns) {
   padding: 20px;
   border: 1px solid transparent;
   background-color: white;
-  cursor: pointer;
   transition-property: box-shadow, border;
   transition-timing-function: ease-out;
   transition-duration: 0.2s;
@@ -87,6 +91,22 @@ async function handleProjectClick(partialProject: ProjectWithoutColumns) {
   }
   &:hover {
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    .follow > span {
+      opacity: 1;
+    }
+  }
+
+  .follow {
+    text-align: end;
+    > span {
+      font-size: 12px;
+      padding: 3px 10px;
+      border: 1px solid rgb(170, 170, 170);
+      border-radius: 6px;
+      opacity: 0;
+      transition: opacity 0.2s ease-out;
+      cursor: pointer;
+    }
   }
 }
 .active-project {
