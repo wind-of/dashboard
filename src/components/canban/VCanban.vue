@@ -5,14 +5,15 @@ import CanbanHeader from "~/canban/CanbanHeader.vue"
 import CanbanTable from "~/canban/CanbanTable.vue"
 import TaskDrawer from "~/TaskDrawer.vue"
 
-import { task as initializeTask, column as initializeColumn, isTaskInList } from "@/utils"
+import { column as initializeColumn, isTaskInList } from "@/utils"
 import type { Project, Column, Task } from "@/types"
 import { useTaskDrawer } from "@/composables/task.drawer"
 import { useProjectStore } from "@/stores/project"
-import { createColumnInProject, deleteColumnFromProject } from "@/api"
+import { createColumnInProject, createTaskInColumn, deleteColumnFromProject } from "@/api"
 
 const projectStore = useProjectStore()
 const project = computed(() => projectStore.project as Project)
+const projectId = computed(() => project.value.id)
 const {
   handleTaskChange,
   handleTaskChangeCancel,
@@ -38,16 +39,17 @@ function handleListChange(columnId: number, updatedList: Task[]) {
 function handleColumnList(updatedColumns: Column[]) {
   project.value.columns = updatedColumns
 }
-function handleTaskCreation(columnId: number) {
-  column(columnId).tasks.push(initializeTask())
+async function handleTaskCreation(columnId: number) {
+  await createTaskInColumn(projectId.value, columnId)
+  projectStore.updateProjectInStore(projectId.value)
 }
 async function handleColumnCreation() {
-  await createColumnInProject(project.value.id)
-  projectStore.updateProjectInStore(project.value.id)
+  await createColumnInProject(projectId.value)
+  projectStore.updateProjectInStore(projectId.value)
 }
 async function handleColumnDeletion(columnId: number) {
-  await deleteColumnFromProject(project.value.id, columnId)
-  projectStore.updateProjectInStore(project.value.id)
+  await deleteColumnFromProject(projectId.value, columnId)
+  projectStore.updateProjectInStore(projectId.value)
 }
 </script>
 

@@ -36,3 +36,7 @@ export async function createColumnInProject(projectId: number) {
 export async function deleteColumnFromProject(projectId: number, columnId: number) {
   return axios.delete(`columns/${columnId}`, { data: { projectId } })
 }
+
+export async function createTaskInColumn(projectId: number, columnId: number) {
+  return axios.post(`tasks/`, { columnId, projectId, title: "Task" })
+}
