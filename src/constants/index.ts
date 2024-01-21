@@ -1,17 +1,16 @@
 import type { Tag } from "@/types"
-import { uid } from "@/utils"
 
 export const NOW = new Date()
 
 export const DARK_THEME = "dark-theme" as const
 export const LIGHT_THEME = "light-theme" as const
 
-export const TAGS: Tag[] = [
+export const TAGS: Omit<Tag, "uniqueId" | "id">[] = [
   ["Design", "#5051F9"],
   ["Research", "#1EA7FF"],
   ["Planning", "#E97342"],
   ["Content", "#F59E0B"]
-].map(([title, color]) => ({ title, color, id: uid("tag") }))
+].map(([title, color]) => ({ title, color }))
 
 export const MINUTES_PER_HOUR = 60
 export const HOURS_PER_DAY = 24

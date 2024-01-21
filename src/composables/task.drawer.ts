@@ -1,6 +1,10 @@
+import { updateTaskFromColumn } from "@/api"
+import { useProjectStore } from "@/stores/project"
 import type { Project, UpdatedTask } from "@/types"
 import { column as initializeColumn, task as initializeTask } from "@/utils"
 import { reactive, ref } from "vue"
+
+const projectStore = useProjectStore()
 
 export function useTaskDrawer(project: Project) {
   const binTask = initializeTask()
@@ -28,23 +32,9 @@ export function useTaskDrawer(project: Project) {
   const selected = reactive({ task: initializeTask({ title: "", description: "" }), columnId: NaN })
 
   return {
-    handleTaskChange({
-      title,
-      description,
-      tags,
-      columnId,
-      startDate,
-      expirationDate
-    }: UpdatedTask) {
-      const targetTask = task(selected.task.id, selected.columnId)
-      targetTask.title = title
-      targetTask.description = description
-      targetTask.tags = tags
-      targetTask.startDate = startDate
-      targetTask.expirationDate = expirationDate
-      if (columnId && columnId !== selected.columnId) {
-        handleTaskColumnUpdate(columnId)
-      }
+    async handleTaskChange(updatedTask: UpdatedTask) {
+      await updateTaskFromColumn(project.id, selected.columnId, updatedTask)
+      projectStore.updateProjectInStore(project.id)
     },
     handleTaskChangeCancel() {
       isDrawerOpen.value = false

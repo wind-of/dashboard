@@ -2,6 +2,7 @@ import type { User } from "@/types"
 
 export interface Tag {
   id: number
+  uniqueId: string
   title: string
   color: string
 }
@@ -13,6 +14,7 @@ export interface Task {
   description: string
   preview?: string
   tags: Tag[]
+  comments: Comment[]
   expirationDate: Date
   startDate: Date
 }

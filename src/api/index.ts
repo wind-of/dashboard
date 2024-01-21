@@ -1,4 +1,4 @@
-import type { LoginUser, SignUpUser } from "@/types"
+import type { LoginUser, SignUpUser, Task } from "@/types"
 import axios from "axios"
 const { VITE_SERVER_URL: BASE_URL } = import.meta.env
 
@@ -25,8 +25,12 @@ export async function getParticipatingProjects() {
   return axios.get(`projects/participating`)
 }
 
-export async function getWholeProjectById(id: number) {
-  return axios.get(`projects/${id}`)
+export async function getWholeProjectById(projectId: number) {
+  return axios.get(`projects/${projectId}`)
+}
+
+export async function getProjectTags(projectId: number) {
+  return axios.get(`projects/${projectId}/tags`)
 }
 
 export async function createColumnInProject(projectId: number) {
@@ -39,4 +43,14 @@ export async function deleteColumnFromProject(projectId: number, columnId: numbe
 
 export async function createTaskInColumn(projectId: number, columnId: number) {
   return axios.post(`tasks/`, { columnId, projectId, title: "Task" })
+}
+
+export async function updateTaskFromColumn(projectId: number, columnId: number, updatedTask: Task) {
+  const { comments, ...task } = updatedTask
+  task.tags = task.tags.map((tag) => ({ ...tag, taskId: task.id }))
+  return axios.patch(`tasks/${updatedTask.id}`, { ...task, columnId, projectId })
+}
+
+export async function deleteTaskFromColumn(projectId: number, columnId: number, taskId: number) {
+  return axios.delete(`tasks/${taskId}`, { data: { columnId, projectId } })
 }

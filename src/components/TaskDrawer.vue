@@ -8,13 +8,13 @@ import VTextarea from "~/form/VTextarea.vue"
 import VButton from "~/form/VButton.vue"
 import { useCopyReactive } from "@/composables/copy.reactive"
 import { Tag, Task, ColumnProto } from "@/types"
-import { TAGS } from "@/constants"
 
 const props = defineProps<{
   task: Task
   columnId: number
   columns: ColumnProto[]
   isOpen: boolean
+  tags: Tag[]
 }>()
 const emit = defineEmits(["onCommitChanges", "onCancelChanges", "onTaskDelete"])
 
@@ -40,18 +40,18 @@ function handleDelete() {
 function getColumnTitleById(columnId: number) {
   return props.columns.find(({ id }) => id === columnId)?.title
 }
-function isActiveTag(tagId: number) {
-  return state.value.tags.some(({ id }) => id === tagId)
+function isActiveTag(tagId: string) {
+  return state.value.tags.some(({ uniqueId }) => uniqueId === tagId) || false
 }
-function computeTagStyles(backgroundColor: string, tagId: number) {
+function computeTagStyles(backgroundColor: string, tagId: string) {
   return {
     "background-color": backgroundColor,
     "--active-tag-scale": Number(isActiveTag(tagId))
   }
 }
 function handleTagClick(tag: Tag) {
-  if (isActiveTag(tag.id)) {
-    state.value.tags = toRaw(state.value.tags).filter(({ id }) => id !== tag.id)
+  if (isActiveTag(tag.uniqueId)) {
+    state.value.tags = toRaw(state.value.tags).filter(({ uniqueId }) => uniqueId !== tag.uniqueId)
     return
   }
   state.value.tags.push(tag)
@@ -72,9 +72,9 @@ function handleTagClick(tag: Tag) {
         <section class="tags">
           <div
             class="tag"
-            v-for="tag in TAGS"
+            v-for="tag in tags"
             :key="tag.id"
-            :style="computeTagStyles(tag.color, tag.id)"
+            :style="computeTagStyles(tag.color, tag.uniqueId)"
             @click="handleTagClick(tag)"
           >
             {{ tag.title }}

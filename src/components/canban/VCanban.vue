@@ -68,6 +68,7 @@ async function handleColumnDeletion(columnId: number) {
     <Teleport to="body">
       <TaskDrawer
         :task="selected.task"
+        :tags="projectStore.tags"
         :columnId="selected.columnId"
         :isOpen="isDrawerOpen"
         :columns="columnsWithoutTasks"

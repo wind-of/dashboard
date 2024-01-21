@@ -24,27 +24,32 @@ export const task = ({
   shortDescription = "Short description",
   description = "Description",
   tags = generateTags(),
+  comments = [],
   preview = Math.random() > 0.8 ? randomURL : "",
   expirationDate = randomDate({ side: "future", period: "month" }),
   startDate = randomDate({ side: "past", period: "month" })
 } = {}): Task => ({
-  id: uid("task"),
+  id: rn(10 ** 8),
   title,
   shortDescription,
   description,
   tags,
+  comments,
   preview,
   expirationDate,
   startDate
 })
 export const column = ({ title = "Column #" + rn(), tasks = generateTasks() } = {}): Column => ({
-  id: uid("table"),
+  id: rn(10 ** 8),
   title,
   tasks
 })
 
 export const generateTags = (length: number = 0): Tag[] =>
-  [...TAGS].sort(() => Math.random() - Math.random()).slice(0, Math.min(length, TAGS.length))
+  [...TAGS]
+    .sort(() => Math.random() - Math.random())
+    .slice(0, Math.min(length, TAGS.length))
+    .map((tag) => ({ ...tag, id: Math.random() * 10 ** 8, uniqueId: uid("tag") }))
 export const generateTasks = (length: number = 0): Task[] =>
   Array.from({ length }, () => task({ tags: generateTags(1) }))
 export const generateColumns = (length: number = 0): Column[] =>
