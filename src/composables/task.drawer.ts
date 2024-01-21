@@ -1,4 +1,4 @@
-import { updateTaskFromColumn } from "@/api"
+import { updateTask } from "@/api"
 import { useProjectStore } from "@/stores/project"
 import type { Project, UpdatedTask } from "@/types"
 import { column as initializeColumn, task as initializeTask } from "@/utils"
@@ -33,7 +33,7 @@ export function useTaskDrawer(project: Project) {
 
   return {
     async handleTaskChange(updatedTask: UpdatedTask) {
-      await updateTaskFromColumn(project.id, selected.columnId, updatedTask)
+      await updateTask(project.id, updatedTask)
       projectStore.updateProjectInStore(project.id)
     },
     handleTaskChangeCancel() {

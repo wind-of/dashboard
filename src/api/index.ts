@@ -1,4 +1,4 @@
-import type { LoginUser, SignUpUser, Task } from "@/types"
+import type { LoginUser, SignUpUser, UpdatedTask } from "@/types"
 import axios from "axios"
 const { VITE_SERVER_URL: BASE_URL } = import.meta.env
 
@@ -45,10 +45,10 @@ export async function createTaskInColumn(projectId: number, columnId: number) {
   return axios.post(`tasks/`, { columnId, projectId, title: "Task" })
 }
 
-export async function updateTaskFromColumn(projectId: number, columnId: number, updatedTask: Task) {
-  const { comments, ...task } = updatedTask
+export async function updateTask(projectId: number, updatedTask: UpdatedTask) {
+  const { comments, columnId, ...task } = updatedTask
   task.tags = task.tags.map((tag) => ({ ...tag, taskId: task.id }))
-  return axios.patch(`tasks/${updatedTask.id}`, { ...task, columnId, projectId })
+  await axios.patch(`tasks/${updatedTask.id}`, { ...task, columnId, projectId })
 }
 
 export async function deleteTaskFromColumn(projectId: number, columnId: number, taskId: number) {
