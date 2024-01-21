@@ -1,29 +1,24 @@
 <script setup lang="ts">
-import { reactive, watchEffect } from "vue"
-import type { ProjectWithoutColumns } from "@/types"
-import { getParticipatingProjects } from "@/api"
+import { watchEffect } from "vue"
 import { useProjectStore } from "@/stores/project"
+import { useParticipatingProjectsStore } from "@/stores/participating.projects"
 
 withDefaults(defineProps<{ title?: string }>(), { title: "Projects" })
-const emit = defineEmits(["onProjectClick", "onProjectSelect"])
+const emit = defineEmits(["onProjectClick", "onProjectSelect", "onProjectCreate"])
 
-const projects = reactive<ProjectWithoutColumns[]>([])
 const projectStore = useProjectStore()
+const participatingProjectsStore = useParticipatingProjectsStore()
 
-watchEffect(() => {
-  getParticipatingProjects()
-    .then((response) => {
-      projects.push(...response.data)
-    })
-    .catch(console.log)
-})
+watchEffect(participatingProjectsStore.updateProjectsList)
 
-async function handleProjectClick(projectId: number) {
+function handleProjectClick(projectId: number) {
   emit("onProjectClick", projectId)
 }
-
-async function handleProjectSelect(projectId: number) {
+function handleProjectSelect(projectId: number) {
   emit("onProjectSelect", projectId)
+}
+function handleProjectCreate() {
+  emit("onProjectCreate")
 }
 </script>
 
@@ -32,7 +27,7 @@ async function handleProjectSelect(projectId: number) {
     <h2>{{ title }}</h2>
     <ul class="projects-list">
       <li
-        v-for="project in projects"
+        v-for="project in participatingProjectsStore.projects"
         :key="project.id"
         class="project-card"
         :class="{ 'active-project': project.id === projectStore.project?.id }"
@@ -54,7 +49,7 @@ async function handleProjectSelect(projectId: number) {
         </div>
       </li>
       <li class="project-card project-proto">
-        <button>+ Add Project</button>
+        <button @click="handleProjectCreate">+ Add Project</button>
       </li>
     </ul>
   </section>

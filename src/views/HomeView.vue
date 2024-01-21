@@ -19,6 +19,7 @@ async function handleProjectSelect(projectId: number) {
       <ProjectsList
         @onProjectClick="projectStore.updateProjectInStore"
         @onProjectSelect="handleProjectSelect"
+        @onProjectCreate="projectStore.createNewProject"
       />
     </main>
   </ViewWrapper>
