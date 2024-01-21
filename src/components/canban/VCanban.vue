@@ -10,8 +10,10 @@ import type { Project, Column, Task } from "@/types"
 import { useTaskDrawer } from "@/composables/task.drawer"
 import { useProjectStore } from "@/stores/project"
 import { createColumnInProject, createTaskInColumn, deleteColumnFromProject } from "@/api"
+import { useTagsStore } from "@/stores/tags"
 
 const projectStore = useProjectStore()
+const tagsStore = useTagsStore()
 const project = computed(() => projectStore.project as Project)
 const projectId = computed(() => project.value.id)
 const {
@@ -68,7 +70,7 @@ async function handleColumnDeletion(columnId: number) {
     <Teleport to="body">
       <TaskDrawer
         :task="selected.task"
-        :tags="projectStore.tags"
+        :tags="tagsStore.tags"
         :columnId="selected.columnId"
         :isOpen="isDrawerOpen"
         :columns="columnsWithoutTasks"

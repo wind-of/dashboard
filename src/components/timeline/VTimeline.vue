@@ -7,8 +7,10 @@ import TaskDrawer from "~/TaskDrawer.vue"
 import { useTaskDrawer } from "@/composables/task.drawer"
 import { useProjectStore } from "@/stores/project"
 import { DEFAULT_PERIOD, PERIODS } from "@/constants"
+import { useTagsStore } from "@/stores/tags"
 
 const projectStore = useProjectStore()
+const tagsStore = useTagsStore()
 const project = computed(() => projectStore.project as Project)
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const columnsWithoutTasks = computed(() => project.value.columns.map(({ tasks, ...rest }) => rest))
@@ -38,7 +40,7 @@ function handlePeriodUpdate(period: PERIODS) {
     <Teleport to="body">
       <TaskDrawer
         :task="selected.task"
-        :tags="projectStore.tags"
+        :tags="tagsStore.tags"
         :columnId="selected.columnId"
         :isOpen="isDrawerOpen"
         :columns="columnsWithoutTasks"
