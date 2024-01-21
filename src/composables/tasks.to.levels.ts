@@ -1,5 +1,5 @@
 import { DEFAULT_PERIOD, DEFAULT_TIMELINE_TABLET_UNIT_WIDTH, PERIOD_UNITS } from "@/constants"
-import type { Column, ColumnTask, Tablet } from "@/types"
+import type { Column, Tablet, Task } from "@/types"
 import {
   doEndAtTheSamePeriod,
   initializeNewTablet,
@@ -12,13 +12,13 @@ export function useTasksToLeveledTablets(
   period = DEFAULT_PERIOD,
   timelineUnitWidth: number = DEFAULT_TIMELINE_TABLET_UNIT_WIDTH
 ) {
-  const tasks: ColumnTask[] = columns
-    .flatMap(({ tasks, id }) => tasks.map((task) => ({ ...task, columnId: id })))
+  const tasks: Task[] = columns
+    .flatMap(({ tasks }) => tasks)
     .filter(({ startDate, expirationDate }) => startDate && expirationDate)
     .sort((a, b) => +a.startDate - +b.startDate)
 
-  const groupedTasks: { [key: number]: ColumnTask[] } = {}
-  const singleTasks: ColumnTask[] = []
+  const groupedTasks: { [key: number]: Task[] } = {}
+  const singleTasks: Task[] = []
 
   for (let i = 0, currentTask = tasks[i]; i < tasks.length; currentTask = tasks[++i]) {
     const startDate = new Date(currentTask.startDate)

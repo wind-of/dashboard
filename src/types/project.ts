@@ -9,6 +9,7 @@ export interface Tag {
 
 export interface Task {
   id: number
+  columnId: number
   title: string
   shortDescription: string
   description: string
@@ -17,9 +18,6 @@ export interface Task {
   comments: Comment[]
   expirationDate: string
   startDate: string
-}
-export interface ColumnTask extends Task {
-  columnId: number
 }
 
 export interface ColumnProto {

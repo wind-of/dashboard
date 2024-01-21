@@ -23,7 +23,7 @@ const {
   handleTaskSelection,
   isDrawerOpen,
   selected
-} = useTaskDrawer(project.value)
+} = useTaskDrawer()
 
 const binColumn = initializeColumn()
 

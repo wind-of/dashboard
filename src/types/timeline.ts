@@ -1,4 +1,4 @@
-import type { ColumnTask } from "@/types"
+import type { Task } from "@/types"
 
 export interface TabletOffsets {
   top: number
@@ -7,15 +7,15 @@ export interface TabletOffsets {
 }
 
 export interface TabletSignle extends TabletOffsets {
-  task: ColumnTask
+  task: Task
 }
 export interface TabletList extends TabletOffsets {
-  task: ColumnTask[]
+  task: Task[]
 }
 
 export type Tablet = TabletSignle | TabletList
 
 export interface TabletWithList extends TabletOffsets {
-  list: ColumnTask[]
+  list: Task[]
   isList: boolean
 }

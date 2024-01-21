@@ -11,7 +11,7 @@ import {
   PERIODS,
   TIMELINE_TABLET_HEIGHT
 } from "@/constants"
-import type { ColumnTask, Tablet, TabletList, TabletSignle } from "@/types"
+import type { Tablet, TabletList, TabletSignle, Task } from "@/types"
 import { getNearbyPeriods } from "@/utils"
 
 export const computedTimelineUnitStyles = (width: number) => ({
@@ -91,7 +91,7 @@ export function doesTabletsIntersect(firstTablet: Tablet | undefined, secondTabl
 }
 
 export function initializeNewTablet(
-  task: ColumnTask,
+  task: Task,
   period: PERIODS = DEFAULT_PERIOD,
   timelineUnitWidth: number
 ): TabletSignle {
@@ -108,7 +108,7 @@ export function initializeNewTablet(
 }
 
 export function initializeNewTabletWithList(
-  list: ColumnTask[],
+  list: Task[],
   offsetIndex: number,
   timelineUnitWidth: number
 ): TabletList {

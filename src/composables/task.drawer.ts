@@ -1,27 +1,25 @@
 import { deleteTask, updateTask } from "@/api"
 import { useProjectStore } from "@/stores/project"
-import type { Project, UpdatedTask } from "@/types"
-import { column as initializeColumn, task as initializeTask } from "@/utils"
-import { reactive, ref } from "vue"
+import type { Column, Project, Task, UpdatedTask } from "@/types"
+import { task as initializeTask } from "@/utils"
+import { computed, reactive, ref } from "vue"
 
-const projectStore = useProjectStore()
-
-export function useTaskDrawer(project: Project) {
-  const binTask = initializeTask()
-  const binColumn = initializeColumn()
+export function useTaskDrawer() {
+  const projectStore = useProjectStore()
+  const project = computed(() => projectStore.project as Project)
 
   const column = (columnId: number) =>
-    project.columns.find(({ id }) => id === columnId) || binColumn
+    project.value.columns.find(({ id }) => id === columnId) as Column
   const task = (taskId: number, columnId: number) =>
-    column(columnId).tasks.find(({ id }) => id === taskId) || binTask
+    column(columnId).tasks.find(({ id }) => id === taskId) as Task
 
   const isDrawerOpen = ref(false)
   const selected = reactive({ task: initializeTask({ title: "", description: "" }), columnId: NaN })
 
   return {
     async handleTaskChange(updatedTask: UpdatedTask) {
-      await updateTask(project.id, updatedTask)
-      await projectStore.updateProjectInStore(project.id)
+      await updateTask(project.value.id, updatedTask)
+      await projectStore.updateProjectInStore(project.value.id)
     },
     handleTaskChangeCancel() {
       isDrawerOpen.value = false
@@ -29,8 +27,8 @@ export function useTaskDrawer(project: Project) {
       selected.columnId = NaN
     },
     async handleTaskDelete() {
-      await deleteTask(project.id, selected.task.id)
-      await projectStore.updateProjectInStore(project.id)
+      await deleteTask(project.value.id, selected.task.id)
+      await projectStore.updateProjectInStore(project.value.id)
       isDrawerOpen.value = false
     },
     handleTaskSelection(taskId: number, columnId: number) {

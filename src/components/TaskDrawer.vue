@@ -89,13 +89,13 @@ function handleTagClick(tag: Tag) {
         <section class="input-block">
           <label class="input-label">
             <p class="input-title">Short Description</p>
-            <VInput v-model="state.shortDescription" />
+            <VInput v-model="state.shortDescription" placeholder="Type here..." />
           </label>
         </section>
         <section class="input-block">
           <label class="input-label">
             <p class="input-title">Description</p>
-            <VTextarea v-model="state.description" />
+            <VTextarea v-model="state.description" placeholder="Write a description to the task" />
           </label>
         </section>
         <select class="columns-select" v-model="state.columnId">
