@@ -15,8 +15,8 @@ export interface Task {
   preview?: string
   tags: Tag[]
   comments: Comment[]
-  expirationDate: Date
-  startDate: Date
+  expirationDate: string
+  startDate: string
 }
 export interface ColumnTask extends Task {
   columnId: number

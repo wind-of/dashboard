@@ -26,8 +26,8 @@ export const task = ({
   tags = generateTags(),
   comments = [],
   preview = Math.random() > 0.8 ? randomURL : "",
-  expirationDate = randomDate({ side: "future", period: "month" }),
-  startDate = randomDate({ side: "past", period: "month" })
+  expirationDate = randomDate({ side: "future", period: "month" }) as unknown as string,
+  startDate = randomDate({ side: "past", period: "month" }) as unknown as string
 } = {}): Task => ({
   id: rn(10 ** 8),
   title,

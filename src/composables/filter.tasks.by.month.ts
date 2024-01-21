@@ -4,11 +4,11 @@ import { getNearbyPeriods } from "@/utils"
 
 export function useFilterTasksByPeriod(columns: Column[], period: PERIODS = DEFAULT_PERIOD) {
   const { current, next } = getNearbyPeriods(period)
-  columns.forEach(
-    (column) =>
-      (column.tasks = column.tasks.filter(
-        ({ startDate, expirationDate }) => startDate < next && expirationDate > current
-      ))
-  )
-  return columns
+  return columns.map((column) => ({
+    ...column,
+    tasks: column.tasks.filter(
+      ({ startDate, expirationDate }) =>
+        new Date(startDate) < next && new Date(expirationDate) > current
+    )
+  }))
 }

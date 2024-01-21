@@ -7,7 +7,7 @@ export function useTabletEdgesCheck(task: Task, period: PERIODS) {
   const { startDate, expirationDate } = task
 
   return {
-    left: current <= startDate,
-    right: next > expirationDate
+    left: current <= new Date(startDate),
+    right: next > new Date(expirationDate)
   }
 }

@@ -19,7 +19,7 @@ export const computedTimelineUnitStyles = (width: number) => ({
   "min-width": `${width}px`
 })
 
-export function doEndAtTheSamePeriod(start: Date, end: Date, period: PERIODS) {
+export function doEndAtTheSamePeriod(first: Date, second: Date, period: PERIODS) {
   const methods = {
     [PERIODS.day]: ["getFullYear", "getMonth", "getDate", "getHours"],
     [PERIODS.week]: ["getFullYear", "getMonth", "getDate"],
@@ -27,7 +27,7 @@ export function doEndAtTheSamePeriod(start: Date, end: Date, period: PERIODS) {
     [PERIODS.year]: ["getFullYear", "getMonth"]
   }[period]
   // @ts-ignore
-  return methods.every((method) => start[method]() === end[method]())
+  return methods.every((method) => first[method]() === second[method]())
 }
 
 export function getDaysCountInCurrentMonth() {

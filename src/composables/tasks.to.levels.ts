@@ -21,12 +21,14 @@ export function useTasksToLeveledTablets(
   const singleTasks: ColumnTask[] = []
 
   for (let i = 0, currentTask = tasks[i]; i < tasks.length; currentTask = tasks[++i]) {
-    if (!doEndAtTheSamePeriod(currentTask.startDate, currentTask.expirationDate, period)) {
+    const startDate = new Date(currentTask.startDate)
+    const expirationDate = new Date(currentTask.expirationDate)
+    if (!doEndAtTheSamePeriod(startDate, expirationDate, period)) {
       singleTasks.push(currentTask)
       continue
     }
     // @ts-ignore
-    const unitIndex = currentTask.startDate[PERIOD_UNITS[period]]()
+    const unitIndex = startDate[PERIOD_UNITS[period]]()
     ;(groupedTasks[unitIndex] || (groupedTasks[unitIndex] = [])).push(currentTask)
   }
 
