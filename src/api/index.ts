@@ -51,6 +51,6 @@ export async function updateTask(projectId: number, updatedTask: UpdatedTask) {
   await axios.patch(`tasks/${updatedTask.id}`, { ...task, columnId, projectId })
 }
 
-export async function deleteTaskFromColumn(projectId: number, columnId: number, taskId: number) {
-  return axios.delete(`tasks/${taskId}`, { data: { columnId, projectId } })
+export async function deleteTask(projectId: number, taskId: number) {
+  return axios.delete(`tasks/${taskId}`, { data: { projectId } })
 }
