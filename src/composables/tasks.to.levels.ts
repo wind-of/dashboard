@@ -36,7 +36,7 @@ export function useTasksToLeveledTablets(
   for (let i = 0; i < singleTasks.length; i++)
     insertNewTablet(levels, initializeNewTablet(singleTasks[i], period, timelineUnitWidth))
   for (const [key, value] of Object.entries(groupedTasks))
-    insertNewTablet(levels, initializeNewTabletWithList(value, +key, timelineUnitWidth))
+    insertNewTablet(levels, initializeNewTabletWithList(value, +key - 1, timelineUnitWidth))
 
   return levels
 }

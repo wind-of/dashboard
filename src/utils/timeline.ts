@@ -98,7 +98,12 @@ export function initializeNewTablet(
   return {
     task,
     top: 0,
-    ...taskDateToTabletOffset(task.startDate, task.expirationDate, period, timelineUnitWidth)
+    ...taskDateToTabletOffset(
+      new Date(task.startDate),
+      new Date(task.expirationDate),
+      period,
+      timelineUnitWidth
+    )
   }
 }
 
