@@ -19,12 +19,6 @@ const columnsList = computed({
 function handleColumnListChange(columnId: number, updatedList: Column[]) {
   emit("onListChange", columnId, updatedList)
 }
-function handleColumnTaskCreation(columnId: number) {
-  emit("onTaskCreate", columnId)
-}
-function handleTaskSelection(taskId: number, columnId: number) {
-  emit("onTaskSelection", taskId, columnId)
-}
 </script>
 
 <template>
@@ -35,8 +29,6 @@ function handleTaskSelection(taskId: number, columnId: number) {
           :key="element.id"
           :column="element"
           @onListChange="handleColumnListChange(element.id, $event)"
-          @onCreateTask="handleColumnTaskCreation"
-          @onTaskSelection="handleTaskSelection"
         />
       </template>
     </draggable>

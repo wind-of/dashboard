@@ -63,9 +63,11 @@ async function handleColumnTitleChange({ title, columnId }: { title: string; col
   await projectStore.updateProjectInStore(projectId.value)
 }
 
-provide("updateColumnTitle", handleColumnTitleChange)
-provide("deleteColumn", handleColumnDeletion)
+provide("createTask", handleTaskCreation)
 provide("createColumn", handleColumnCreation)
+provide("deleteColumn", handleColumnDeletion)
+provide("updateColumnTitle", handleColumnTitleChange)
+provide("selectTask", handleTaskSelection)
 </script>
 
 <template>
@@ -75,8 +77,6 @@ provide("createColumn", handleColumnCreation)
       :columns="project.columns"
       @onColumnChange="handleColumnList"
       @onListChange="handleListChange"
-      @onTaskCreate="handleTaskCreation"
-      @onTaskSelection="handleTaskSelection"
     />
     <Teleport to="body">
       <TaskDrawer
