@@ -1,0 +1,30 @@
+<script setup lang="ts">
+import VInput from "~/form/VInput.vue"
+import VTextarea from "~/form/VTextarea.vue"
+const props = defineProps<{
+  label: string
+  isTextarea?: boolean
+}>()
+const modelValue = defineModel<string>()
+const component = props.isTextarea ? VTextarea : VInput
+</script>
+
+<template>
+  <section class="input-block">
+    <label class="input-label">
+      <p class="input-title">{{ label }}</p>
+      <component :is="component" v-model="modelValue" />
+    </label>
+  </section>
+</template>
+
+<style scoped lang="scss">
+.input-label {
+  @include flex-column;
+  font-size: 16px;
+  gap: 5px;
+}
+.input-title {
+  padding-right: 10px;
+}
+</style>
