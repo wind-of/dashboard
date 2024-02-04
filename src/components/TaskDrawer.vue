@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, reactive, toRaw } from "vue"
+import { vOnClickOutside } from "@vueuse/components"
 import VueDatePicker from "@vuepic/vue-datepicker"
 import "@vuepic/vue-datepicker/dist/main.css"
 
@@ -59,7 +60,7 @@ function handleTagClick(tag: Tag) {
 </script>
 
 <template>
-  <section class="drawer" :style="drawerStyles">
+  <section class="drawer" :style="drawerStyles" v-on-click-outside="handleCancel">
     <div class="preview-wrapper">
       <img :src="state.preview" alt="preview image" class="preview-image" v-if="task.preview" />
       <div class="preview-button">Update preview</div>
