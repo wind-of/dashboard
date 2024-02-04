@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import IconArrowDown from "./icons/IconArrowDown.vue"
-import IconNotification from "./icons/IconNotification.vue"
+import VAvatar from "@/components/common/VAvatar.vue"
+import IconNotification from "@/components/icons/IconNotification.vue"
 </script>
 
 <template>
@@ -12,10 +12,10 @@ import IconNotification from "./icons/IconNotification.vue"
       <section class="notification">
         <i class="notification-icon"><IconNotification /></i>
       </section>
-      <section class="user-profile">
-        <div class="profile"></div>
-        <i class="dropdown"><IconArrowDown /></i>
-      </section>
+      <VAvatar
+        :with-dropdown="true"
+        image="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
+      />
     </section>
   </header>
 </template>
@@ -48,23 +48,8 @@ import IconNotification from "./icons/IconNotification.vue"
   background-color: var(--vt-c-white-soft);
   color: var(--color-text);
 }
-.user-profile {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.profile {
-  width: 40px;
-  height: 40px;
-  border-radius: 20px;
-  background: grey;
-}
-.dropdown,
-.profile,
 .notification-icon {
   cursor: pointer;
-}
-.notification-icon {
   display: flex;
   align-items: center;
 }
