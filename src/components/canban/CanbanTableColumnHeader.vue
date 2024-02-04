@@ -35,6 +35,7 @@ const editedTitle = ref(state.title)
 function handleUnfocus() {
   const title = editedTitle.value.trim()
   if (title === state.title) {
+    isEditable.value = false
     return
   }
   if (!title) {
@@ -86,7 +87,6 @@ function handleDoubleClick() {
   background: var(--vt-c-white);
 }
 .title {
-  padding: 0 5px;
   font-size: 16px;
   max-width: 100px;
   text-wrap: nowrap;
@@ -94,10 +94,11 @@ function handleDoubleClick() {
   overflow: hidden;
   border: 1px solid transparent;
   border-radius: 3px;
-  transition-property: border-color, box-shadow;
+  transition-property: border-color, box-shadow, padding;
   transition-timing-function: ease-out;
   transition-duration: 0.2s;
   &.editable {
+    padding: 0 5px;
     border-color: #ccc;
     box-shadow: 0 0 5px 0 rgba(34, 60, 80, 0.2);
   }
