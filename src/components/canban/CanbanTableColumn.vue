@@ -50,7 +50,6 @@ function handleColumnTitleChange(title: string) {
 <style scoped lang="scss">
 .column {
   height: 100%;
-  overflow-y: scroll;
   min-width: 235px;
   max-width: 235px;
   display: flex;

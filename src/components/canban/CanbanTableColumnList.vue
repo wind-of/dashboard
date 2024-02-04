@@ -37,6 +37,7 @@ function handleTaskClick(taskId: number) {
 .list-group {
   min-height: 200px;
   height: 100%;
+  overflow-y: scroll;
 
   display: flex;
   flex-direction: column;
