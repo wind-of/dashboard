@@ -13,7 +13,8 @@ import {
   createColumnInProject,
   createTaskInColumn,
   deleteColumnFromProject,
-  updateColumn
+  updateColumn,
+  updateProjectTitle
 } from "@/api"
 import { useTagsStore } from "@/stores/tags"
 
@@ -29,6 +30,11 @@ const {
   isDrawerOpen,
   selected
 } = useTaskDrawer()
+
+async function projectUpdater(request) {
+  await request()
+  await projectStore.updateProjectInStore(projectId.value)
+}
 
 const binColumn = initializeColumn()
 
@@ -63,6 +69,10 @@ async function handleColumnTitleChange({ title, columnId }: { title: string; col
   await projectStore.updateProjectInStore(projectId.value)
 }
 
+async function handleProjectTitleChange(title: string) {
+  projectUpdater(() => updateProjectTitle(projectId.value, title))
+}
+
 provide("createTask", handleTaskCreation)
 provide("createColumn", handleColumnCreation)
 provide("deleteColumn", handleColumnDeletion)
@@ -72,7 +82,7 @@ provide("selectTask", handleTaskSelection)
 
 <template>
   <section class="canban">
-    <CanbanHeader :title="project.title" />
+    <CanbanHeader :title="project.title" @onProjectTitleChange="handleProjectTitleChange" />
     <CanbanTable
       :columns="project.columns"
       @onColumnChange="handleColumnList"

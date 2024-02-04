@@ -1,20 +1,26 @@
 <script setup lang="ts">
-withDefaults(defineProps<{ title: string }>(), { title: "Tasks" })
+import EditableH from "@/components/common/contenteditable/EditableH.vue"
+withDefaults(defineProps<{ title: string }>(), { title: "Project" })
+const emit = defineEmits(["onProjectTitleChange"])
+
+function handleUnfocus(updatedContent: string) {
+  emit("onProjectTitleChange", updatedContent)
+}
 </script>
 
 <template>
   <header class="header">
-    <h1 class="title">{{ title }}</h1>
+    <EditableH tag="h1" :content="title" @onContentUpdate="handleUnfocus" class="title" />
   </header>
 </template>
 
-<style scoped>
-.title {
-  font-size: 30px;
-  font-weight: 500;
-}
+<style scoped lang="scss">
 .header {
   display: flex;
   justify-content: space-between;
+}
+.title {
+  font-size: 30px;
+  font-weight: 500;
 }
 </style>
