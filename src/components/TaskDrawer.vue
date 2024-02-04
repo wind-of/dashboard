@@ -5,6 +5,7 @@ import VueDatePicker from "@vuepic/vue-datepicker"
 import "@vuepic/vue-datepicker/dist/main.css"
 
 import VButton from "~/form/VButton.vue"
+import VSelect from "~/form/VSelect.vue"
 import InputBlock from "~/form/InputBlock.vue"
 import { useCopyReactive } from "@/composables/copy.reactive"
 import { Tag, Task, ColumnProto } from "@/types"
@@ -83,12 +84,11 @@ function handleTagClick(tag: Tag) {
         <InputBlock v-model="state.title" label="Title" />
         <InputBlock v-model="state.shortDescription" label="Short Description" />
         <InputBlock v-model="state.description" label="Description" isTextarea />
-        <select class="columns-select" v-model="state.columnId">
-          <option value="" selected disabled hidden>{{ getColumnTitleById(columnId) }}</option>
+        <VSelect v-model="state.columnId" :defaultTitle="getColumnTitleById(columnId) || ''">
           <option v-for="{ id, title } in columns" :key="id" :value="id">
             {{ title }}
           </option>
-        </select>
+        </VSelect>
         <section class="dates">
           <VueDatePicker v-model="state.startDate" locale="en" /> —
           <VueDatePicker v-model="state.expirationDate" locale="en" />
@@ -195,32 +195,11 @@ function handleTagClick(tag: Tag) {
     transition: transform 0.1s;
   }
 }
-.input-label {
-  @include flex-column;
-  font-size: 16px;
-  gap: 5px;
-}
-.input-title {
-  padding-right: 10px;
-}
 
-.columns-select {
-  align-self: flex-start;
-  padding: 10px 6em 10px 10px;
-  border: 1px solid #eee;
-  color: #777;
-  border-radius: 0.25rem;
-  outline: none;
-}
 .dates {
   @include flex-row;
   gap: 10px;
   align-items: center;
-}
-.date {
-  @include taskDateTag;
-  font-size: 14px;
-  cursor: pointer;
 }
 .form-buttons {
   @include flex-row;

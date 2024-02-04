@@ -20,3 +20,7 @@ export function computeBorderRadiusStyle(side: "left" | "right", size: number) {
     [`border-bottom-${side}-radius`]: `${size}px`
   }
 }
+
+export function keyMapper(arrayOfObjects: object[], key: string, value: string) {
+  return arrayOfObjects.reduce((acc, obj) => ((acc[obj[key]] = obj[value]), acc), {})
+}

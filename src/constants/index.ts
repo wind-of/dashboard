@@ -1,4 +1,4 @@
-import type { Tag } from "@/types"
+import { ParticipantRolesEnum, type Tag } from "@/types"
 
 export const NOW = new Date()
 
@@ -41,3 +41,9 @@ export const PERIOD_UNITS = {
   [PERIODS.month]: "getDate",
   [PERIODS.year]: "getMonth"
 }
+
+export const ParticipantRoles = [
+  ParticipantRolesEnum.Admin,
+  ParticipantRolesEnum.Owner,
+  ParticipantRolesEnum.Member
+]

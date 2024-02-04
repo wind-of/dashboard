@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import IconArrowDown from "@/components/icons/IconArrowDown.vue"
 defineEmits(["onDropdownClick"])
-withDefaults(defineProps<{ withDropdown: boolean; image: string }>(), {
+withDefaults(defineProps<{ withDropdown?: boolean; image?: string }>(), {
   withDropdown: false,
   image: ""
 })
