@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue"
+import { computed, provide } from "vue"
 
 import CanbanHeader from "~/canban/CanbanHeader.vue"
 import CanbanTable from "~/canban/CanbanTable.vue"
@@ -9,7 +9,12 @@ import { column as initializeColumn, isTaskInList } from "@/utils"
 import type { Project, Column, Task } from "@/types"
 import { useTaskDrawer } from "@/composables/task.drawer"
 import { useProjectStore } from "@/stores/project"
-import { createColumnInProject, createTaskInColumn, deleteColumnFromProject } from "@/api"
+import {
+  createColumnInProject,
+  createTaskInColumn,
+  deleteColumnFromProject,
+  updateColumn
+} from "@/api"
 import { useTagsStore } from "@/stores/tags"
 
 const projectStore = useProjectStore()
@@ -53,6 +58,14 @@ async function handleColumnDeletion(columnId: number) {
   await deleteColumnFromProject(projectId.value, columnId)
   projectStore.updateProjectInStore(projectId.value)
 }
+async function handleColumnTitleChange({ title, columnId }: { title: string; columnId: number }) {
+  await updateColumn(projectId.value, columnId, { title })
+  await projectStore.updateProjectInStore(projectId.value)
+}
+
+provide("updateColumnTitle", handleColumnTitleChange)
+provide("deleteColumn", handleColumnDeletion)
+provide("createColumn", handleColumnCreation)
 </script>
 
 <template>
@@ -64,8 +77,6 @@ async function handleColumnDeletion(columnId: number) {
       @onListChange="handleListChange"
       @onTaskCreate="handleTaskCreation"
       @onTaskSelection="handleTaskSelection"
-      @onColumnCreate="handleColumnCreation"
-      @onColumnDelete="handleColumnDeletion"
     />
     <Teleport to="body">
       <TaskDrawer

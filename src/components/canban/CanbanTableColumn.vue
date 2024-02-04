@@ -1,16 +1,14 @@
 <script setup lang="ts">
+import { inject } from "vue"
 import { Column, Task } from "@/types"
 import CanbanTableColumnHeader from "~/canban/CanbanTableColumnHeader.vue"
 import CanbanTableColumnList from "~/canban/CanbanTableColumnList.vue"
 import VButton from "~/form/VButton.vue"
 const props = defineProps<{ column: Column; isProtoColumn?: boolean }>()
-const emit = defineEmits([
-  "onListChange",
-  "onCreateTask",
-  "onTaskSelection",
-  "onCreateColumn",
-  "onDeleteColumn"
-])
+const emit = defineEmits(["onListChange", "onCreateTask", "onTaskSelection"])
+const updateColumnTitle = inject("updateColumnTitle", ({ title, columnId }) => {})
+const deleteColumn = inject("deleteColumn", (columnId) => {})
+const createColumn = inject("createColumn", () => {})
 
 function handleListChange(updatedTasks: Task[]) {
   emit("onListChange", updatedTasks)
@@ -22,24 +20,25 @@ function handleTaskSelection(taskId: number) {
   emit("onTaskSelection", taskId, props.column.id)
 }
 
-function handleColumnCreation() {
-  emit("onCreateColumn")
-}
 function handleColumnDeletion() {
-  emit("onDeleteColumn")
+  deleteColumn(props.column.id)
+}
+function handleColumnTitleChange(title: string) {
+  updateColumnTitle({ title, columnId: props.column.id })
 }
 </script>
 
 <template>
   <section class="column">
     <div class="proto-column" v-if="isProtoColumn">
-      <VButton @click="handleColumnCreation">Create column</VButton>
+      <VButton @click="createColumn">Create column</VButton>
     </div>
     <template v-else>
       <CanbanTableColumnHeader
         :title="column.title"
         @onCreateTask="handleTaskCreation(column.id)"
         @onDeleteColumn="handleColumnDeletion"
+        @onColumnTitleChange="handleColumnTitleChange"
       />
       <CanbanTableColumnList
         :tasks="column.tasks"
@@ -52,6 +51,8 @@ function handleColumnDeletion() {
 
 <style scoped lang="scss">
 .column {
+  height: 100%;
+  overflow-y: scroll;
   min-width: 235px;
   max-width: 235px;
   display: flex;

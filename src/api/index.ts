@@ -1,4 +1,4 @@
-import type { LoginUser, SignUpUser, UpdatedTask } from "@/types"
+import type { ColumnProto, LoginUser, SignUpUser, UpdatedTask } from "@/types"
 import axios from "axios"
 const { VITE_SERVER_URL: BASE_URL } = import.meta.env
 
@@ -47,6 +47,14 @@ export async function deleteColumnFromProject(projectId: number, columnId: numbe
 
 export async function createTaskInColumn(projectId: number, columnId: number) {
   return axios.post(`tasks/`, { columnId, projectId, title: "Task" })
+}
+
+export async function updateColumn(
+  projectId: number,
+  columnId: number,
+  data: Partial<Omit<ColumnProto, "id">>
+) {
+  return axios.patch(`columns/${columnId}`, { ...data, projectId })
 }
 
 export async function updateTask(projectId: number, updatedTask: UpdatedTask) {

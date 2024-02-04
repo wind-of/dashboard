@@ -6,14 +6,7 @@ import CanbanTableColumn from "~/canban/CanbanTableColumn.vue"
 import { mockColumn } from "@/mock"
 
 const props = defineProps<{ columns: Column[] }>()
-const emit = defineEmits([
-  "onListChange",
-  "onTaskCreate",
-  "onColumnChange",
-  "onTaskSelection",
-  "onColumnCreate",
-  "onColumnDelete"
-])
+const emit = defineEmits(["onListChange", "onTaskCreate", "onColumnChange", "onTaskSelection"])
 const columnsList = computed({
   get() {
     return props.columns
@@ -32,13 +25,6 @@ function handleColumnTaskCreation(columnId: number) {
 function handleTaskSelection(taskId: number, columnId: number) {
   emit("onTaskSelection", taskId, columnId)
 }
-
-function handleColumnCreation() {
-  emit("onColumnCreate")
-}
-function handleColumnDeletion(columnId: number) {
-  emit("onColumnDelete", columnId)
-}
 </script>
 
 <template>
@@ -51,11 +37,10 @@ function handleColumnDeletion(columnId: number) {
           @onListChange="handleColumnListChange(element.id, $event)"
           @onCreateTask="handleColumnTaskCreation"
           @onTaskSelection="handleTaskSelection"
-          @onDeleteColumn="handleColumnDeletion(element.id)"
         />
       </template>
     </draggable>
-    <CanbanTableColumn isProtoColumn :column="mockColumn" @onCreateColumn="handleColumnCreation" />
+    <CanbanTableColumn isProtoColumn :column="mockColumn" />
   </section>
 </template>
 
