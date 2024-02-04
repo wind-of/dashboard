@@ -4,9 +4,8 @@ import { vOnClickOutside } from "@vueuse/components"
 import VueDatePicker from "@vuepic/vue-datepicker"
 import "@vuepic/vue-datepicker/dist/main.css"
 
-import VInput from "~/form/VInput.vue"
-import VTextarea from "~/form/VTextarea.vue"
 import VButton from "~/form/VButton.vue"
+import InputBlock from "~/form/InputBlock.vue"
 import { useCopyReactive } from "@/composables/copy.reactive"
 import { Tag, Task, ColumnProto } from "@/types"
 
@@ -81,24 +80,9 @@ function handleTagClick(tag: Tag) {
             {{ tag.title }}
           </div>
         </section>
-        <section class="input-block">
-          <label class="input-label">
-            <p class="input-title">Title</p>
-            <VInput v-model="state.title" />
-          </label>
-        </section>
-        <section class="input-block">
-          <label class="input-label">
-            <p class="input-title">Short Description</p>
-            <VInput v-model="state.shortDescription" placeholder="Type here..." />
-          </label>
-        </section>
-        <section class="input-block">
-          <label class="input-label">
-            <p class="input-title">Description</p>
-            <VTextarea v-model="state.description" placeholder="Write a description to the task" />
-          </label>
-        </section>
+        <InputBlock v-model="state.title" label="Title" />
+        <InputBlock v-model="state.shortDescription" label="Short Description" />
+        <InputBlock v-model="state.description" label="Description" isTextarea />
         <select class="columns-select" v-model="state.columnId">
           <option value="" selected disabled hidden>{{ getColumnTitleById(columnId) }}</option>
           <option v-for="{ id, title } in columns" :key="id" :value="id">

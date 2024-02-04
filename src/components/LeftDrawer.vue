@@ -39,7 +39,7 @@ import IconVisual from "~/icons/IconVisual.vue"
           </RouterLink>
         </li>
         <li class="navigation-item">
-          <RouterLink to="/mew" v-slot="{ isActive }">
+          <RouterLink to="/project" v-slot="{ isActive }">
             <IconButton v-slot="{ theme }" :isActive="isActive">
               <IconStorage :theme="theme" />
             </IconButton>

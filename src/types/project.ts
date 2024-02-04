@@ -1,4 +1,4 @@
-import type { User } from "@/types"
+import type { Participant } from "@/types"
 
 export interface Tag {
   id: number
@@ -32,7 +32,7 @@ export interface Project {
   id: number
   title: string
   columns: Column[]
-  participants: User[]
+  participants: Participant[]
 }
 export interface ProjectWithoutColumns extends Omit<Project, "columns"> {}
 
