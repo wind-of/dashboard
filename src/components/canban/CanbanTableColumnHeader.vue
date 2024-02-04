@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from "vue"
+import { ref } from "vue"
 import { vOnClickOutside } from "@vueuse/components"
-import VueContenteditable from "@/components/common/contenteditable/VueContenteditable.vue"
 import IconOptions from "~/icons/IconOptions.vue"
 import IconPlus from "~/icons/IconPlus.vue"
+import EditableH from "../common/contenteditable/EditableH.vue"
 
-const props = defineProps({
+defineProps({
   title: {
     type: String,
     default: "Column Header"
   }
 })
 const emit = defineEmits(["onCreateTask", "onDeleteColumn", "onColumnTitleChange"])
-const state = reactive({ title: props.title })
 
 const isOptionsOpened = ref(false)
 
@@ -27,44 +26,14 @@ function handleColumnDeletion() {
   emit("onDeleteColumn")
 }
 
-const columnTitle = ref<{ element } | null>()
-const isEditable = ref(false)
-const contenteditableClass = computed(() => ({ editable: isEditable.value }))
-const editedTitle = ref(state.title)
-
-function handleUnfocus() {
-  const title = editedTitle.value.trim()
-  if (title === state.title) {
-    isEditable.value = false
-    return
-  }
-  if (!title) {
-    editedTitle.value = state.title
-  }
-  state.title = title
-  isEditable.value = false
-  emit("onColumnTitleChange", state.title)
-}
-function handleDoubleClick() {
-  isEditable.value = true
-  columnTitle.value?.element.focus()
+function handleUnfocus(updatedContent: string) {
+  emit("onColumnTitleChange", updatedContent)
 }
 </script>
 
 <template>
   <header class="header">
-    <VueContenteditable
-      tag="h3"
-      class="title"
-      ref="columnTitle"
-      :class="contenteditableClass"
-      v-model="editedTitle"
-      :contenteditable="isEditable"
-      :no-nl="true"
-      @dblclick="handleDoubleClick"
-      @returned="handleUnfocus"
-      v-on-click-outside="handleUnfocus"
-    />
+    <EditableH tag="h3" class="title" :content="title" @onContentUpdate="handleUnfocus" />
     <section class="settings">
       <i class="options-icon" @click="handleOptionsClick">
         <IconOptions />
@@ -89,19 +58,6 @@ function handleDoubleClick() {
 .title {
   font-size: 16px;
   max-width: 100px;
-  text-wrap: nowrap;
-  outline: none;
-  overflow: hidden;
-  border: 1px solid transparent;
-  border-radius: 3px;
-  transition-property: border-color, box-shadow, padding;
-  transition-timing-function: ease-out;
-  transition-duration: 0.2s;
-  &.editable {
-    padding: 0 5px;
-    border-color: #ccc;
-    box-shadow: 0 0 5px 0 rgba(34, 60, 80, 0.2);
-  }
 }
 .settings {
   display: flex;
