@@ -43,14 +43,14 @@ const column = (columnId: number) =>
 const columnsWithoutTasks = computed(() => project.value.columns.map(({ tasks, ...rest }) => rest))
 
 function handleListChange(columnId: number, updatedList: Task[]) {
-  const currentColumn = column(columnId)
-  if (isTaskInList(updatedList, selected.task.id)) {
-    selected.columnId = columnId
-  }
-  currentColumn.tasks = updatedList
+  // const currentColumn = column(columnId)
+  // if (isTaskInList(updatedList, selected.task.id)) {
+  //   selected.columnId = columnId
+  // }
+  // currentColumn.tasks = updatedList
 }
 function handleColumnList(updatedColumns: Column[]) {
-  project.value.columns = updatedColumns
+  // project.value.columns = updatedColumns
 }
 async function handleTaskCreation(columnId: number) {
   await createTaskInColumn(projectId.value, columnId)
