@@ -2,6 +2,7 @@
 import { computed, reactive, watchEffect } from "vue"
 import { storeToRefs } from "pinia"
 import type { UserWithRole } from "@/types"
+import { ParticipantRolesEnum } from "@/types"
 import { useProjectStore } from "@/stores/project"
 import { useCopyReactive } from "@/composables/copy.reactive"
 import { getUsersByIds } from "@/api/user.requests"
@@ -10,7 +11,10 @@ import VAvatar from "@/components/common/VAvatar.vue"
 import VSelect from "@/components/form/VSelect.vue"
 import { ParticipantRoles } from "@/constants"
 import { keyMapper } from "@/utils"
+import { updateParticipantsRole } from "@/api/participants.requests"
+import { useUserStore } from "@/stores/user"
 
+const userStore = useUserStore()
 const projectStore = useProjectStore()
 const { project } = storeToRefs(projectStore)
 
@@ -37,9 +41,24 @@ watchEffect(async () => {
   state.value.participantRoles = keyMapper(plainParticipants.value, "userId", "role")
 })
 
-function handleFormSave() {
-  // await updateParticipantsRoles(state.value.participantsRoles)
-  // await projectStore.updateProjectInStore(project.value.id)
+function shouldDisableRoleSelect(role: ParticipantRolesEnum) {
+  const { role: userRole } = state.value.participants.find(
+    ({ id }) => id === userStore.user?.id
+  ) as unknown as UserWithRole
+  return (
+    userRole === ParticipantRolesEnum.Member ||
+    role === ParticipantRolesEnum.Owner ||
+    (role === ParticipantRolesEnum.Admin && userRole !== ParticipantRolesEnum.Owner)
+  )
+}
+
+async function handleParticipantRoleUpdate(participantId: number) {
+  await updateParticipantsRole(
+    project.value?.id as number,
+    participantId,
+    state.value.participantRoles[participantId]
+  )
+  await projectStore.updateProjectInStore(project.value?.id as number)
 }
 </script>
 
@@ -66,16 +85,23 @@ function handleFormSave() {
             <VSelect
               v-model="state.participantRoles[participant.id]"
               :defaultTitle="participant.role"
+              :disabled="shouldDisableRoleSelect(participant.role)"
             >
               <option v-for="role in ParticipantRoles" :key="role" :value="role">
                 {{ role }}
               </option>
             </VSelect>
+            <section class="user-data button-wrapper">
+              <button
+                v-if="state.participantRoles[participant.id] !== participant.role"
+                class="button"
+                @click="handleParticipantRoleUpdate(participant.id)"
+              >
+                Save
+              </button>
+            </section>
           </li>
         </ul>
-      </section>
-      <section class="buttons">
-        <button class="button" @click="handleFormSave">Save</button>
       </section>
     </form>
   </section>
@@ -84,7 +110,7 @@ function handleFormSave() {
 <style scoped lang="scss">
 .form {
   width: 80vw;
-  max-width: 600px;
+  max-width: 700px;
   display: flex;
   flex-direction: column;
 }
@@ -124,19 +150,19 @@ function handleFormSave() {
     width: 10%;
   }
   &.user-name {
-    width: 20%;
+    width: 25%;
   }
   &.user-email {
     width: 50%;
   }
+  &.button-wrapper {
+    width: 15%;
+  }
 }
 
-.buttons {
-  display: flex;
-  justify-content: flex-end;
-}
 .button {
-  width: 100px;
+  width: 100%;
+  font-size: 14px;
   border-radius: 10px;
   background: var(--blue);
   color: white;

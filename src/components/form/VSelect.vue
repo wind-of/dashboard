@@ -1,12 +1,13 @@
 <script setup lang="ts">
 defineProps<{
   defaultTitle: string
+  disabled?: boolean
 }>()
 const modelValue = defineModel()
 </script>
 
 <template>
-  <select class="select" v-model="modelValue">
+  <select class="select" v-model="modelValue" :disabled="disabled">
     <option value="" selected disabled hidden>{{ defaultTitle }}</option>
     <slot />
   </select>
