@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from "vue"
 import type { Project } from "@/types"
-import TimelineHeader from "~/timeline/TimelineHeader.vue"
-import TimelineTable from "~/timeline/TimelineTable.vue"
-import TaskDrawer from "~/TaskDrawer.vue"
+import TimelineHeader from "@/components/timeline/TimelineHeader.vue"
+import TimelineTable from "@/components/timeline/TimelineTable.vue"
+import TaskDrawer from "@/components/TaskDrawer.vue"
 import { useTaskDrawer } from "@/composables/task.drawer"
 import { useProjectStore } from "@/stores/project"
 import { DEFAULT_PERIOD, PERIODS } from "@/constants"

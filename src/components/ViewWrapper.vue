@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import LeftDrawer from "~/LeftDrawer.vue"
-import AppHeader from "~/AppHeader.vue"
+import LeftDrawer from "@/components/LeftDrawer.vue"
+import AppHeader from "@/components/AppHeader.vue"
 </script>
 
 <template>

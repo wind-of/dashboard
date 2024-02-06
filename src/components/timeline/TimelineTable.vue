@@ -6,7 +6,7 @@ import { useTasksToLeveledTablets } from "@/composables/tasks.to.levels"
 import { useFilterTasksByPeriod } from "@/composables/filter.tasks.by.period"
 import { useCssVar } from "@vueuse/core"
 import { computedTimelineUnitStyles, unitsCountInPeriod } from "@/utils/timeline"
-import TimelineTableTablet from "~/timeline/TimelineTableTablet.vue"
+import TimelineTableTablet from "@/components/timeline/TimelineTableTablet.vue"
 
 const props = defineProps<{ columns: Column[]; period: PERIODS }>()
 const emit = defineEmits(["onTaskSelection"])

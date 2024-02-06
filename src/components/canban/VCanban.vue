@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, provide } from "vue"
 
-import CanbanHeader from "~/canban/CanbanHeader.vue"
-import CanbanTable from "~/canban/CanbanTable.vue"
-import TaskDrawer from "~/TaskDrawer.vue"
+import CanbanHeader from "@/components/canban/CanbanHeader.vue"
+import CanbanTable from "@/components/canban/CanbanTable.vue"
+import TaskDrawer from "@/components/TaskDrawer.vue"
 
 import { column as initializeColumn, isTaskInList } from "@/utils"
 import type { Project, Column, Task } from "@/types"

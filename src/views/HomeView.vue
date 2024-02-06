@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useProjectStore } from "@/stores/project"
 import { useRouter } from "vue-router"
-import ProjectsList from "~/common/ProjectsList.vue"
-import ViewWrapper from "~/ViewWrapper.vue"
+import ProjectsList from "@/components/common/ProjectsList.vue"
+import ViewWrapper from "@/components/ViewWrapper.vue"
 
 const router = useRouter()
 const projectStore = useProjectStore()

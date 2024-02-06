@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ViewWrapper from "~/ViewWrapper.vue"
+import ViewWrapper from "@/components/ViewWrapper.vue"
 </script>
 
 <template>

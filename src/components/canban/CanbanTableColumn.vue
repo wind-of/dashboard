@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { inject } from "vue"
 import { Column, Task } from "@/types"
-import CanbanTableColumnHeader from "~/canban/CanbanTableColumnHeader.vue"
-import CanbanTableColumnList from "~/canban/CanbanTableColumnList.vue"
-import VButton from "~/form/VButton.vue"
+import CanbanTableColumnHeader from "@/components/canban/CanbanTableColumnHeader.vue"
+import CanbanTableColumnList from "@/components/canban/CanbanTableColumnList.vue"
+import VButton from "@/components/form/VButton.vue"
 const props = defineProps<{ column: Column; isProtoColumn?: boolean }>()
 const emit = defineEmits(["onListChange"])
 const updateColumnTitle = inject("updateColumnTitle", ({ title, columnId }) => {})

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref, toRaw } from "vue"
-import VInput from "~/form/VInput.vue"
-import VButton from "~/form/VButton.vue"
+import VInput from "@/components/form/VInput.vue"
+import VButton from "@/components/form/VButton.vue"
 import { useUserStore } from "@/stores/user"
 import { signInUser } from "@/api"
 import { useRouter } from "vue-router"

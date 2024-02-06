@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue"
 import { useProjectStore } from "@/stores/project"
-import ProjectsList from "~/common/ProjectsList.vue"
+import ProjectsList from "@/components/common/ProjectsList.vue"
 
 const projectStore = useProjectStore()
 const isChosen = computed(() => !!projectStore.project)

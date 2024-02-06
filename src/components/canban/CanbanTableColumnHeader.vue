@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue"
 import { vOnClickOutside } from "@vueuse/components"
-import IconOptions from "~/icons/IconOptions.vue"
-import IconPlus from "~/icons/IconPlus.vue"
+import IconOptions from "@/components/icons/IconOptions.vue"
+import IconPlus from "@/components/icons/IconPlus.vue"
 import EditableH from "../common/contenteditable/EditableH.vue"
 
 defineProps({

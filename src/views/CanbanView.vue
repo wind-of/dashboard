@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import VCanban from "~/canban/VCanban.vue"
-import ViewWrapper from "~/ViewWrapper.vue"
+import VCanban from "@/components/canban/VCanban.vue"
+import ViewWrapper from "@/components/ViewWrapper.vue"
 import ProjectDependentView from "@/components/ProjectDependentView.vue"
 </script>
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AuthBanner from "~/auth/AuthBanner.vue"
+import AuthBanner from "@/components/auth/AuthBanner.vue"
 </script>
 
 <template>

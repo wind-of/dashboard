@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { reactive, ref, toRaw } from "vue"
 import { useRouter } from "vue-router"
-import VInput from "~/form/VInput.vue"
-import VButton from "~/form/VButton.vue"
+import VInput from "@/components/form/VInput.vue"
+import VButton from "@/components/form/VButton.vue"
 import { signUpUser } from "@/api"
 
 const router = useRouter()

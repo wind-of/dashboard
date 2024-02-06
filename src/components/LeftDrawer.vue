@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import IconLogo from "~/icons/IconLogo.vue"
-import IconButton from "~/common/IconButton.vue"
-import IconHome from "~/icons/IconHome.vue"
-import IconStorage from "~/icons/IconStorage.vue"
-import IconCanban from "~/icons/IconCanban.vue"
-import IconSettings from "~/icons/IconSettings.vue"
-import IconChat from "~/icons/IconChat.vue"
-import IconVisual from "~/icons/IconVisual.vue"
+import IconLogo from "@/components/icons/IconLogo.vue"
+import IconButton from "@/components/common/IconButton.vue"
+import IconHome from "@/components/icons/IconHome.vue"
+import IconStorage from "@/components/icons/IconStorage.vue"
+import IconCanban from "@/components/icons/IconCanban.vue"
+import IconSettings from "@/components/icons/IconSettings.vue"
+import IconChat from "@/components/icons/IconChat.vue"
+import IconVisual from "@/components/icons/IconVisual.vue"
 </script>
 
 <template>

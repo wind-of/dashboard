@@ -2,7 +2,7 @@
 import { computed } from "vue"
 import draggable from "vuedraggable"
 import type { Column } from "@/types"
-import CanbanTableColumn from "~/canban/CanbanTableColumn.vue"
+import CanbanTableColumn from "@/components/canban/CanbanTableColumn.vue"
 import { mockColumn } from "@/mock"
 
 const props = defineProps<{ columns: Column[] }>()

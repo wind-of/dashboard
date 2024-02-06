@@ -13,6 +13,7 @@ import { keyMapper } from "@/utils"
 
 const projectStore = useProjectStore()
 const { project } = storeToRefs(projectStore)
+
 const plainParticipants = computed(() => project.value?.participants)
 
 const roles = computed(

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import VInput from "~/form/VInput.vue"
-import VTextarea from "~/form/VTextarea.vue"
+import VInput from "@/components/form/VInput.vue"
+import VTextarea from "@/components/form/VTextarea.vue"
 const props = defineProps<{
   label: string
   isTextarea?: boolean

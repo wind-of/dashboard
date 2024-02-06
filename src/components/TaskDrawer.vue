@@ -4,9 +4,9 @@ import { vOnClickOutside } from "@vueuse/components"
 import VueDatePicker from "@vuepic/vue-datepicker"
 import "@vuepic/vue-datepicker/dist/main.css"
 
-import VButton from "~/form/VButton.vue"
-import VSelect from "~/form/VSelect.vue"
-import InputBlock from "~/form/InputBlock.vue"
+import VButton from "@/components/form/VButton.vue"
+import VSelect from "@/components/form/VSelect.vue"
+import InputBlock from "@/components/form/InputBlock.vue"
 import { useCopyReactive } from "@/composables/copy.reactive"
 import { Tag, Task, ColumnProto } from "@/types"
 
