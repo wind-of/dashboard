@@ -41,14 +41,19 @@ watchEffect(async () => {
   state.value.participantRoles = keyMapper(plainParticipants.value, "userId", "role")
 })
 
-function shouldDisableRoleSelect(role: ParticipantRolesEnum) {
-  const { role: userRole } = state.value.participants.find(
-    ({ id }) => id === userStore.user?.id
-  ) as unknown as UserWithRole
+function shouldDisableRolesSelect(role: ParticipantRolesEnum) {
+  const currentUserRole = roles.value?.[userStore.user?.id as number] as ParticipantRolesEnum
   return (
-    userRole === ParticipantRolesEnum.Member ||
+    currentUserRole === ParticipantRolesEnum.Member ||
     role === ParticipantRolesEnum.Owner ||
-    (role === ParticipantRolesEnum.Admin && userRole !== ParticipantRolesEnum.Owner)
+    (role === ParticipantRolesEnum.Admin && currentUserRole !== ParticipantRolesEnum.Owner)
+  )
+}
+function isRolesOperationPermissible(role: ParticipantRolesEnum) {
+  const currentUserRole = roles.value?.[userStore.user?.id as number] as ParticipantRolesEnum
+  return (
+    currentUserRole === ParticipantRolesEnum.Owner ||
+    (currentUserRole === ParticipantRolesEnum.Admin && role === ParticipantRolesEnum.Admin)
   )
 }
 
@@ -85,7 +90,7 @@ async function handleParticipantRoleUpdate(participantId: number) {
             <VSelect
               v-model="state.participantRoles[participant.id]"
               :defaultTitle="participant.role"
-              :disabled="shouldDisableRoleSelect(participant.role)"
+              :disabled="shouldDisableRolesSelect(participant.role)"
             >
               <option v-for="role in ParticipantRoles" :key="role" :value="role">
                 {{ role }}
@@ -95,7 +100,13 @@ async function handleParticipantRoleUpdate(participantId: number) {
               <button
                 v-if="state.participantRoles[participant.id] !== participant.role"
                 class="button"
+                :class="{
+                  'button-disabled': !isRolesOperationPermissible(
+                    state.participantRoles[participant.id]
+                  )
+                }"
                 @click="handleParticipantRoleUpdate(participant.id)"
+                :disabled="!isRolesOperationPermissible(state.participantRoles[participant.id])"
               >
                 Save
               </button>
@@ -166,5 +177,10 @@ async function handleParticipantRoleUpdate(participantId: number) {
   border-radius: 10px;
   background: var(--blue);
   color: white;
+
+  &.button-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 </style>
