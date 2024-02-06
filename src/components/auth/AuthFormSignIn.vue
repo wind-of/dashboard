@@ -50,5 +50,5 @@ function handleSubmit() {
 </template>
 
 <style scoped lang="scss">
-@import "~/auth/mixins/auth-form.scss";
+@import "@/components/auth/mixins/auth-form.scss";
 </style>
