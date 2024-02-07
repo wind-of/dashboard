@@ -138,14 +138,18 @@ async function handleParticipantsDeletion(participantId: number) {
 }
 .participants-list {
   @include flex-column;
-  gap: 20px;
 }
 .participants-list-item {
   width: 100%;
+  padding: 20px 0;
   @include flex-row;
   align-items: center;
   justify-content: space-between;
   gap: 15px;
+  border-bottom: 1px solid #ccc;
+  &:first-child {
+    border-top: 1px solid #ccc;
+  }
 }
 .participants-data {
   @include flex-row;
