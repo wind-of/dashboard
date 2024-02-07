@@ -5,7 +5,6 @@ import CanbanHeader from "@/components/canban/CanbanHeader.vue"
 import CanbanTable from "@/components/canban/CanbanTable.vue"
 import TaskDrawer from "@/components/TaskDrawer.vue"
 
-import { column as initializeColumn, isTaskInList } from "@/utils"
 import type { Project, Column, Task } from "@/types"
 import { useTaskDrawer } from "@/composables/task.drawer"
 import { useProjectStore } from "@/stores/project"
@@ -36,21 +35,13 @@ async function projectUpdater(request) {
   await projectStore.updateProjectInStore(projectId.value)
 }
 
-const binColumn = initializeColumn()
-
-const column = (columnId: number) =>
-  project.value.columns.find(({ id }) => id === columnId) || binColumn
 const columnsWithoutTasks = computed(() => project.value.columns.map(({ tasks, ...rest }) => rest))
 
-function handleListChange(columnId: number, updatedList: Task[]) {
-  // const currentColumn = column(columnId)
-  // if (isTaskInList(updatedList, selected.task.id)) {
-  //   selected.columnId = columnId
-  // }
-  // currentColumn.tasks = updatedList
+function handleTaskPositionChange(task: Task, newIndex: number) {
+  console.log(task, newIndex)
 }
-function handleColumnList(updatedColumns: Column[]) {
-  // project.value.columns = updatedColumns
+function handleColumnPositionChange(column: Column, newIndex: number) {
+  console.log(column, newIndex)
 }
 async function handleTaskCreation(columnId: number) {
   await createTaskInColumn(projectId.value, columnId)
@@ -78,16 +69,14 @@ provide("createColumn", handleColumnCreation)
 provide("deleteColumn", handleColumnDeletion)
 provide("updateColumnTitle", handleColumnTitleChange)
 provide("selectTask", handleTaskSelection)
+provide("taskPositionChange", handleTaskPositionChange)
+provide("columnPositionChange", handleColumnPositionChange)
 </script>
 
 <template>
   <section class="canban">
     <CanbanHeader :title="project.title" @onProjectTitleChange="handleProjectTitleChange" />
-    <CanbanTable
-      :columns="project.columns"
-      @onColumnChange="handleColumnList"
-      @onListChange="handleListChange"
-    />
+    <CanbanTable :columns="project.columns" />
     <Teleport to="body">
       <TaskDrawer
         :task="selected.task"

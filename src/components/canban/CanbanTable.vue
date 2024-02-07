@@ -1,35 +1,38 @@
 <script setup lang="ts">
-import { computed } from "vue"
+import { computed, inject } from "vue"
 import draggable from "vuedraggable"
 import type { Column } from "@/types"
 import CanbanTableColumn from "@/components/canban/CanbanTableColumn.vue"
 import { mockColumn } from "@/mock"
 
 const props = defineProps<{ columns: Column[] }>()
-const emit = defineEmits(["onListChange", "onTaskCreate", "onColumnChange", "onTaskSelection"])
+const handleColumnPositionChange = inject(
+  "columnPositionChange",
+  (column: Column, newIndex: number) => {}
+)
 const columnsList = computed({
   get() {
     return props.columns
   },
-  set(updatedColumns) {
-    emit("onColumnChange", updatedColumns)
-  }
+  set() {}
 })
 
-function handleColumnListChange(columnId: number, updatedList: Column[]) {
-  emit("onListChange", columnId, updatedList)
+function handleColumnsListChange({ moved }) {
+  handleColumnPositionChange(moved.element, moved.newIndex)
 }
 </script>
 
 <template>
   <section class="wrapper">
-    <draggable class="columns" v-model="columnsList" group="columns" itemKey="id">
+    <draggable
+      class="columns"
+      v-model="columnsList"
+      @change="handleColumnsListChange"
+      group="columns"
+      itemKey="id"
+    >
       <template #item="{ element }">
-        <CanbanTableColumn
-          :key="element.id"
-          :column="element"
-          @onListChange="handleColumnListChange(element.id, $event)"
-        />
+        <CanbanTableColumn :key="element.id" :column="element" />
       </template>
     </draggable>
     <CanbanTableColumn isProtoColumn :column="mockColumn" />

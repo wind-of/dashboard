@@ -1,28 +1,30 @@
 <script setup lang="ts">
+import { computed, inject } from "vue"
 import draggable from "vuedraggable"
-import CanbanTableColumnListItem from "./CanbanTableColumnListItem.vue"
-import { computed } from "vue"
-import { Task } from "../../types"
+import { Task } from "@/types"
+import CanbanTableColumnListItem from "@/components/canban/CanbanTableColumnListItem.vue"
 
 const props = defineProps<{ tasks: Task[] }>()
-const emit = defineEmits(["onListChange", "onTaskSelection"])
+const emit = defineEmits(["onTaskSelection"])
+const handleTaskPositionChange = inject("taskPositionChange", (task: Task, newIndex: number) => {})
 
 const tasks = computed({
   get() {
     return props.tasks
   },
-  set(updatedTasks) {
-    emit("onListChange", updatedTasks)
-  }
+  set() {}
 })
 
 function handleTaskClick(taskId: number) {
   emit("onTaskSelection", taskId)
 }
+function handleTasksListChange({ moved }) {
+  handleTaskPositionChange(moved.element, moved.newIndex)
+}
 </script>
 
 <template>
-  <draggable class="list-group" v-model="tasks" group="tasks" itemKey="id">
+  <draggable class="list-group" v-model="tasks" @change="handleTasksListChange" group="tasks">
     <template #item="{ element }">
       <CanbanTableColumnListItem
         :key="element.id"

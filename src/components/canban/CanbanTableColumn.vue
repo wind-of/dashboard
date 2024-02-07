@@ -1,20 +1,16 @@
 <script setup lang="ts">
 import { inject } from "vue"
-import { Column, Task } from "@/types"
+import { Column } from "@/types"
 import CanbanTableColumnHeader from "@/components/canban/CanbanTableColumnHeader.vue"
 import CanbanTableColumnList from "@/components/canban/CanbanTableColumnList.vue"
 import VButton from "@/components/form/VButton.vue"
 const props = defineProps<{ column: Column; isProtoColumn?: boolean }>()
-const emit = defineEmits(["onListChange"])
 const updateColumnTitle = inject("updateColumnTitle", ({ title, columnId }) => {})
 const deleteColumn = inject("deleteColumn", (columnId) => {})
 const createColumn = inject("createColumn", () => {})
 const createTask = inject("createTask", (columnId) => {})
 const selectTask = inject("selectTask", (taskId, columnId) => {})
 
-function handleListChange(updatedTasks: Task[]) {
-  emit("onListChange", updatedTasks)
-}
 function handleTaskSelection(taskId: number) {
   selectTask(taskId, props.column.id)
 }
@@ -38,11 +34,7 @@ function handleColumnTitleChange(title: string) {
         @onDeleteColumn="handleColumnDeletion"
         @onColumnTitleChange="handleColumnTitleChange"
       />
-      <CanbanTableColumnList
-        :tasks="column.tasks"
-        @onListChange="handleListChange"
-        @onTaskSelection="handleTaskSelection"
-      />
+      <CanbanTableColumnList :tasks="column.tasks" @onTaskSelection="handleTaskSelection" />
     </template>
   </section>
 </template>
