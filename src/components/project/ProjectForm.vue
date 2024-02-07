@@ -11,7 +11,7 @@ import VAvatar from "@/components/common/VAvatar.vue"
 import VSelect from "@/components/form/VSelect.vue"
 import { ParticipantRoles } from "@/constants"
 import { keyMapper } from "@/utils"
-import { updateParticipantsRole } from "@/api/participants.requests"
+import { deleteParticipantRequest, updateParticipantsRole } from "@/api/participants.requests"
 import { useUserStore } from "@/stores/user"
 
 const userStore = useUserStore()
@@ -56,6 +56,13 @@ function isRolesOperationPermissible(role: ParticipantRolesEnum) {
     (currentUserRole === ParticipantRolesEnum.Admin && role === ParticipantRolesEnum.Admin)
   )
 }
+function isUserDeletionPermissible(role: ParticipantRolesEnum) {
+  const currentUserRole = roles.value?.[userStore.user?.id as number] as ParticipantRolesEnum
+  return (
+    currentUserRole === ParticipantRolesEnum.Owner ||
+    (currentUserRole === ParticipantRolesEnum.Admin && role === ParticipantRolesEnum.Member)
+  )
+}
 
 async function handleParticipantsRoleUpdate(participantId: number) {
   await updateParticipantsRole(
@@ -63,6 +70,10 @@ async function handleParticipantsRoleUpdate(participantId: number) {
     participantId,
     state.value.participantRoles[participantId]
   )
+  await projectStore.updateProjectInStore(project.value?.id as number)
+}
+async function handleParticipantsDeletion(participantId: number) {
+  await deleteParticipantRequest(project.value?.id as number, participantId)
   await projectStore.updateProjectInStore(project.value?.id as number)
 }
 </script>
@@ -105,6 +116,18 @@ async function handleParticipantsRoleUpdate(participantId: number) {
               :disabled="!isRolesOperationPermissible(state.participantRoles[participant.id])"
             >
               Save
+            </button>
+          </section>
+          <section class="user-data button-wrapper">
+            <button
+              class="button button-delete"
+              :class="{
+                'button-disabled': !isUserDeletionPermissible(participant.role)
+              }"
+              :disabled="!isUserDeletionPermissible(participant.role)"
+              @click="handleParticipantsDeletion(participant.id)"
+            >
+              Delete
             </button>
           </section>
         </li>
@@ -172,6 +195,13 @@ async function handleParticipantsRoleUpdate(participantId: number) {
   &.button-disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+
+  &.button-delete {
+    border: 1px solid var(--red);
+    border-radius: 5px;
+    background: transparent;
+    color: var(--red);
   }
 }
 </style>
