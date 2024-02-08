@@ -13,7 +13,8 @@ import {
   createTaskInColumn,
   deleteColumnFromProject,
   updateColumn,
-  updateProjectTitle
+  updateProjectTitle,
+  updateTaskPositionRequest
 } from "@/api"
 import { useTagsStore } from "@/stores/tags"
 
@@ -37,8 +38,17 @@ async function projectUpdater(request) {
 
 const columnsWithoutTasks = computed(() => project.value.columns.map(({ tasks, ...rest }) => rest))
 
-function handleTaskPositionChange(task: Task, newIndex: number) {
+// FIXME: список на мгновение возвращается в исходное состояние, пока запрос не завершится.
+async function handleTaskPositionChange(
+  task: Task,
+  columndId: number,
+  newIndex: number,
+  oldIndex: number
+) {
   console.log(task, newIndex)
+  projectUpdater(() =>
+    updateTaskPositionRequest(projectId.value, task.id, columndId, newIndex, oldIndex)
+  )
 }
 function handleColumnPositionChange(column: Column, newIndex: number) {
   console.log(column, newIndex)

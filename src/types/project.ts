@@ -9,6 +9,7 @@ export interface Tag {
 
 export interface Task {
   id: number
+  lexorank: string
   columnId: number
   title: string
   shortDescription: string

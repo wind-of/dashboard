@@ -14,3 +14,13 @@ export async function updateTask(projectId: number, updatedTask: UpdatedTask) {
 export async function deleteTask(projectId: number, taskId: number) {
   return axios.delete(`tasks/${taskId}`, { data: { projectId } })
 }
+
+export async function updateTaskPositionRequest(
+  projectId: number,
+  taskId: number,
+  columnId: number,
+  position: number,
+  oldPosition: number
+) {
+  return axios.patch(`tasks/${taskId}/position`, { projectId, columnId, position, oldPosition })
+}
