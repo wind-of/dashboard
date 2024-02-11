@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, provide } from "vue"
+import { computed, provide, ref, watchEffect } from "vue"
 
 import CanbanHeader from "@/components/canban/CanbanHeader.vue"
 import CanbanTable from "@/components/canban/CanbanTable.vue"
@@ -17,6 +17,7 @@ import {
   updateTaskPositionRequest
 } from "@/api"
 import { useTagsStore } from "@/stores/tags"
+import { watch } from "fs"
 
 const projectStore = useProjectStore()
 const tagsStore = useTagsStore()
@@ -39,15 +40,32 @@ async function projectUpdater(request) {
 const columnsWithoutTasks = computed(() => project.value.columns.map(({ tasks, ...rest }) => rest))
 
 // FIXME: список на мгновение возвращается в исходное состояние, пока запрос не завершится.
-async function handleTaskPositionChange(
-  task: Task,
-  columndId: number,
-  newIndex: number,
-  oldIndex: number
-) {
-  console.log(task, newIndex)
+const draggingTaskData = ref<any>({
+  element: undefined,
+  columnId: undefined,
+  newIndex: undefined,
+  inserAfter: false
+})
+const updateDraggingTaskData = (update: object) => {
+  draggingTaskData.value = { ...draggingTaskData.value, ...update }
+}
+
+watchEffect(async () => {
+  const { element, columnId, newIndex } = draggingTaskData.value
+  if (!element || columnId === undefined || newIndex === undefined) return
+  await handleTaskPositionChange()
+  draggingTaskData.value = {
+    element: undefined,
+    columnId: undefined,
+    newIndex: undefined,
+    inserAfter: false
+  }
+})
+
+async function handleTaskPositionChange() {
+  const { shouldInsertAfter, columnId, newIndex, element: task } = draggingTaskData.value
   projectUpdater(() =>
-    updateTaskPositionRequest(projectId.value, task.id, columndId, newIndex, oldIndex)
+    updateTaskPositionRequest(projectId.value, task.id, columnId, newIndex, shouldInsertAfter)
   )
 }
 function handleColumnPositionChange(column: Column, newIndex: number) {
@@ -79,8 +97,11 @@ provide("createColumn", handleColumnCreation)
 provide("deleteColumn", handleColumnDeletion)
 provide("updateColumnTitle", handleColumnTitleChange)
 provide("selectTask", handleTaskSelection)
-provide("taskPositionChange", handleTaskPositionChange)
 provide("columnPositionChange", handleColumnPositionChange)
+provide("draggingTaskData", {
+  data: draggingTaskData,
+  update: updateDraggingTaskData
+})
 </script>
 
 <template>

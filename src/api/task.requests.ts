@@ -20,7 +20,12 @@ export async function updateTaskPositionRequest(
   taskId: number,
   columnId: number,
   position: number,
-  oldPosition: number
+  shouldInsertAfter: boolean
 ) {
-  return axios.patch(`tasks/${taskId}/position`, { projectId, columnId, position, oldPosition })
+  return axios.patch(`tasks/${taskId}/position`, {
+    projectId,
+    columnId,
+    position,
+    shouldInsertAfter
+  })
 }

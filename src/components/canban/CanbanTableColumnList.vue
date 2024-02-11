@@ -1,70 +1,34 @@
 <script setup lang="ts">
-import { computed, inject, reactive } from "vue"
+import { computed, inject } from "vue"
 import draggable from "vuedraggable"
 import { Task } from "@/types"
 import CanbanTableColumnListItem from "@/components/canban/CanbanTableColumnListItem.vue"
+import { draggingTaskDataDefaults } from "@/components/canban/helpers"
 
 const props = defineProps<{ tasks: Task[] }>()
-const emit = defineEmits(["onTaskSelection"])
-const handleTaskPositionChange = inject(
-  "taskPositionChange",
-  async (task: Task, columnId: number, newIndex: number, oldIndex: number) => {}
-)
+const emit = defineEmits(["onTaskSelection", "onTaskDragEnd", "onTaskInsertion"])
 
 const tasks = computed({
   get() {
     return [...props.tasks].sort((a, b) => (b.lexorank <= a.lexorank ? 1 : -1))
   },
-  set() {}
+  set(newList) {
+    if (newList.length < props.tasks.length) {
+      return
+    }
+    emit("onTaskInsertion")
+  }
 })
+const taskDragData = inject("draggingTaskData", draggingTaskDataDefaults)
 
 function handleTaskClick(taskId: number) {
   emit("onTaskSelection", taskId)
 }
-const taskData = reactive({
-  element: undefined,
-  columnId: undefined,
-  oldIndex: undefined,
-  newIndex: undefined
-})
-async function handleTasksListChange({ moved, added, removed }) {
-  if (moved) {
-    await handleTaskPositionChange(
-      moved.element,
-      moved.element.columnId,
-      moved.newIndex,
-      moved.oldIndex
-    )
-    return
-  }
-  if (added) {
-    taskData.newIndex = added.newIndex
-  } else {
-    taskData.oldIndex = removed.oldIndex
-  }
-  taskData.element = added?.element || removed?.element
-  taskData.columnId = added?.element?.columnId || removed?.element?.columnId
-  if (
-    taskData.element &&
-    taskData.columnId !== undefined &&
-    taskData.oldIndex !== undefined &&
-    taskData.newIndex !== undefined
-  ) {
-    await handleTaskPositionChange(
-      taskData.element,
-      taskData.columnId,
-      taskData.newIndex,
-      taskData.oldIndex
-    )
-    taskData.oldIndex = taskData.newIndex = taskData.columnId = taskData.element = undefined
-  }
+function handleChange({ moved, added, removed }) {
+  taskDragData.update(moved || added || removed)
 }
-// TODO: достань newColumnId
-async function handleEnd(event) {
-  console.log(event)
-  // const { oldIndex, newIndex } = event
-  // const task = tasks.value[oldIndex]
-  // await handleTaskPositionChange(task, , newIndex, oldIndex)
+function handleMove(event) {
+  taskDragData.update({ shouldInsertAfter: event.willInsertAfter })
 }
 </script>
 
@@ -72,7 +36,8 @@ async function handleEnd(event) {
   <draggable
     class="list-group"
     v-model="tasks"
-    @end="handleEnd"
+    @change="handleChange"
+    @move="handleMove"
     group="tasks"
     item-key="lexorank"
     itemid="lexorank"
@@ -98,3 +63,4 @@ async function handleEnd(event) {
   gap: 14px;
 }
 </style>
+@/components/canban/helpers/helper

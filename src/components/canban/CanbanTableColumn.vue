@@ -4,12 +4,14 @@ import { Column } from "@/types"
 import CanbanTableColumnHeader from "@/components/canban/CanbanTableColumnHeader.vue"
 import CanbanTableColumnList from "@/components/canban/CanbanTableColumnList.vue"
 import VButton from "@/components/form/VButton.vue"
+import { draggingTaskDataDefaults } from "@/components/canban/helpers"
 const props = defineProps<{ column: Column; isProtoColumn?: boolean }>()
 const updateColumnTitle = inject("updateColumnTitle", ({ title, columnId }) => {})
 const deleteColumn = inject("deleteColumn", (columnId) => {})
 const createColumn = inject("createColumn", () => {})
 const createTask = inject("createTask", (columnId) => {})
 const selectTask = inject("selectTask", (taskId, columnId) => {})
+const taskDragData = inject("draggingTaskData", draggingTaskDataDefaults)
 
 function handleTaskSelection(taskId: number) {
   selectTask(taskId, props.column.id)
@@ -19,6 +21,9 @@ function handleColumnDeletion() {
 }
 function handleColumnTitleChange(title: string) {
   updateColumnTitle({ title, columnId: props.column.id })
+}
+function handleTaskInsertion() {
+  taskDragData.update({ columnId: props.column.id })
 }
 </script>
 
@@ -34,7 +39,11 @@ function handleColumnTitleChange(title: string) {
         @onDeleteColumn="handleColumnDeletion"
         @onColumnTitleChange="handleColumnTitleChange"
       />
-      <CanbanTableColumnList :tasks="column.tasks" @onTaskSelection="handleTaskSelection" />
+      <CanbanTableColumnList
+        :tasks="column.tasks"
+        @onTaskSelection="handleTaskSelection"
+        @onTaskInsertion="handleTaskInsertion"
+      />
     </template>
   </section>
 </template>
@@ -52,3 +61,4 @@ function handleColumnTitleChange(title: string) {
   margin: 10px;
 }
 </style>
+@/components/canban/helpers/helper
