@@ -6,7 +6,8 @@ import CanbanTableColumnListItem from "@/components/canban/CanbanTableColumnList
 import { draggingTaskDataDefaults } from "@/components/canban/helpers"
 
 const props = defineProps<{ tasks: Task[] }>()
-const emit = defineEmits(["onTaskSelection", "onTaskDragEnd", "onTaskInsertion"])
+const emit = defineEmits(["onTaskDragEnd", "onTaskInsertion"])
+const selectTask = inject("selectTask", (taskId, columnId) => {})
 
 const tasks = computed({
   get() {
@@ -21,14 +22,14 @@ const tasks = computed({
 })
 const taskDragData = inject("draggingTaskData", draggingTaskDataDefaults)
 
-function handleTaskClick(taskId: number) {
-  emit("onTaskSelection", taskId)
-}
 function handleChange({ moved, added, removed }) {
   taskDragData.update(moved || added || removed)
 }
 function handleMove(event) {
   taskDragData.update({ shouldInsertAfter: event.willInsertAfter })
+}
+function handleTaskClick(task: Task) {
+  selectTask(task.id, task.columnId)
 }
 </script>
 
@@ -46,7 +47,7 @@ function handleMove(event) {
       <CanbanTableColumnListItem
         :key="element.lexorank"
         :task="element"
-        @click="handleTaskClick(element.id)"
+        @click="handleTaskClick(element as Task)"
       />
     </template>
   </draggable>

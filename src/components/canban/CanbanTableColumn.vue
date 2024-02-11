@@ -10,12 +10,8 @@ const updateColumnTitle = inject("updateColumnTitle", ({ title, columnId }) => {
 const deleteColumn = inject("deleteColumn", (columnId) => {})
 const createColumn = inject("createColumn", () => {})
 const createTask = inject("createTask", (columnId) => {})
-const selectTask = inject("selectTask", (taskId, columnId) => {})
 const taskDragData = inject("draggingTaskData", draggingTaskDataDefaults)
 
-function handleTaskSelection(taskId: number) {
-  selectTask(taskId, props.column.id)
-}
 function handleColumnDeletion() {
   deleteColumn(props.column.id)
 }
@@ -39,11 +35,7 @@ function handleTaskInsertion() {
         @onDeleteColumn="handleColumnDeletion"
         @onColumnTitleChange="handleColumnTitleChange"
       />
-      <CanbanTableColumnList
-        :tasks="column.tasks"
-        @onTaskSelection="handleTaskSelection"
-        @onTaskInsertion="handleTaskInsertion"
-      />
+      <CanbanTableColumnList :tasks="column.tasks" @onTaskInsertion="handleTaskInsertion" />
     </template>
   </section>
 </template>
@@ -61,4 +53,3 @@ function handleTaskInsertion() {
   margin: 10px;
 }
 </style>
-@/components/canban/helpers/helper
