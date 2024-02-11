@@ -94,20 +94,16 @@ async function handleColumnPositionChange() {
   )
 }
 async function handleTaskCreation(columnId: number) {
-  await createTaskInColumn(projectId.value, columnId)
-  projectStore.updateProjectInStore(projectId.value)
+  projectUpdater(() => createTaskInColumn(projectId.value, columnId))
 }
 async function handleColumnCreation() {
-  await createColumnInProject(projectId.value)
-  projectStore.updateProjectInStore(projectId.value)
+  projectUpdater(() => createColumnInProject(projectId.value))
 }
 async function handleColumnDeletion(columnId: number) {
-  await deleteColumnFromProject(projectId.value, columnId)
-  projectStore.updateProjectInStore(projectId.value)
+  projectUpdater(() => deleteColumnFromProject(projectId.value, columnId))
 }
 async function handleColumnTitleChange({ title, columnId }: { title: string; columnId: number }) {
-  await updateColumn(projectId.value, columnId, { title })
-  await projectStore.updateProjectInStore(projectId.value)
+  projectUpdater(() => updateColumn(projectId.value, columnId, { title }))
 }
 
 async function handleProjectTitleChange(title: string) {
