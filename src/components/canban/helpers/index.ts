@@ -7,3 +7,8 @@ export const draggingTaskDataDefaults = {
     willInsertAfter = false
   }: any) => {}
 }
+
+export const draggingColumnDataDefaults = {
+  data: {},
+  update: ({ element = undefined, newIndex = undefined, willInsertAfter = false }: any) => {}
+}

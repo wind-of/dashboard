@@ -10,5 +10,6 @@ export const project: Project = {
 export const mockColumn = {
   id: 999919191919.111,
   title: "Create column",
+  lexorank: "aaa",
   tasks: []
 }

@@ -13,6 +13,7 @@ import {
   createTaskInColumn,
   deleteColumnFromProject,
   updateColumn,
+  updateColumnPositionRequest,
   updateProjectTitle,
   updateTaskPositionRequest
 } from "@/api"
@@ -44,10 +45,18 @@ const draggingTaskData = ref<any>({
   element: undefined,
   columnId: undefined,
   newIndex: undefined,
-  inserAfter: false
+  shouldInsertAfter: false
+})
+const draggingColumnData = ref<any>({
+  element: undefined,
+  newIndex: undefined,
+  shouldInsertAfter: false
 })
 const updateDraggingTaskData = (update: object) => {
   draggingTaskData.value = { ...draggingTaskData.value, ...update }
+}
+const updateDraggingColumnData = (update: object) => {
+  draggingColumnData.value = { ...draggingColumnData.value, ...update }
 }
 
 watchEffect(async () => {
@@ -58,18 +67,31 @@ watchEffect(async () => {
     element: undefined,
     columnId: undefined,
     newIndex: undefined,
-    inserAfter: false
+    shouldInsertAfter: false
+  }
+})
+watchEffect(async () => {
+  const { element, newIndex } = draggingColumnData.value
+  if (!element || newIndex === undefined) return
+  await handleColumnPositionChange()
+  draggingColumnData.value = {
+    element: undefined,
+    newIndex: undefined,
+    shouldInsertAfter: false
   }
 })
 
 async function handleTaskPositionChange() {
   const { shouldInsertAfter, columnId, newIndex, element: task } = draggingTaskData.value
-  projectUpdater(() =>
+  await projectUpdater(() =>
     updateTaskPositionRequest(projectId.value, task.id, columnId, newIndex, shouldInsertAfter)
   )
 }
-function handleColumnPositionChange(column: Column, newIndex: number) {
-  console.log(column, newIndex)
+async function handleColumnPositionChange() {
+  const { shouldInsertAfter, newIndex, element: column } = draggingColumnData.value
+  await projectUpdater(() =>
+    updateColumnPositionRequest(projectId.value, column.id, newIndex, shouldInsertAfter)
+  )
 }
 async function handleTaskCreation(columnId: number) {
   await createTaskInColumn(projectId.value, columnId)
@@ -97,10 +119,13 @@ provide("createColumn", handleColumnCreation)
 provide("deleteColumn", handleColumnDeletion)
 provide("updateColumnTitle", handleColumnTitleChange)
 provide("selectTask", handleTaskSelection)
-provide("columnPositionChange", handleColumnPositionChange)
 provide("draggingTaskData", {
   data: draggingTaskData,
   update: updateDraggingTaskData
+})
+provide("draggingColumnData", {
+  data: draggingColumnData,
+  update: updateDraggingColumnData
 })
 </script>
 
@@ -124,7 +149,6 @@ provide("draggingTaskData", {
 </template>
 
 <style lang="scss" scoped>
-// FIX: Перенос тасков с "высоких" колонок в низкие не происходит из-за высоты колонки
 .canban {
   @include flex-column;
   width: calc(var(--view-width) - var(--view-padding));

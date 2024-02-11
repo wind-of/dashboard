@@ -4,21 +4,22 @@ import draggable from "vuedraggable"
 import type { Column } from "@/types"
 import CanbanTableColumn from "@/components/canban/CanbanTableColumn.vue"
 import { mockColumn } from "@/mock"
+import { draggingColumnDataDefaults } from "@/components/canban/helpers"
 
 const props = defineProps<{ columns: Column[] }>()
-const handleColumnPositionChange = inject(
-  "columnPositionChange",
-  (column: Column, newIndex: number) => {}
-)
+const columnDragData = inject("draggingColumnData", draggingColumnDataDefaults)
 const columnsList = computed({
   get() {
-    return props.columns
+    return [...props.columns].sort((a, b) => (b.lexorank <= a.lexorank ? 1 : -1))
   },
   set() {}
 })
 
-function handleColumnsListChange({ moved }) {
-  handleColumnPositionChange(moved.element, moved.newIndex)
+function handleChange({ moved, added, removed }) {
+  columnDragData.update(moved || added || removed)
+}
+function handleMove(event) {
+  columnDragData.update({ shouldInsertAfter: event.willInsertAfter })
 }
 </script>
 
@@ -27,7 +28,8 @@ function handleColumnsListChange({ moved }) {
     <draggable
       class="columns"
       v-model="columnsList"
-      @change="handleColumnsListChange"
+      @change="handleChange"
+      @move="handleMove"
       group="columns"
       itemKey="id"
     >

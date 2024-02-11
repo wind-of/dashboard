@@ -24,6 +24,7 @@ export interface Task {
 export interface ColumnProto {
   id: number
   title: string
+  lexorank: string
 }
 export interface Column extends ColumnProto {
   tasks: Task[]

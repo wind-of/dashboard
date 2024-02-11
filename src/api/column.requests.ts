@@ -16,3 +16,16 @@ export async function updateColumn(
 ) {
   return axios.patch(`columns/${columnId}`, { ...data, projectId })
 }
+
+export async function updateColumnPositionRequest(
+  projectId: number,
+  columnId: number,
+  position: number,
+  shouldInsertAfter: boolean
+) {
+  return axios.patch(`columns/${columnId}/position`, {
+    projectId,
+    position,
+    shouldInsertAfter
+  })
+}
