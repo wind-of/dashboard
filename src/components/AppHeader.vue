@@ -5,9 +5,6 @@ import IconNotification from "@/components/icons/IconNotification.vue"
 
 <template>
   <header class="header">
-    <section class="search">
-      <input type="text" placeholder="Search anything..." class="input" />
-    </section>
     <section class="user-details">
       <section class="notification">
         <i class="notification-icon"><IconNotification /></i>
@@ -29,7 +26,7 @@ import IconNotification from "@/components/icons/IconNotification.vue"
 
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
 
   background-color: var(--vt-c-white);
 }
