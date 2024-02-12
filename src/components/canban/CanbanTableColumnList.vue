@@ -42,6 +42,7 @@ function handleTaskClick(task: Task) {
     group="tasks"
     item-key="lexorank"
     itemid="lexorank"
+    animation="150"
   >
     <template #item="{ element }">
       <CanbanTableColumnListItem

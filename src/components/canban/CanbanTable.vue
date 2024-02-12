@@ -32,6 +32,7 @@ function handleMove(event) {
       @move="handleMove"
       group="columns"
       itemKey="id"
+      animation="150"
     >
       <template #item="{ element }">
         <CanbanTableColumn :key="element.id" :column="element" />
