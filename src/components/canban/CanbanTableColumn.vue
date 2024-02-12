@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { inject } from "vue"
-import { Column } from "@/types"
+import { Column, Task } from "@/types"
 import CanbanTableColumnHeader from "@/components/canban/CanbanTableColumnHeader.vue"
 import CanbanTableColumnList from "@/components/canban/CanbanTableColumnList.vue"
 import VButton from "@/components/form/VButton.vue"
@@ -11,6 +11,7 @@ const deleteColumn = inject("deleteColumn", (columnId) => {})
 const createColumn = inject("createColumn", () => {})
 const createTask = inject("createTask", (columnId) => {})
 const taskDragData = inject("draggingTaskData", draggingTaskDataDefaults)
+const tasksListChangeEmulation = inject("tasksListChangeEmulation", (newList, columnId) => {})
 
 function handleColumnDeletion() {
   deleteColumn(props.column.id)
@@ -20,6 +21,9 @@ function handleColumnTitleChange(title: string) {
 }
 function handleTaskInsertion() {
   taskDragData.update({ columnId: props.column.id })
+}
+function handleTasksListChangeEmulation(newList: Task[]) {
+  tasksListChangeEmulation(newList, props.column.id)
 }
 </script>
 
@@ -35,7 +39,11 @@ function handleTaskInsertion() {
         @onDeleteColumn="handleColumnDeletion"
         @onColumnTitleChange="handleColumnTitleChange"
       />
-      <CanbanTableColumnList :tasks="column.tasks" @onTaskInsertion="handleTaskInsertion" />
+      <CanbanTableColumnList
+        :tasks="column.tasks"
+        @onTaskInsertion="handleTaskInsertion"
+        @onTasksListChangeEmulation="handleTasksListChangeEmulation"
+      />
     </template>
   </section>
 </template>

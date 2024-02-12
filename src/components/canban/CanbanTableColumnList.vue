@@ -6,7 +6,12 @@ import CanbanTableColumnListItem from "@/components/canban/CanbanTableColumnList
 import { draggingTaskDataDefaults } from "@/components/canban/helpers"
 
 const props = defineProps<{ tasks: Task[] }>()
-const emit = defineEmits(["onTaskDragEnd", "onTaskInsertion"])
+const emit = defineEmits([
+  "onTaskDragEnd",
+  "onTaskInsertion",
+  "onTasksListChangeEmulation",
+  "onColumnsListChangeEmulation"
+])
 const selectTask = inject("selectTask", (taskId, columnId) => {})
 
 const tasks = computed({
@@ -14,6 +19,7 @@ const tasks = computed({
     return [...props.tasks].sort((a, b) => (b.lexorank <= a.lexorank ? 1 : -1))
   },
   set(newList) {
+    emit("onTasksListChangeEmulation", newList)
     if (newList.length < props.tasks.length) {
       return
     }
@@ -65,4 +71,3 @@ function handleTaskClick(task: Task) {
   gap: 14px;
 }
 </style>
-@/components/canban/helpers/helper

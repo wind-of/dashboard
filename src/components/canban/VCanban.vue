@@ -5,7 +5,7 @@ import CanbanHeader from "@/components/canban/CanbanHeader.vue"
 import CanbanTable from "@/components/canban/CanbanTable.vue"
 import TaskDrawer from "@/components/TaskDrawer.vue"
 
-import type { Project, Column, Task } from "@/types"
+import type { Project, Task } from "@/types"
 import { useTaskDrawer } from "@/composables/task.drawer"
 import { useProjectStore } from "@/stores/project"
 import {
@@ -18,7 +18,7 @@ import {
   updateTaskPositionRequest
 } from "@/api"
 import { useTagsStore } from "@/stores/tags"
-import { watch } from "fs"
+import { column as initializeColumn, isTaskInList } from "@/utils"
 
 const projectStore = useProjectStore()
 const tagsStore = useTagsStore()
@@ -40,7 +40,16 @@ async function projectUpdater(request) {
 
 const columnsWithoutTasks = computed(() => project.value.columns.map(({ tasks, ...rest }) => rest))
 
-// FIXME: список на мгновение возвращается в исходное состояние, пока запрос не завершится.
+const column = (columnId: number) =>
+  project.value.columns.find(({ id }) => id === columnId) || initializeColumn()
+function handleTasksListChangeEmulation(updatedList: Task[], columnId: number) {
+  const currentColumn = column(columnId)
+  if (isTaskInList(updatedList, selected.task.id)) {
+    selected.columnId = columnId
+  }
+  currentColumn.tasks = updatedList
+}
+
 const draggingTaskData = ref<any>({
   element: undefined,
   columnId: undefined,
@@ -94,20 +103,20 @@ async function handleColumnPositionChange() {
   )
 }
 async function handleTaskCreation(columnId: number) {
-  projectUpdater(() => createTaskInColumn(projectId.value, columnId))
+  await projectUpdater(() => createTaskInColumn(projectId.value, columnId))
 }
 async function handleColumnCreation() {
-  projectUpdater(() => createColumnInProject(projectId.value))
+  await projectUpdater(() => createColumnInProject(projectId.value))
 }
 async function handleColumnDeletion(columnId: number) {
-  projectUpdater(() => deleteColumnFromProject(projectId.value, columnId))
+  await projectUpdater(() => deleteColumnFromProject(projectId.value, columnId))
 }
 async function handleColumnTitleChange({ title, columnId }: { title: string; columnId: number }) {
-  projectUpdater(() => updateColumn(projectId.value, columnId, { title }))
+  await projectUpdater(() => updateColumn(projectId.value, columnId, { title }))
 }
 
 async function handleProjectTitleChange(title: string) {
-  projectUpdater(() => updateProjectTitle(projectId.value, title))
+  await projectUpdater(() => updateProjectTitle(projectId.value, title))
 }
 
 provide("createTask", handleTaskCreation)
@@ -123,6 +132,7 @@ provide("draggingColumnData", {
   data: draggingColumnData,
   update: updateDraggingColumnData
 })
+provide("tasksListChangeEmulation", handleTasksListChangeEmulation)
 </script>
 
 <template>
