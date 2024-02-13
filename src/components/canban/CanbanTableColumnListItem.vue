@@ -7,7 +7,7 @@ const props = defineProps<{ task: Task }>()
 
 const expirationDate = computed(() => {
   const date = props.task.expirationDate
-  return date ? useTimeFormat({ date: new Date(props.task.expirationDate) }) : "-- -- -- -- "
+  return date ? useTimeFormat({ date: new Date(date) }) : "-- -- -- -- "
 })
 </script>
 
@@ -45,6 +45,7 @@ const expirationDate = computed(() => {
   padding: 16px;
   border-radius: 12px;
   background-color: var(--white);
+  box-shadow: 0 0 5px 0 rgba(34, 60, 80, 0.05);
 }
 .header {
   @include flex-column;
