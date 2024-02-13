@@ -12,6 +12,7 @@ export interface Task {
   lexorank: string
   columnId: number
   creatorId: number
+  performerId: number
   title: string
   shortDescription: string
   description: string

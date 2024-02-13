@@ -1,6 +1,6 @@
 export * from "./template"
 import { PERIODS } from "@/constants"
-import type { Task } from "@/types"
+import type { Task, User } from "@/types"
 import { getNearbyDays, getNearbyMonth, getNearbyWeeks, getNearbyYears } from "@/utils/nearby.dates"
 
 export const isTaskInList = (list: Task[], taskId: number) => list.find(({ id }) => id === taskId)
@@ -23,4 +23,11 @@ export function computeBorderRadiusStyle(side: "left" | "right", size: number) {
 
 export function keyMapper(arrayOfObjects: object[], key: string, value: string) {
   return arrayOfObjects.reduce((acc, obj) => ((acc[obj[key]] = obj[value]), acc), {})
+}
+
+export function userFullName(user: User | null | undefined) {
+  return `${user?.firstname || ""} ${user?.lastname || ""}`.trim()
+}
+export function isNullable(value: any) {
+  return value === null || value === undefined
 }

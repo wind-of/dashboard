@@ -5,7 +5,7 @@ export async function getUserById(userId: number) {
 }
 
 export async function getUsersByIds(userIds: number[]) {
-  return axios.get(`users/project?userIds=${userIds.join(",")}`)
+  return axios.get(`users/list?userIds=${userIds.join(",")}`)
 }
 
 export async function getMeRequest() {

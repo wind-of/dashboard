@@ -3,7 +3,7 @@ import { computed, provide, ref, watchEffect } from "vue"
 
 import CanbanHeader from "@/components/canban/CanbanHeader.vue"
 import CanbanTable from "@/components/canban/CanbanTable.vue"
-import TaskDrawer from "@/components/TaskDrawer.vue"
+import TaskDrawer from "@/components/TaskDrawer/TaskDrawer.vue"
 
 import type { Project, Task } from "@/types"
 import { useTaskDrawer } from "@/composables/task.drawer"

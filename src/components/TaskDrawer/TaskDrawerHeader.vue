@@ -1,0 +1,113 @@
+<script setup lang="ts">
+import { computed, ref, watchEffect } from "vue"
+
+import VAvatar from "@/components/common/VAvatar.vue"
+import VSelect from "@/components/form/VSelect.vue"
+import { User } from "@/types"
+import { getUserById, getUsersByIds } from "@/api/user.requests"
+import { useProjectStore } from "@/stores/project"
+import { isNullable, userFullName } from "@/utils"
+
+const props = defineProps<{ creatorId?: number; performerId?: number }>()
+const emit = defineEmits(["onPerformerUpdate"])
+
+const projectStore = useProjectStore()
+const projectParticipantsData = computed(() => projectStore.project!.participants)
+const { data: participants } = await getUsersByIds(
+  projectParticipantsData.value.map(({ userId }) => userId)
+)
+
+const creator = ref<User | null>(null)
+const performer = ref<User | null>(null)
+const creatorName = computed(() => userFullName(creator.value))
+const performerName = computed(() => userFullName(performer.value))
+const performerId = computed({
+  get() {
+    return props.performerId
+  },
+  async set(newPerformerId) {
+    emit("onPerformerUpdate", newPerformerId)
+  }
+})
+
+watchEffect(async () => {
+  if (isNullable(props.creatorId)) {
+    return
+  }
+  const { data } = await getUserById(props.creatorId as number).catch(() => ({ data: null }))
+  creator.value = data
+})
+watchEffect(async () => {
+  if (isNullable(props.performerId)) {
+    return
+  }
+  const { data } = await getUserById(props.performerId as number).catch(() => ({ data: null }))
+  performer.value = data
+})
+</script>
+
+<template>
+  <header class="header">
+    <h2 class="header-title">Task</h2>
+    <section class="header-meta">
+      <div class="header-creator">
+        <p>Created by: {{ creatorName }}</p>
+        <VAvatar class="avatar" :image="creator?.avatar" />
+      </div>
+      <div class="header-performer">
+        <section class="current-performer">
+          <p>Assigned to: {{ performerName }}</p>
+          <VAvatar class="avatar" :image="performer?.avatar" />
+        </section>
+        <section class="assign-performer">
+          <p>Re-assign to:</p>
+          <VSelect class="performer-select" v-model="performerId" defaultTitle="Update performer">
+            <option v-for="user in participants" :key="user.id" :value="user.id">
+              {{ userFullName(user) }}
+            </option>
+          </VSelect>
+        </section>
+      </div>
+    </section>
+  </header>
+</template>
+
+<style scoped lang="scss">
+.header {
+  @include flex-row;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.header-title {
+  font-size: 28px;
+}
+.header-meta {
+  @include flex-column;
+  align-items: flex-end;
+}
+.header-creator,
+.current-performer {
+  @include flex-row;
+  gap: 5px;
+  align-items: center;
+  p {
+    font-size: 14px;
+  }
+  .avatar {
+    scale: 0.7;
+  }
+}
+
+.header-performer {
+  @include flex-column;
+  gap: 5px;
+  align-items: flex-end;
+}
+.assign-performer {
+  @include flex-row;
+  gap: 10px;
+  align-items: center;
+  font-size: 14px;
+}
+</style>
