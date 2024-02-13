@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import { computed, reactive, toRaw } from "vue"
+import { computed, reactive, ref, toRaw, watchEffect } from "vue"
 import { vOnClickOutside } from "@vueuse/components"
 import VueDatePicker from "@vuepic/vue-datepicker"
 import "@vuepic/vue-datepicker/dist/main.css"
 
 import VButton from "@/components/form/VButton.vue"
 import VSelect from "@/components/form/VSelect.vue"
+import VAvatar from "@/components/common/VAvatar.vue"
 import InputBlock from "@/components/form/InputBlock.vue"
 import { useCopyReactive } from "@/composables/copy.reactive"
-import { Tag, Task, ColumnProto } from "@/types"
+import { Tag, Task, ColumnProto, User } from "@/types"
+import { getUserById } from "@/api/user.requests"
 
 const props = defineProps<{
   task: Task
@@ -57,6 +59,18 @@ function handleTagClick(tag: Tag) {
   }
   state.value.tags.push(tag)
 }
+
+const creator = ref<User | null>(null)
+const creatorName = computed(() =>
+  `${creator.value?.firstname || ""} ${creator.value?.lastname || ""}`.trim()
+)
+watchEffect(async () => {
+  if (props.task.creatorId === undefined) {
+    return
+  }
+  const { data } = await getUserById(props.task.creatorId).catch(() => ({ data: null }))
+  creator.value = data
+})
 </script>
 
 <template>
@@ -69,6 +83,10 @@ function handleTagClick(tag: Tag) {
       <div class="drawer-content">
         <header class="header">
           <h2 class="header-title">Task</h2>
+          <div class="header-creator">
+            <p>Created by: {{ creatorName }}</p>
+            <VAvatar :image="creator?.avatar" />
+          </div>
         </header>
         <form class="form" @submit.prevent>
           <section class="tags">
@@ -172,8 +190,22 @@ function handleTagClick(tag: Tag) {
   gap: 30px;
   padding: 20px;
 }
+.header {
+  @include flex-row;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+}
 .header-title {
   font-size: 28px;
+}
+.header-creator {
+  @include flex-row;
+  gap: 10px;
+  align-items: center;
+  p {
+    font-size: 14px;
+  }
 }
 
 .form {
