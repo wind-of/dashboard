@@ -8,6 +8,7 @@ import VButton from "@/components/form/VButton.vue"
 import VSelect from "@/components/form/VSelect.vue"
 import InputBlock from "@/components/form/InputBlock.vue"
 import TaskDrawerHeader from "@/components/TaskDrawer/TaskDrawerHeader.vue"
+import TaskDrawerComments from "@/components/TaskDrawer/TaskDrawerComments.vue"
 import { useCopyReactive } from "@/composables/copy.reactive"
 import { Tag, Task, ColumnProto } from "@/types"
 import { useUserStore } from "@/stores/user"
@@ -19,7 +20,7 @@ const props = defineProps<{
   isOpen: boolean
   tags: Tag[]
 }>()
-const emit = defineEmits(["onCommitChanges", "onCancelChanges", "onTaskDelete"])
+const emit = defineEmits(["onCommitChanges", "onCancelChanges", "onTaskDelete", "onCommentSend"])
 
 const userStore = useUserStore()
 const canEdit = ref(false)
@@ -72,6 +73,9 @@ function handlePerformerUpdate(newPerformerId: number) {
 }
 function handleEditButtonClick() {
   canEdit.value = true
+}
+function handleCommentSend(newCommentContent) {
+  emit("onCommentSend", newCommentContent)
 }
 </script>
 
@@ -133,12 +137,12 @@ function handleEditButtonClick() {
             <VButton @click="handleCancel">Cancel</VButton>
             <VButton @click="handleDelete" isDanger>Delete</VButton>
           </section>
-          <section v-else class="form-buttons">
+          <section v-else-if="isOwner" class="form-buttons">
             <VButton @click="handleEditButtonClick">Edit</VButton>
           </section>
         </form>
         <div class="divider" />
-        <TaskDrawerComments :comments="task.comments" />
+        <TaskDrawerComments :comments="task.comments" @onCommentSend="handleCommentSend" />
       </div>
     </section>
   </section>
@@ -167,16 +171,13 @@ function handleEditButtonClick() {
 }
 .drawer {
   @include flex-column;
-
   position: absolute;
   width: var(--canban-drawer-width);
-  height: calc(100vh - var(--header-height));
+  height: 100vh;
   transform: translateX(var(--canban-drawer-width));
   box-shadow: -5px 0px 10px 0px rgba(34, 60, 80, 0.05);
   background: white;
   overflow: scroll;
-
-  top: var(--header-height);
   right: 0;
   transition: transform 0.2s ease-out;
 }

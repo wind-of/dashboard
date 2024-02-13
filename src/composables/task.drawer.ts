@@ -1,4 +1,5 @@
 import { deleteTask, updateTask } from "@/api"
+import { createCommentRequest } from "@/api/comments.requests"
 import { useProjectStore } from "@/stores/project"
 import type { Column, Project, Task, UpdatedTask } from "@/types"
 import { task as initializeTask } from "@/utils"
@@ -21,6 +22,13 @@ export function useTaskDrawer() {
       selected.task.performerId = updatedTask.performerId
       await updateTask(project.value.id, updatedTask)
       await projectStore.updateProjectInStore(project.value.id)
+    },
+    async handleTaskComment(newCommentContent: string) {
+      const { data: comment } = await createCommentRequest(project.value.id, selected.task.id, {
+        content: newCommentContent
+      })
+      await projectStore.updateProjectInStore(project.value.id)
+      selected.task.comments.push(comment)
     },
     handleTaskChangeCancel() {
       isDrawerOpen.value = false

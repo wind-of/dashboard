@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { ref, watchEffect } from "vue"
+import VAvatar from "@/components/common/VAvatar.vue"
 import { getUserById } from "@/api/user.requests"
 import { Comment, User } from "@/types"
 import { userFullName } from "@/utils"
-import { ref, watchEffect } from "vue"
+import { useTimeFormat } from "@/composables/format.time"
 
 const props = defineProps<{ comment: Comment }>()
 
@@ -15,14 +17,34 @@ watchEffect(async () => {
 </script>
 
 <template>
-  <div class="comment-user-data">
-    <VAvatar class="comment-avatar" :image="author?.avatar" />
-    <span class="comment-username">{{ userFullName(author) }}</span>
-  </div>
-  <div class="comment-content">{{ comment.content }}</div>
-  <div class="comment-meta">
-    <span class="comment-date">Отправлен: ${{ comment.createdAt }}</span>
-  </div>
+  <section class="comment">
+    <div class="comment-user-data">
+      <VAvatar class="comment-avatar" :image="author?.avatar" width="30px" height="30px" />
+      <span class="comment-username">{{ userFullName(author) }}</span>
+      <span class="comment-date">{{
+        useTimeFormat({ date: new Date(comment.createdAt), isDetailed: true })
+      }}</span>
+    </div>
+    <div class="comment-content">{{ comment.content }}</div>
+  </section>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.comment {
+  @include flex-column;
+  gap: 10px;
+}
+.comment-date {
+  font-size: 12px;
+  color: var(--gray);
+}
+.comment-user-data {
+  @include flex-row;
+  align-items: center;
+  gap: 10px;
+  .comment-username {
+    font-size: 14px;
+    font-weight: 500;
+  }
+}
+</style>

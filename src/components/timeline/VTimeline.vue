@@ -16,6 +16,7 @@ const project = computed(() => projectStore.project as Project)
 const columnsWithoutTasks = computed(() => project.value.columns.map(({ tasks, ...rest }) => rest))
 const {
   handleTaskChange,
+  handleTaskComment,
   handleTaskChangeCancel,
   handleTaskDelete,
   handleTaskSelection,
@@ -47,6 +48,7 @@ function handlePeriodUpdate(period: PERIODS) {
         @onCommitChanges="handleTaskChange"
         @onCancelChanges="handleTaskChangeCancel"
         @onTaskDelete="handleTaskDelete"
+        @onCommentSend="handleTaskComment"
       />
     </Teleport>
   </section>

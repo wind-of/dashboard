@@ -26,6 +26,7 @@ const project = computed(() => projectStore.project as Project)
 const projectId = computed(() => project.value.id)
 const {
   handleTaskChange,
+  handleTaskComment,
   handleTaskChangeCancel,
   handleTaskDelete,
   handleTaskSelection,
@@ -149,6 +150,7 @@ provide("tasksListChangeEmulation", handleTasksListChangeEmulation)
         @onCommitChanges="handleTaskChange"
         @onCancelChanges="handleTaskChangeCancel"
         @onTaskDelete="handleTaskDelete"
+        @onCommentSend="handleTaskComment"
       />
     </Teleport>
   </section>
