@@ -13,7 +13,7 @@ const component = props.isTextarea ? VTextarea : VInput
   <section class="input-block">
     <label class="input-label">
       <p class="input-title">{{ label }}</p>
-      <component :is="component" v-model="modelValue" />
+      <component :is="component" v-model="modelValue" v-bind="$attrs" />
     </label>
   </section>
 </template>

@@ -8,7 +8,7 @@ import { getUserById, getUsersByIds } from "@/api/user.requests"
 import { useProjectStore } from "@/stores/project"
 import { isNullable, userFullName } from "@/utils"
 
-const props = defineProps<{ creatorId?: number; performerId?: number }>()
+const props = defineProps<{ creatorId?: number; performerId?: number; canEdit: boolean }>()
 const emit = defineEmits(["onPerformerUpdate"])
 
 const projectStore = useProjectStore()
@@ -55,19 +55,17 @@ watchEffect(async () => {
         <VAvatar class="avatar" :image="creator?.avatar" />
       </div>
       <div class="header-performer">
-        <section class="current-performer">
-          <p>Assigned to: {{ performerName }}</p>
-          <VAvatar class="avatar" :image="performer?.avatar" />
-        </section>
-        <section class="assign-performer">
-          <p>Re-assign to:</p>
-          <VSelect class="performer-select" v-model="performerId" defaultTitle="Update performer">
-            <option v-for="user in participants" :key="user.id" :value="user.id">
-              {{ userFullName(user) }}
-            </option>
-          </VSelect>
-        </section>
+        <p>Assigned to: {{ performerName }}</p>
+        <VAvatar v-if="performerName" class="avatar" :image="performer?.avatar" />
       </div>
+      <section v-if="canEdit" class="assign-performer">
+        <p>Re-assign to:</p>
+        <VSelect class="performer-select" v-model="performerId" defaultTitle="Update performer">
+          <option v-for="user in participants" :key="user.id" :value="user.id">
+            {{ userFullName(user) }}
+          </option>
+        </VSelect>
+      </section>
     </section>
   </header>
 </template>
@@ -87,7 +85,7 @@ watchEffect(async () => {
   align-items: flex-end;
 }
 .header-creator,
-.current-performer {
+.header-performer {
   @include flex-row;
   gap: 5px;
   align-items: center;
@@ -99,11 +97,6 @@ watchEffect(async () => {
   }
 }
 
-.header-performer {
-  @include flex-column;
-  gap: 5px;
-  align-items: flex-end;
-}
 .assign-performer {
   @include flex-row;
   gap: 10px;

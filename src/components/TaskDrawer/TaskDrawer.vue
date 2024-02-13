@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive, toRaw } from "vue"
+import { computed, reactive, ref, toRaw } from "vue"
 import { vOnClickOutside } from "@vueuse/components"
 import VueDatePicker from "@vuepic/vue-datepicker"
 import "@vuepic/vue-datepicker/dist/main.css"
@@ -10,6 +10,7 @@ import InputBlock from "@/components/form/InputBlock.vue"
 import TaskDrawerHeader from "@/components/TaskDrawer/TaskDrawerHeader.vue"
 import { useCopyReactive } from "@/composables/copy.reactive"
 import { Tag, Task, ColumnProto } from "@/types"
+import { useUserStore } from "@/stores/user"
 
 const props = defineProps<{
   task: Task
@@ -20,6 +21,9 @@ const props = defineProps<{
 }>()
 const emit = defineEmits(["onCommitChanges", "onCancelChanges", "onTaskDelete"])
 
+const userStore = useUserStore()
+const canEdit = ref(false)
+const isOwner = computed(() => props.task.creatorId === userStore.user?.id)
 const drawerStyles = computed(() => ({
   [props.isOpen ? "transform" : ""]: "none"
 }))
@@ -30,9 +34,11 @@ const form = computed(() => ({
 const state = computed(() => form.value.state)
 
 function handleCommitChanges() {
+  canEdit.value = false
   emit("onCommitChanges", useCopyReactive(state.value))
 }
 function handleCancel() {
+  canEdit.value = false
   emit("onCancelChanges")
 }
 function handleDelete() {
@@ -52,6 +58,9 @@ function computeTagStyles(backgroundColor: string, tagId: string) {
   }
 }
 function handleTagClick(tag: Tag) {
+  if (!canEdit.value) {
+    return
+  }
   if (isActiveTag(tag.uniqueId)) {
     state.value.tags = toRaw(state.value.tags).filter(({ uniqueId }) => uniqueId !== tag.uniqueId)
     return
@@ -60,6 +69,9 @@ function handleTagClick(tag: Tag) {
 }
 function handlePerformerUpdate(newPerformerId: number) {
   state.value.performerId = newPerformerId
+}
+function handleEditButtonClick() {
+  canEdit.value = true
 }
 </script>
 
@@ -76,6 +88,7 @@ function handlePerformerUpdate(newPerformerId: number) {
             :creatorId="task.creatorId"
             :performerId="task.performerId"
             @onPerformerUpdate="handlePerformerUpdate"
+            :canEdit="canEdit"
           />
         </Suspense>
         <form class="form" @submit.prevent>
@@ -90,22 +103,38 @@ function handlePerformerUpdate(newPerformerId: number) {
               {{ tag.title }}
             </div>
           </section>
-          <InputBlock v-model="state.title" label="Title" />
-          <InputBlock v-model="state.shortDescription" label="Short Description" />
-          <InputBlock v-model="state.description" label="Description" isTextarea />
-          <VSelect v-model="state.columnId" :defaultTitle="getColumnTitleById(columnId) || ''">
+          <InputBlock v-model="state.title" label="Title" :disabled="!canEdit" />
+          <InputBlock
+            v-model="state.shortDescription"
+            label="Short Description"
+            :disabled="!canEdit"
+          />
+          <InputBlock
+            v-model="state.description"
+            label="Description"
+            isTextarea
+            :disabled="!canEdit"
+          />
+          <VSelect
+            v-model="state.columnId"
+            :defaultTitle="getColumnTitleById(columnId) || ''"
+            :disabled="!canEdit"
+          >
             <option v-for="{ id, title } in columns" :key="id" :value="id">
               {{ title }}
             </option>
           </VSelect>
           <section class="dates">
-            <VueDatePicker v-model="state.startDate" locale="en" /> —
-            <VueDatePicker v-model="state.expirationDate" locale="en" />
+            <VueDatePicker v-model="state.startDate" locale="en" :disabled="!canEdit" /> —
+            <VueDatePicker v-model="state.expirationDate" locale="en" :disabled="!canEdit" />
           </section>
-          <section class="form-buttons">
+          <section v-if="canEdit" class="form-buttons">
             <VButton @click="handleCommitChanges" isPrimary>Save</VButton>
             <VButton @click="handleCancel">Cancel</VButton>
             <VButton @click="handleDelete" isDanger>Delete</VButton>
+          </section>
+          <section v-else class="form-buttons">
+            <VButton @click="handleEditButtonClick">Edit</VButton>
           </section>
         </form>
       </div>
@@ -180,6 +209,10 @@ function handlePerformerUpdate(newPerformerId: number) {
   gap: 30px;
   padding: 20px;
 }
+.edit-button-wrapper {
+  @include flex-row;
+  justify-content: flex-end;
+}
 
 .form {
   @include flex-column;
@@ -220,7 +253,6 @@ function handlePerformerUpdate(newPerformerId: number) {
 }
 .form-buttons {
   @include flex-row;
-  padding-right: 30px;
   gap: 15px;
   align-self: flex-end;
 }
