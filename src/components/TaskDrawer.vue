@@ -60,55 +60,67 @@ function handleTagClick(tag: Tag) {
 </script>
 
 <template>
-  <section class="drawer" :style="drawerStyles" v-on-click-outside="handleCancel">
-    <div class="preview-wrapper">
-      <img :src="state.preview" alt="preview image" class="preview-image" v-if="task.preview" />
-      <div class="preview-button">Update preview</div>
-    </div>
-    <div class="drawer-content">
-      <header class="header">
-        <h2 class="header-title">Task</h2>
-      </header>
-      <form class="form" @submit.prevent>
-        <section class="tags">
-          <div
-            class="tag"
-            v-for="tag in tags"
-            :key="tag.id"
-            :style="computeTagStyles(tag.color, tag.uniqueId)"
-            @click="handleTagClick(tag)"
-          >
-            {{ tag.title }}
-          </div>
-        </section>
-        <InputBlock v-model="state.title" label="Title" />
-        <InputBlock v-model="state.shortDescription" label="Short Description" />
-        <InputBlock v-model="state.description" label="Description" isTextarea />
-        <VSelect v-model="state.columnId" :defaultTitle="getColumnTitleById(columnId) || ''">
-          <option v-for="{ id, title } in columns" :key="id" :value="id">
-            {{ title }}
-          </option>
-        </VSelect>
-        <section class="dates">
-          <VueDatePicker v-model="state.startDate" locale="en" /> —
-          <VueDatePicker v-model="state.expirationDate" locale="en" />
-        </section>
-        <section class="form-buttons">
-          <VButton @click="handleCommitChanges" isPrimary>Save</VButton>
-          <VButton @click="handleCancel">Cancel</VButton>
-          <VButton @click="handleDelete" isDanger>Delete</VButton>
-        </section>
-      </form>
-    </div>
+  <section class="drawer-wrapper" :class="{ open: isOpen }">
+    <section class="drawer" :style="drawerStyles" v-on-click-outside="handleCancel">
+      <div class="preview-wrapper">
+        <img :src="state.preview" alt="preview image" class="preview-image" v-if="task.preview" />
+        <div class="preview-button">Update preview</div>
+      </div>
+      <div class="drawer-content">
+        <header class="header">
+          <h2 class="header-title">Task</h2>
+        </header>
+        <form class="form" @submit.prevent>
+          <section class="tags">
+            <div
+              class="tag"
+              v-for="tag in tags"
+              :key="tag.id"
+              :style="computeTagStyles(tag.color, tag.uniqueId)"
+              @click="handleTagClick(tag)"
+            >
+              {{ tag.title }}
+            </div>
+          </section>
+          <InputBlock v-model="state.title" label="Title" />
+          <InputBlock v-model="state.shortDescription" label="Short Description" />
+          <InputBlock v-model="state.description" label="Description" isTextarea />
+          <VSelect v-model="state.columnId" :defaultTitle="getColumnTitleById(columnId) || ''">
+            <option v-for="{ id, title } in columns" :key="id" :value="id">
+              {{ title }}
+            </option>
+          </VSelect>
+          <section class="dates">
+            <VueDatePicker v-model="state.startDate" locale="en" /> —
+            <VueDatePicker v-model="state.expirationDate" locale="en" />
+          </section>
+          <section class="form-buttons">
+            <VButton @click="handleCommitChanges" isPrimary>Save</VButton>
+            <VButton @click="handleCancel">Cancel</VButton>
+            <VButton @click="handleDelete" isDanger>Delete</VButton>
+          </section>
+        </form>
+      </div>
+    </section>
   </section>
 </template>
 
-<style lang="scss">
-.active::after {
-  transform: scale(1);
-}
-</style>
 <style lang="scss" scoped>
+.drawer-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  @include flex-row;
+  z-index: 3;
+  transition-property: height, background-color;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-out;
+  &.open {
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+}
 .drawer {
   @include flex-column;
 
