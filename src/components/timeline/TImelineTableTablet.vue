@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import type { Tablet } from "@/types"
 import { Column, TabletSignle, TabletList } from "@/types"
-import { PERIODS } from "@/constants"
+import { PERIODS, TIMELINE_TABLET_HEIGHT } from "@/constants"
 import {
   useComputedTimelineTabletStyles,
   useComputedTimelineTabletListStyles
 } from "@/composables/timeline.tablet.styles"
+import { useCssVar } from "@vueuse/core"
+
+useCssVar("--timeline-tablet-height").value = `${TIMELINE_TABLET_HEIGHT}px`
 
 const props = defineProps<{ tablet: Tablet; columns: Column[]; period: PERIODS }>()
 const emit = defineEmits(["onTaskSelection"])
@@ -24,6 +27,7 @@ function getColumnTitle(columnId: number) {
     class="tablet tablet-single"
     :style="useComputedTimelineTabletStyles(tablet as TabletSignle, period)"
     @click="handleSelection(tablet.task.id, tablet.task.columnId)"
+    :title="`${tablet.task.title} [${getColumnTitle(tablet.task.columnId)}]`"
   >
     {{ tablet.task.title }}
     <sub class="column-title">[{{ getColumnTitle(tablet.task.columnId) }}]</sub>
@@ -33,8 +37,9 @@ function getColumnTitle(columnId: number) {
     class="tablet tablet-list"
     :style="useComputedTimelineTabletListStyles(tablet as TabletList)"
     @click="console.log(tablet.task)"
+    title="List of tasks"
   >
-    List of tasks...
+    List of tasks
   </div>
 </template>
 
@@ -43,7 +48,7 @@ function getColumnTitle(columnId: number) {
   position: absolute;
   @include flex-row;
   align-items: center;
-  height: 46px;
+  height: var(--timeline-tablet-height);
   color: white;
   font-weight: 600;
   cursor: pointer;
@@ -55,11 +60,13 @@ function getColumnTitle(columnId: number) {
 .tablet-list {
   justify-content: center;
   border-radius: 5px;
+  background-color: #1ea7ff;
 }
 .tablet-single {
   padding: 0 16px;
-  height: 46px;
+  height: var(--timeline-tablet-height);
   border-radius: 40px;
+  background-color: #5051f9;
 
   .column-title {
     margin-left: 4px;

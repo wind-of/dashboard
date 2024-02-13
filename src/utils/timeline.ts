@@ -19,6 +19,16 @@ export const computedTimelineUnitStyles = (width: number) => ({
   "min-width": `${width}px`
 })
 
+export const computeLineOffset = (period: PERIODS, unitsCount: number, sectionWidth: number) => {
+  const { current, next } = getNearbyPeriods(period)
+  const periodTime = next.getTime() - current.getTime()
+  const offsetTime = new Date().getTime() - current.getTime()
+  const unitTime = periodTime / unitsCount
+  return {
+    left: `${(offsetTime / unitTime) * sectionWidth}px`
+  }
+}
+
 export function doEndAtTheSamePeriod(first: Date, second: Date, period: PERIODS) {
   const methods = {
     [PERIODS.day]: ["getFullYear", "getMonth", "getDate", "getHours"],

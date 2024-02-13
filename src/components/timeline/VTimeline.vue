@@ -21,7 +21,7 @@ const {
   handleTaskSelection,
   isDrawerOpen,
   selected
-} = useTaskDrawer(project.value)
+} = useTaskDrawer()
 
 const currentPeriod = ref(DEFAULT_PERIOD)
 function handlePeriodUpdate(period: PERIODS) {

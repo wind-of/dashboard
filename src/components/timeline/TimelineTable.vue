@@ -5,7 +5,7 @@ import { PERIODS, DEFAULT_TIMELINE_TABLET_UNIT_WIDTH } from "@/constants"
 import { useTasksToLeveledTablets } from "@/composables/tasks.to.levels"
 import { useFilterTasksByPeriod } from "@/composables/filter.tasks.by.period"
 import { useCssVar } from "@vueuse/core"
-import { computedTimelineUnitStyles, unitsCountInPeriod } from "@/utils/timeline"
+import { computedTimelineUnitStyles, unitsCountInPeriod, computeLineOffset } from "@/utils/timeline"
 import TimelineTableTablet from "@/components/timeline/TimelineTableTablet.vue"
 
 const props = defineProps<{ columns: Column[]; period: PERIODS }>()
@@ -37,6 +37,10 @@ function handleSelection(taskId: number, columnId: number) {
 
 <template>
   <section class="table" ref="timelineTable">
+    <div
+      class="line"
+      :style="computeLineOffset(period, timelineUnitsCount, timelineSectionWidth)"
+    />
     <template v-for="i in unitsCountInPeriod(period)" :key="i">
       <div class="unit" :style="computedTimelineUnitStyles(timelineSectionWidth)">
         <h3 class="unit-title">{{ i }}</h3>
@@ -64,6 +68,23 @@ function handleSelection(taskId: number, columnId: number) {
   position: relative;
   min-width: 100%;
   height: 100%;
+  overflow-y: hidden;
+}
+.line {
+  position: absolute;
+  user-select: none;
+  top: 8px;
+  bottom: 0;
+  width: 2px;
+  height: 100%;
+  z-index: 2;
+  background-color: red;
+  &::after {
+    content: "";
+    margin-left: -5px;
+    border: 6px solid transparent;
+    border-top: 8px solid red;
+  }
 }
 .blocks-container {
   position: absolute;
