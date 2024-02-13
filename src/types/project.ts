@@ -7,6 +7,16 @@ export interface Tag {
   color: string
 }
 
+export interface Comment {
+  id: number
+  content: string
+  userId: number
+  taskId: number
+  attachment?: string
+  createdAt: string
+  updatedAt: string
+}
+
 export interface Task {
   id: number
   lexorank: string

@@ -137,12 +137,19 @@ function handleEditButtonClick() {
             <VButton @click="handleEditButtonClick">Edit</VButton>
           </section>
         </form>
+        <div class="divider" />
+        <TaskDrawerComments :comments="task.comments" />
       </div>
     </section>
   </section>
 </template>
 
 <style lang="scss" scoped>
+.divider {
+  width: 100%;
+  height: 1px;
+  background: #ddd;
+}
 .drawer-wrapper {
   position: absolute;
   top: 0;
