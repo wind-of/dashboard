@@ -52,12 +52,12 @@ watchEffect(async () => {
     <section class="header-meta">
       <div class="header-creator">
         <p>Created by: {{ creatorName }}</p>
-        <VAvatar class="avatar" :image="creator?.avatar" />
+        <VAvatar class="avatar" :image="creator?.avatar" height="32px" width="32px" />
       </div>
       <div class="header-performer">
         <template v-if="performer">
           <p>Assigned to: {{ performerName }}</p>
-          <VAvatar class="avatar" :image="performer.avatar" />
+          <VAvatar class="avatar" :image="performer.avatar" height="32px" width="32px" />
         </template>
       </div>
       <section v-if="canEdit" class="assign-performer">
@@ -85,6 +85,7 @@ watchEffect(async () => {
 .header-meta {
   @include flex-column;
   align-items: flex-end;
+  gap: 5px;
 }
 .header-creator,
 .header-performer {
@@ -93,9 +94,6 @@ watchEffect(async () => {
   align-items: center;
   p {
     font-size: 14px;
-  }
-  .avatar {
-    scale: 0.7;
   }
 }
 
