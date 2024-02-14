@@ -1,6 +1,10 @@
 import type { ParticipantRolesEnum } from "@/types"
 import axios from "./axios"
 
+export async function addParticipantRequest(email: string, projectId: number) {
+  return axios.post(`participants`, { email, projectId })
+}
+
 export async function updateParticipantsRole(
   projectId: number,
   userId: number,

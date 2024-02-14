@@ -1,6 +1,6 @@
 <template>
   <header>
-    <h1 class="title">Project's settings</h1>
+    <h1 class="title">Project settings</h1>
   </header>
 </template>
 

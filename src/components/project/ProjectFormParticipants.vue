@@ -133,7 +133,7 @@ async function handleParticipantsDeletion(participantId: number) {
 <style scoped lang="scss">
 .participants-wrapper {
   @include flex-column;
-  gap: 40px;
+  gap: 20px;
   margin-bottom: 30px;
 }
 .participants-list {
