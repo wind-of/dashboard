@@ -62,7 +62,7 @@ watchEffect(async () => {
       </div>
       <section v-if="canEdit" class="assign-performer">
         <p>Assign to:</p>
-        <VSelect class="performer-select" v-model="performerId" defaultTitle="Update performer">
+        <VSelect v-model="performerId" defaultTitle="Update performer">
           <option v-for="user in participants" :key="user.id" :value="user.id">
             {{ userFullName(user) }}
           </option>

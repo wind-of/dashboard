@@ -15,9 +15,9 @@ const modelValue = defineModel()
 
 <style scoped lang="scss">
 .select {
-  max-width: 150px;
+  max-width: 200px;
   align-self: flex-start;
-  padding: 10px 6em 10px 10px;
+  padding: 10px;
   border: 1px solid #eee;
   color: #777;
   border-radius: 0.25rem;
