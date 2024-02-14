@@ -1,10 +1,10 @@
 import { getParticipatingProjects } from "@/api"
-import type { ProjectWithoutColumns } from "@/types"
+import type { Project } from "@/types"
 import { defineStore } from "pinia"
 import { ref } from "vue"
 
 export const useParticipatingProjectsStore = defineStore("participatingProjects", () => {
-  const projects = ref<ProjectWithoutColumns[]>()
+  const projects = ref<Project[]>()
 
   async function updateProjectsList() {
     const { data: list } = await getParticipatingProjects()
