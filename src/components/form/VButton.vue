@@ -12,6 +12,15 @@ const classList = computed(() => {
 </template>
 
 <style lang="scss">
+button {
+  transition-property: opacity;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-out;
+}
+button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 .primary-button-class {
   border: none;
   color: var(--white);
