@@ -39,7 +39,7 @@ watchEffect(async () => {
 })
 
 function shouldDisableRolesSelect(role: ParticipantRolesEnum) {
-  const currentUserRole = roles.value?.[userStore.user?.id as number] as ParticipantRolesEnum
+  const currentUserRole = roles.value?.[userStore.user!.id] as ParticipantRolesEnum
   return (
     currentUserRole === ParticipantRolesEnum.Member ||
     role === ParticipantRolesEnum.Owner ||
@@ -47,17 +47,18 @@ function shouldDisableRolesSelect(role: ParticipantRolesEnum) {
   )
 }
 function isRolesOperationPermissible(role: ParticipantRolesEnum) {
-  const currentUserRole = roles.value?.[userStore.user?.id as number] as ParticipantRolesEnum
+  const currentUserRole = roles.value?.[userStore.user!.id] as ParticipantRolesEnum
   return (
     currentUserRole === ParticipantRolesEnum.Owner ||
     (currentUserRole === ParticipantRolesEnum.Admin && role === ParticipantRolesEnum.Admin)
   )
 }
-function isUserDeletionPermissible(role: ParticipantRolesEnum) {
-  const currentUserRole = roles.value?.[userStore.user?.id as number] as ParticipantRolesEnum
+function isUserDeletionPermissible(role: ParticipantRolesEnum, userId: number) {
+  const currentUserRole = roles.value![userStore.user!.id]
   return (
-    currentUserRole === ParticipantRolesEnum.Owner ||
-    (currentUserRole === ParticipantRolesEnum.Admin && role === ParticipantRolesEnum.Member)
+    userId !== userStore.user!.id &&
+    (currentUserRole === ParticipantRolesEnum.Owner ||
+      (currentUserRole === ParticipantRolesEnum.Admin && role === ParticipantRolesEnum.Member))
   )
 }
 
@@ -67,11 +68,11 @@ async function handleParticipantsRoleUpdate(participantId: number) {
     participantId,
     state.value.participantRoles[participantId]
   )
-  await projectStore.updateProjectInStore(project.value?.id as number)
+  await projectStore.updateProjectInStore(project.value!.id)
 }
 async function handleParticipantsDeletion(participantId: number) {
-  await deleteParticipantRequest(project.value?.id as number, participantId)
-  await projectStore.updateProjectInStore(project.value?.id as number)
+  await deleteParticipantRequest(project.value!.id, participantId)
+  await projectStore.updateProjectInStore(project.value!.id)
 }
 </script>
 
@@ -102,11 +103,6 @@ async function handleParticipantsDeletion(participantId: number) {
           <button
             v-if="state.participantRoles[participant.id] !== participant.role"
             class="button"
-            :class="{
-              'button-disabled': !isRolesOperationPermissible(
-                state.participantRoles[participant.id]
-              )
-            }"
             @click="handleParticipantsRoleUpdate(participant.id)"
             :disabled="!isRolesOperationPermissible(state.participantRoles[participant.id])"
           >
@@ -116,10 +112,7 @@ async function handleParticipantsDeletion(participantId: number) {
         <section class="participants-data button-wrapper">
           <button
             class="button button-delete"
-            :class="{
-              'button-disabled': !isUserDeletionPermissible(participant.role)
-            }"
-            :disabled="!isUserDeletionPermissible(participant.role)"
+            :disabled="!isUserDeletionPermissible(participant.role, participant.id)"
             @click="handleParticipantsDeletion(participant.id)"
           >
             Delete
@@ -176,11 +169,6 @@ async function handleParticipantsDeletion(participantId: number) {
   border-radius: 10px;
   background: var(--blue);
   color: white;
-
-  &.button-disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
 
   &.button-delete {
     border: 1px solid var(--red);
