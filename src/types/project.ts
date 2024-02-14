@@ -44,6 +44,7 @@ export interface Column extends ColumnProto {
 
 export interface Project {
   id: number
+  ownerId: number
   title: string
   columns: Column[]
   participants: Participant[]
