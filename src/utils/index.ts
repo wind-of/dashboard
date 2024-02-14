@@ -5,6 +5,10 @@ import { getNearbyDays, getNearbyMonth, getNearbyWeeks, getNearbyYears } from "@
 
 export const isTaskInList = (list: Task[], taskId: number) => list.find(({ id }) => id === taskId)
 
+export const emailPattern =
+  // eslint-disable-next-line no-useless-escape
+  /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+
 export function getNearbyPeriods(period: PERIODS) {
   return {
     [PERIODS.day]: getNearbyDays,
