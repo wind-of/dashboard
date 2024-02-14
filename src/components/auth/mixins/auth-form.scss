@@ -39,6 +39,10 @@
 	margin-top: -5px;
 	color: #718096;
 }
+.input-error-text {
+  color: red;
+  font-size: 14px;
+}
 .checkbox-wrapper {
 	@include flex-row;
 	align-items: flex-start;

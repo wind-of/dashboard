@@ -1,13 +1,10 @@
+export * from "./rules"
 export * from "./template"
 import { PERIODS } from "@/constants"
 import type { Task, User } from "@/types"
 import { getNearbyDays, getNearbyMonth, getNearbyWeeks, getNearbyYears } from "@/utils/nearby.dates"
 
 export const isTaskInList = (list: Task[], taskId: number) => list.find(({ id }) => id === taskId)
-
-export const emailPattern =
-  // eslint-disable-next-line no-useless-escape
-  /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
 
 export function getNearbyPeriods(period: PERIODS) {
   return {
