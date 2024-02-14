@@ -18,7 +18,7 @@ const isOwner = computed(() => project.value?.ownerId === user.value?.id)
   <form class="form" @submit.prevent>
     <ProjectFormTitle />
     <ProjectFormParticipants />
-    <ProjectFormNewParticipant />
+    <ProjectFormNewParticipant v-if="isOwner" />
     <ProjectFormDanger v-if="isOwner" />
   </form>
 </template>
