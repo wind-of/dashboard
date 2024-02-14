@@ -32,14 +32,14 @@ const performerId = computed({
 
 watchEffect(async () => {
   if (isNullable(props.creatorId)) {
-    return
+    return (creator.value = null)
   }
   const { data } = await getUserById(props.creatorId as number).catch(() => ({ data: null }))
   creator.value = data
 })
 watchEffect(async () => {
   if (isNullable(props.performerId)) {
-    return
+    return (performer.value = null)
   }
   const { data } = await getUserById(props.performerId as number).catch(() => ({ data: null }))
   performer.value = data
@@ -55,11 +55,13 @@ watchEffect(async () => {
         <VAvatar class="avatar" :image="creator?.avatar" />
       </div>
       <div class="header-performer">
-        <p>Assigned to: {{ performerName }}</p>
-        <VAvatar v-if="performerName" class="avatar" :image="performer?.avatar" />
+        <template v-if="performer">
+          <p>Assigned to: {{ performerName }}</p>
+          <VAvatar class="avatar" :image="performer.avatar" />
+        </template>
       </div>
       <section v-if="canEdit" class="assign-performer">
-        <p>Re-assign to:</p>
+        <p>Assign to:</p>
         <VSelect class="performer-select" v-model="performerId" defaultTitle="Update performer">
           <option v-for="user in participants" :key="user.id" :value="user.id">
             {{ userFullName(user) }}
