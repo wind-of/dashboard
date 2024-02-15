@@ -2,6 +2,7 @@
 import { useProjectStore } from "@/stores/project"
 import { useRouter } from "vue-router"
 import ProjectsList from "@/components/common/ProjectsList.vue"
+import HomeAssignedTasks from "@/components/home/HomeAssignedTasks.vue"
 import ViewWrapper from "@/components/ViewWrapper.vue"
 
 const router = useRouter()
@@ -21,6 +22,7 @@ async function handleProjectSelect(projectId: number) {
         @onProjectSelect="handleProjectSelect"
         @onProjectCreate="projectStore.createNewProject"
       />
+      <HomeAssignedTasks />
     </main>
   </ViewWrapper>
 </template>

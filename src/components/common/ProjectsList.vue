@@ -64,7 +64,6 @@ function handleProjectCreate() {
   @include flex-row;
   gap: 20px;
   padding: 15px;
-  padding-left: 0;
   max-width: 100%;
   overflow-x: scroll;
 }
@@ -80,6 +79,7 @@ function handleProjectCreate() {
   transition-property: box-shadow, border;
   transition-timing-function: ease-out;
   transition-duration: 0.2s;
+  cursor: pointer;
   &-title {
     font-size: 18px;
     font-weight: 600;

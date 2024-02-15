@@ -29,3 +29,7 @@ export async function updateTaskPositionRequest(
     shouldInsertAfter
   })
 }
+
+export async function getAssignedTasksRequest() {
+  return axios.get(`tasks/assigned`)
+}
