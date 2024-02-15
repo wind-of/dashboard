@@ -37,7 +37,11 @@ export const task = ({
   comments,
   preview,
   expirationDate,
-  startDate
+  startDate,
+  lexorank: uid("task"),
+  columnId: rn(10 ** 8),
+  creatorId: rn(10 ** 8),
+  performerId: rn(10 ** 8)
 })
 export const column = ({ title = "Column #" + rn(), tasks = generateTasks() } = {}): Column => ({
   id: rn(10 ** 8),
