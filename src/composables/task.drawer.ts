@@ -19,6 +19,7 @@ export function useTaskDrawer() {
 
   return {
     async handleTaskChange(updatedTask: UpdatedTask) {
+      console.log(updatedTask)
       selected.task.performerId = updatedTask.performerId
       await updateTask(project.value.id, updatedTask)
       await projectStore.updateProjectInStore(project.value.id)

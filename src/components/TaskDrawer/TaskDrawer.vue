@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive, ref, toRaw } from "vue"
+import { computed, ref, toRaw } from "vue"
 import { vOnClickOutside } from "@vueuse/components"
 import VueDatePicker from "@vuepic/vue-datepicker"
 import "@vuepic/vue-datepicker/dist/main.css"
@@ -12,10 +12,11 @@ import TaskDrawerComments from "@/components/TaskDrawer/TaskDrawerComments.vue"
 import { useCopyReactive } from "@/composables/copy.reactive"
 import { Tag, Task, ColumnProto } from "@/types"
 import { useUserStore } from "@/stores/user"
+import { rules } from "@/utils"
+import { createFormState } from "@/utils/form.state"
 
 const props = defineProps<{
   task: Task
-  columnId: number
   columns: ColumnProto[]
   isOpen: boolean
   tags: Tag[]
@@ -29,14 +30,41 @@ const drawerStyles = computed(() => ({
   [props.isOpen ? "transform" : ""]: "none"
 }))
 
-const form = computed(() => ({
-  state: reactive({ ...useCopyReactive(props.task), columnId: props.columnId })
-}))
-const state = computed(() => form.value.state)
+const state = computed(() =>
+  createFormState(
+    Object.keys(props.task),
+    {
+      title: [rules.required],
+      shortDescription: [rules.required],
+      columnId: [rules.required],
+      expirationDate: [
+        (end: Date) => {
+          const start = state.value.startDate.value
+          return !start || end > new Date(start) || "Task should end after it starts"
+        }
+      ],
+      startDate: [
+        (start: Date) => {
+          const end = state.value.expirationDate.value
+          return !end || start < new Date(end) || "Task should start before it ends"
+        }
+      ]
+    },
+    useCopyReactive(props.task)
+  )
+)
+const isSaveButtonDisabled = computed(
+  () =>
+    !state.value.title.value ||
+    !state.value.shortDescription.value ||
+    !state.value.columnId.value ||
+    !!state.value.expirationDate.error ||
+    !!state.value.startDate.error
+)
 
 function handleCommitChanges() {
   canEdit.value = false
-  emit("onCommitChanges", useCopyReactive(state.value))
+  emit("onCommitChanges", state.value.plain())
 }
 function handleCancel() {
   canEdit.value = false
@@ -50,7 +78,7 @@ function getColumnTitleById(columnId: number) {
   return props.columns.find(({ id }) => id === columnId)?.title
 }
 function isActiveTag(tagId: string) {
-  return state.value.tags.some(({ uniqueId }) => uniqueId === tagId) || false
+  return state.value.tags.value.some(({ uniqueId }) => uniqueId === tagId) || false
 }
 function computeTagStyles(backgroundColor: string, tagId: string) {
   return {
@@ -63,18 +91,20 @@ function handleTagClick(tag: Tag) {
     return
   }
   if (isActiveTag(tag.uniqueId)) {
-    state.value.tags = toRaw(state.value.tags).filter(({ uniqueId }) => uniqueId !== tag.uniqueId)
+    state.value.tags.value = toRaw(state.value.tags.value).filter(
+      ({ uniqueId }) => uniqueId !== tag.uniqueId
+    )
     return
   }
-  state.value.tags.push(tag)
-}
-function handlePerformerUpdate(newPerformerId: number) {
-  state.value.performerId = newPerformerId
+  state.value.tags.value.push(tag)
 }
 function handleEditButtonClick() {
   canEdit.value = true
 }
 function handleCommentSend(newCommentContent) {
+  if (isSaveButtonDisabled.value) {
+    return
+  }
   emit("onCommentSend", newCommentContent)
 }
 </script>
@@ -83,15 +113,19 @@ function handleCommentSend(newCommentContent) {
   <section class="drawer-wrapper" :class="{ open: isOpen }">
     <section class="drawer" :style="drawerStyles" v-on-click-outside="handleCancel">
       <div class="preview-wrapper">
-        <img :src="state.preview" alt="preview image" class="preview-image" v-if="task.preview" />
+        <img
+          :src="state.preview.value"
+          alt="preview image"
+          class="preview-image"
+          v-if="task.preview"
+        />
         <div class="preview-button">Update preview</div>
       </div>
       <div class="drawer-content">
         <Suspense>
           <TaskDrawerHeader
             :creatorId="task.creatorId"
-            :performerId="task.performerId"
-            @onPerformerUpdate="handlePerformerUpdate"
+            v-model:performerId="state.performerId.value"
             :canEdit="canEdit"
           />
         </Suspense>
@@ -107,33 +141,50 @@ function handleCommentSend(newCommentContent) {
               {{ tag.title }}
             </div>
           </section>
-          <InputBlock v-model="state.title" label="Title" :disabled="!canEdit" />
           <InputBlock
-            v-model="state.shortDescription"
-            label="Short Description"
+            v-model="state.title.value"
+            label="Title"
             :disabled="!canEdit"
+            :error="state.title.error"
           />
           <InputBlock
-            v-model="state.description"
+            v-model="state.shortDescription.value"
+            label="Short Description"
+            :disabled="!canEdit"
+            :error="state.shortDescription.error"
+          />
+          <InputBlock
+            v-model="state.description.value"
             label="Description"
             isTextarea
             :disabled="!canEdit"
+            :error="state.description.error"
           />
           <VSelect
-            v-model="state.columnId"
-            :defaultTitle="getColumnTitleById(columnId) || ''"
+            v-model="state.columnId.value"
+            :defaultTitle="getColumnTitleById(task.columnId) || ''"
             :disabled="!canEdit"
           >
             <option v-for="{ id, title } in columns" :key="id" :value="id">
               {{ title }}
             </option>
           </VSelect>
-          <section class="dates">
-            <VueDatePicker v-model="state.startDate" locale="en" :disabled="!canEdit" /> —
-            <VueDatePicker v-model="state.expirationDate" locale="en" :disabled="!canEdit" />
+          <section class="dates-wrapper">
+            <section class="dates">
+              <VueDatePicker v-model="state.startDate.value" locale="en" :disabled="!canEdit" /> —
+              <VueDatePicker
+                v-model="state.expirationDate.value"
+                locale="en"
+                :disabled="!canEdit"
+              />
+            </section>
+            <p class="dates-error">{{ state.startDate.error || state.expirationDate.error }}</p>
           </section>
+
           <section v-if="canEdit" class="form-buttons">
-            <VButton @click="handleCommitChanges" isPrimary>Save</VButton>
+            <VButton @click="handleCommitChanges" isPrimary :disabled="isSaveButtonDisabled"
+              >Save</VButton
+            >
             <VButton @click="handleCancel">Cancel</VButton>
             <VButton @click="handleDelete" isDanger>Delete</VButton>
           </section>
@@ -258,6 +309,9 @@ function handleCommentSend(newCommentContent) {
   @include flex-row;
   gap: 10px;
   align-items: center;
+}
+.dates-error {
+  color: red;
 }
 .form-buttons {
   @include flex-row;

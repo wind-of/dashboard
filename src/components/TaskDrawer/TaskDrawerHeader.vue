@@ -8,8 +8,7 @@ import { getUserById, getUsersByIds } from "@/api/user.requests"
 import { useProjectStore } from "@/stores/project"
 import { isNullable, userFullName } from "@/utils"
 
-const props = defineProps<{ creatorId?: number; performerId?: number; canEdit: boolean }>()
-const emit = defineEmits(["onPerformerUpdate"])
+const props = defineProps<{ creatorId?: number; canEdit: boolean }>()
 
 const projectStore = useProjectStore()
 const projectParticipantsData = computed(() => projectStore.project!.participants)
@@ -21,14 +20,7 @@ const creator = ref<User | null>(null)
 const performer = ref<User | null>(null)
 const creatorName = computed(() => userFullName(creator.value))
 const performerName = computed(() => userFullName(performer.value))
-const performerId = computed({
-  get() {
-    return props.performerId
-  },
-  async set(newPerformerId) {
-    emit("onPerformerUpdate", newPerformerId)
-  }
-})
+const performerId = defineModel("performerId")
 
 watchEffect(async () => {
   if (isNullable(props.creatorId)) {
@@ -38,10 +30,10 @@ watchEffect(async () => {
   creator.value = data
 })
 watchEffect(async () => {
-  if (isNullable(props.performerId)) {
+  if (isNullable(performerId.value)) {
     return (performer.value = null)
   }
-  const { data } = await getUserById(props.performerId as number).catch(() => ({ data: null }))
+  const { data } = await getUserById(performerId.value as number).catch(() => ({ data: null }))
   performer.value = data
 })
 </script>
