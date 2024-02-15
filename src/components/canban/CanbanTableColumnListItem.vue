@@ -2,17 +2,22 @@
 import { computed } from "vue"
 import { useTimeFormat } from "@/composables/format.time"
 import type { Task } from "@/types"
+import { useRouter } from "vue-router"
 
+const router = useRouter()
 const props = defineProps<{ task: Task }>()
 
 const expirationDate = computed(() => {
   const date = props.task.expirationDate
   return date ? useTimeFormat({ date: new Date(date) }) : "-- -- -- -- "
 })
+const isActiveTask = computed(() => {
+  return props.task.id === Number(router.currentRoute.value.query.taskId)
+})
 </script>
 
 <template>
-  <section class="item">
+  <section class="item" :class="{ 'is-active': isActiveTask }">
     <header class="header">
       <section class="tags">
         <div
@@ -46,6 +51,10 @@ const expirationDate = computed(() => {
   border-radius: 12px;
   background-color: var(--white);
   box-shadow: 0 0 5px 0 rgba(34, 60, 80, 0.05);
+
+  &.is-active {
+    border: 1px solid var(--blue);
+  }
 }
 .header {
   @include flex-column;
