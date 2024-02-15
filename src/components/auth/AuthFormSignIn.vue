@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive, ref, toRaw, watch } from "vue"
+import { computed, ref, toRaw, watch } from "vue"
 import VInput from "@/components/form/VInput.vue"
 import VButton from "@/components/form/VButton.vue"
 import { useUserStore } from "@/stores/user"
@@ -7,34 +7,18 @@ import { signInUser } from "@/api"
 import { useRouter } from "vue-router"
 import { rules } from "@/utils"
 import { useParticipatingProjectsStore } from "@/stores/participating.projects"
+import { createFormState } from "@/utils/form.state"
 
-const serverError = ref(false)
-const state = reactive({
-  email: {
-    value: "",
-    error: ""
-  },
-  password: {
-    value: "",
-    error: ""
-  }
-})
 const router = useRouter()
 const userStore = useUserStore()
 const projectsStore = useParticipatingProjectsStore()
 
+const serverError = ref(false)
+const state = createFormState(["email", "password"], {
+  email: [rules.required, rules.email],
+  password: [rules.required, rules.minLength(8), rules.maxLength(64)]
+})
 watch(state, () => (serverError.value = false))
-watch(state.email, () => {
-  const value = state.email.value.trim()
-  state.email.error = rules.email(value) ? "" : "Invalid email"
-})
-watch(state.password, () => {
-  const value = state.password.value.trim()
-  state.password.error =
-    rules.minLength(value, 8) && rules.maxLength(value, 64)
-      ? ""
-      : "Password must be 8 characters at least and no more than 64"
-})
 const isButtonDisabled = computed(
   () => !state.email.value || !state.password.value || !!state.email.error || !!state.password.error
 )
@@ -75,7 +59,9 @@ function handleSubmit() {
           >Sign in</VButton
         >
         <p>Don't have an account? <RouterLink to="/auth/sign-up">Sign up!</RouterLink></p>
-        <p v-if="serverError">Something went wrong. Please try again or check your credentials.</p>
+        <p v-if="serverError" class="server-error">
+          Something went wrong. Please try again or check your credentials.
+        </p>
       </form>
     </div>
   </section>

@@ -1,48 +1,23 @@
 <script setup lang="ts">
-import { computed, reactive, ref, toRaw, watch } from "vue"
+import { computed, ref, toRaw, watch } from "vue"
 import { useRouter } from "vue-router"
 import VInput from "@/components/form/VInput.vue"
 import VButton from "@/components/form/VButton.vue"
 import { signUpUser } from "@/api"
 import { rules } from "@/utils"
+import { createFormState } from "@/utils/form.state"
 
 const router = useRouter()
+
 const serverError = ref(false)
 const doAgreedWithTerms = ref(false)
-const state = reactive({
-  email: {
-    value: "",
-    error: ""
-  },
-  password: {
-    value: "",
-    error: ""
-  },
-  firstname: {
-    value: "",
-    error: ""
-  }
+const state = createFormState(["email", "password", "firstname"], {
+  email: [rules.required, rules.email],
+  password: [rules.required, rules.minLength(8), rules.maxLength(64)],
+  firstname: [rules.required, rules.minLength(2), rules.maxLength(64)]
 })
 
 watch(state, () => (serverError.value = false))
-watch(state.email, () => {
-  const value = state.email.value.trim()
-  state.email.error = rules.email(value) ? "" : "Invalid email"
-})
-watch(state.password, () => {
-  const value = state.password.value.trim()
-  state.password.error =
-    rules.minLength(value, 8) && rules.maxLength(value, 64)
-      ? ""
-      : "Password must be 8 characters at least and no more than 64"
-})
-watch(state.firstname, () => {
-  const value = state.firstname.value.trim()
-  state.firstname.error =
-    rules.minLength(value, 2) && rules.maxLength(value, 64)
-      ? ""
-      : "Name must be 2 characters at least and no more than 64"
-})
 const isButtonDisabled = computed(
   () =>
     !state.email.value ||
@@ -55,9 +30,7 @@ const isButtonDisabled = computed(
 )
 function handleSubmit() {
   const { email, password, firstname } = toRaw(state)
-  if (serverError.value) {
-    return
-  }
+  serverError.value = false
   signUpUser({
     email: email.value.trim(),
     password: password.value.trim(),
@@ -103,7 +76,9 @@ function handleSubmit() {
           >Sign up</VButton
         >
         <p>Already have an account? <RouterLink to="/auth/login">Sign in!</RouterLink></p>
-        <p v-if="serverError">Something went wrong. Please try again or check your credentials.</p>
+        <p v-if="serverError" class="server-error">
+          Something went wrong. Please try again or check your credentials.
+        </p>
       </form>
     </div>
   </section>
