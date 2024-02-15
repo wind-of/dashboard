@@ -1,13 +1,25 @@
 import { reactive, watch } from "vue"
 
-interface FormState {
-  [key: string]: { value: string; error: string }
+type FormStateFieldValue = any
+interface FormStateField {
+  value: FormStateFieldValue
+  error: string
+}
+interface FormStatePlain {
+  [key: string]: FormStateFieldValue
+}
+type FormState = { plain(): FormStatePlain } & {
+  [key: string]: FormStateField
 }
 
-export function createFormState(fields: string[], rules: { [key: string]: Function[] }): FormState {
+export function createFormState(
+  fields: string[],
+  rules: { [key: string]: Function[] },
+  defaults?: FormStatePlain
+): FormState {
   const plainState = fields.reduce((state, field) => {
     state[field] = {
-      value: "",
+      value: defaults?.[field] || "",
       error: ""
     }
     return state
@@ -15,13 +27,21 @@ export function createFormState(fields: string[], rules: { [key: string]: Functi
   const state = reactive(plainState)
   for (const field of fields) {
     watch(state[field], () => {
-      const value = state[field].value.trim()
-      const errorRule = rules[field].find((rule) => rule(value) !== true)
+      const value =
+        typeof state[field].value == "string" ? state[field].value.trim() : state[field].value
+      const errorRule = rules[field]?.find((rule) => rule(value) !== true)
       if (errorRule === undefined) {
         return (state[field].error = "")
       }
       state[field].error = errorRule(value) || `Invalid ${field}`
     })
+  }
+  state.plain = function () {
+    const plain: FormStatePlain = {}
+    for (const field of fields) {
+      plain[field] = state[field].value
+    }
+    return plain
   }
   return state
 }
