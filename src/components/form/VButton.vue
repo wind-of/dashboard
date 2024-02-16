@@ -13,7 +13,7 @@ const classList = computed(() => {
 
 <style lang="scss">
 button {
-  transition-property: opacity;
+  transition-property: opacity, background-color, color, border-color;
   transition-duration: 0.2s;
   transition-timing-function: ease-out;
 }

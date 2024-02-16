@@ -43,7 +43,7 @@
   --view-height: calc(100vh - var(--header-height));
   --view-padding: 30px;
 
-  --input-max-width: 308px;
+  --input-max-width: unset;
   --textarea-max-width: 508px;
   --textarea-min-height: 128px;
 }
