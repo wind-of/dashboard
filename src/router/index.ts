@@ -1,5 +1,4 @@
 import { isUserAuthenticated } from "@/api"
-import { getMeRequest } from "@/api/user.requests"
 import { useUserStore } from "@/stores/user"
 import HomeView from "@/views/HomeView.vue"
 import { createRouter, createWebHistory } from "vue-router"
@@ -34,6 +33,11 @@ const router = createRouter({
       component: () => import("@/views/ProjectView.vue")
     },
     {
+      path: "/profile",
+      name: "profile",
+      component: () => import("@/views/ProfileView.vue")
+    },
+    {
       path: "/auth",
       name: "auth",
       component: () => import("@/views/AuthView.vue"),
@@ -63,8 +67,7 @@ router.beforeEach(async (to) => {
   const auth = { name: "auth", replace: true }
 
   if (isAuthenticated) {
-    const { data: user } = await getMeRequest()
-    useUserStore().saveUser(user)
+    useUserStore().updateByAuthenticatedUser()
   }
 
   if (isAuthPage && isAuthenticated) return home

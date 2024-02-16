@@ -9,6 +9,10 @@ export async function signInUser(user: LoginUser) {
   return axios.post(`auth/login`, user)
 }
 
+export async function logoutRequest() {
+  return axios.get(`auth/logout`)
+}
+
 export async function isUserAuthenticated() {
   return axios.get(`auth/authenticated`)
 }

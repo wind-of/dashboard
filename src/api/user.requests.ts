@@ -1,3 +1,4 @@
+import type { User } from "@/types"
 import axios from "./axios"
 
 export async function getUserById(userId: number) {
@@ -10,4 +11,8 @@ export async function getUsersByIds(userIds: number[]) {
 
 export async function getMeRequest() {
   return axios.get(`users/me`)
+}
+
+export async function updateUserRequest(userId: number, body: Partial<User>) {
+  return axios.patch(`users/${userId}`, body)
 }

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import LeftDrawer from "@/components/LeftDrawer.vue"
+import LeftNavigation from "@/components/LeftNavigation.vue"
 import AppHeader from "@/components/AppHeader.vue"
 </script>
 
 <template>
   <div class="wrapper">
-    <LeftDrawer />
+    <LeftNavigation />
     <section class="content">
       <AppHeader />
       <section class="body">
