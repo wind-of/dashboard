@@ -1,5 +1,7 @@
 import type { NearbyDatesResult } from "@/types/utils"
 
+// FIXME: В действительности, это можно переписать в одну функцию, если перестать оперировать периодами и начать оперировать миллисекундами
+
 export function getNearbyWeeks(): NearbyDatesResult {
   const date = new Date()
   const [year, month, day, weekDay] = [
