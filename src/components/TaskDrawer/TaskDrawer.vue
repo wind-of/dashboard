@@ -35,7 +35,6 @@ const state = computed(() =>
     Object.keys(props.task),
     {
       title: [rules.required],
-      shortDescription: [rules.required],
       columnId: [rules.required],
       expirationDate: [
         (end: Date) => {
@@ -56,7 +55,6 @@ const state = computed(() =>
 const isSaveButtonDisabled = computed(
   () =>
     !state.value.title.value ||
-    !state.value.shortDescription.value ||
     !state.value.columnId.value ||
     !!state.value.expirationDate.error ||
     !!state.value.startDate.error
