@@ -82,9 +82,13 @@ async function handleProjectUpdate(projectId: number, taskId: number) {
   &-description {
     color: #aaa;
   }
-  &-project span {
-    color: var(--blue);
-    font-weight: 600;
+  &-project {
+    font-size: 14px;
+    max-width: 200px;
+    > span {
+      color: var(--blue);
+      font-weight: 600;
+    }
   }
 
   &:hover {

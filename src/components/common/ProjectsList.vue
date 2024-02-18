@@ -72,6 +72,7 @@ function handleProjectCreate() {
   gap: 10px;
   height: 150px;
   min-width: 250px;
+  max-width: 250px;
   border-radius: 20px;
   padding: 20px;
   border: 1px solid transparent;
@@ -83,6 +84,9 @@ function handleProjectCreate() {
   &-title {
     font-size: 18px;
     font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   &:hover {
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
