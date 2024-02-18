@@ -9,6 +9,7 @@ import { useRouter } from "vue-router"
 import VDivider from "@/components/common/VDivider.vue"
 import { useCopyReactive } from "@/composables/copy.reactive"
 import { User } from "@/types"
+import { updateUserRequest } from "@/api/user.requests"
 
 const userStore = useUserStore()
 const router = useRouter()
@@ -31,7 +32,7 @@ const isSaveButtonDisabled = computed(
 
 async function handleUserUpdate() {
   canEdit.value = false
-  // TODO:
+  await updateUserRequest(userStore.user!.id, useCopyReactive(state.value.plain()))
 }
 async function handleLogout() {
   await userStore.logout()
