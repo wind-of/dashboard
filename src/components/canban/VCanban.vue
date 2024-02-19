@@ -38,8 +38,6 @@ async function projectUpdater(request) {
   await projectStore.updateProjectInStore(projectId.value)
 }
 
-const columnsWithoutTasks = computed(() => project.value.columns.map(({ tasks, ...rest }) => rest))
-
 const column = (columnId: number) =>
   project.value.columns.find(({ id }) => id === columnId) || initializeColumn()
 function handleTasksListChangeEmulation(updatedList: Task[], columnId: number) {
@@ -145,7 +143,7 @@ provide("tasksListChangeEmulation", handleTasksListChangeEmulation)
         :tags="tagsStore.tags"
         :columnId="selected.columnId"
         :isOpen="isDrawerOpen"
-        :columns="columnsWithoutTasks"
+        :columns="project.columns"
         @onCommitChanges="handleTaskChange"
         @onCancelChanges="handleTaskChangeCancel"
         @onTaskDelete="handleTaskDelete"
