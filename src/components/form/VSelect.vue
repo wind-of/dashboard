@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { defineModel } from "vue"
 defineProps<{
   defaultTitle: string
   disabled?: boolean

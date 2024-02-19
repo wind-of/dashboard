@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watchEffect } from "vue"
+import { computed, ref, watchEffect, defineModel } from "vue"
 
 import VAvatar from "@/components/common/VAvatar.vue"
 import VSelect from "@/components/form/VSelect.vue"

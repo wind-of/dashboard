@@ -40,6 +40,7 @@ function handlePeriodUpdate(period: PERIODS) {
     />
     <Teleport to="body">
       <TaskDrawer
+        v-if="!isNaN(selected.columnId)"
         :task="selected.task"
         :tags="tagsStore.tags"
         :columnId="selected.columnId"
