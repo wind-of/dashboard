@@ -1,5 +1,5 @@
-<script setup>
-import IconWrapper from "./IconWrapper.vue"
+<script setup lang="ts">
+import IconWrapper from "@/components/icons/IconWrapper.vue"
 </script>
 
 <template>

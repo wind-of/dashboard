@@ -1,4 +1,10 @@
-export function useTimeFormat({ date, isDetailed = false }: { date: Date; isDetailed?: boolean }) {
+export function useTimeFormat({
+  date,
+  isDetailed = false
+}: {
+  date: Date | string
+  isDetailed?: boolean
+}) {
   return new Intl.DateTimeFormat("ru-RU", {
     year: "numeric",
     month: "short",

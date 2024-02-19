@@ -7,11 +7,15 @@ import {
   useComputedTimelineTabletListStyles
 } from "@/composables/timeline.tablet.styles"
 import { useCssVar } from "@vueuse/core"
+import TasksListModal from "@/components/common/TasksListModal.vue"
+import { ref } from "vue"
 
 useCssVar("--timeline-tablet-height").value = `${TIMELINE_TABLET_HEIGHT}px`
 
 const props = defineProps<{ tablet: Tablet; columns: Column[]; period: PERIODS }>()
 const emit = defineEmits(["onTaskSelection"])
+
+const shouldShowTasksListModal = ref(false)
 
 function handleSelection(taskId: number, columnId: number) {
   emit("onTaskSelection", taskId, columnId)
@@ -36,10 +40,18 @@ function getColumnTitle(columnId: number) {
     v-else
     class="tablet tablet-list"
     :style="useComputedTimelineTabletListStyles(tablet as TabletList)"
-    @click="console.log(tablet.task)"
+    @click="shouldShowTasksListModal = true"
     title="List of tasks"
   >
     List of tasks
+    <Teleport to="body">
+      <TasksListModal
+        v-if="shouldShowTasksListModal"
+        :tasks="tablet.task"
+        @onTaskClick="handleSelection"
+        @onClose="shouldShowTasksListModal = false"
+      />
+    </Teleport>
   </div>
 </template>
 
