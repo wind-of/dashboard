@@ -15,6 +15,8 @@ import { useUserStore } from "@/stores/user"
 import { rules } from "@/utils"
 import { createFormState } from "@/utils/form.state"
 
+// TODO: обработать случай, когда передаётся моковая таска
+
 const props = defineProps<{
   task: Task
   columns: ColumnProto[]
