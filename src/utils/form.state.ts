@@ -19,7 +19,7 @@ export function createFormState(
 ): FormState {
   const plainState = fields.reduce((state, field) => {
     state[field] = {
-      value: defaults?.[field] || "",
+      value: defaults?.[field] === undefined ? "" : defaults[field],
       error: ""
     }
     return state

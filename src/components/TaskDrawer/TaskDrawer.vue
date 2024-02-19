@@ -73,7 +73,7 @@ function handleDelete() {
 }
 
 function getColumnTitleById(columnId: number) {
-  return props.columns.find(({ id }) => id === columnId)?.title
+  return props.columns.find(({ id }) => id === columnId)?.title || "Column"
 }
 function isActiveTag(tagId: string) {
   return state.value.tags.value.some(({ uniqueId }) => uniqueId === tagId) || false
@@ -160,7 +160,7 @@ function handleCommentSend(newCommentContent) {
           />
           <VSelect
             v-model="state.columnId.value"
-            :defaultTitle="getColumnTitleById(task.columnId) || ''"
+            :defaultTitle="getColumnTitleById(task.columnId)"
             :disabled="!canEdit"
           >
             <option v-for="{ id, title } in columns" :key="id" :value="id">
