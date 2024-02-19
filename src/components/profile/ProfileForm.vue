@@ -10,6 +10,7 @@ import { rules } from "@/utils"
 import { useCopyReactive } from "@/composables/useCopyReactive"
 import { User } from "@/types"
 import { updateUserRequest } from "@/api/user.requests"
+import { LOGIN_ROUTE_NAME } from "@/router"
 
 const userStore = useUserStore()
 const router = useRouter()
@@ -36,7 +37,7 @@ async function handleUserUpdate() {
 }
 async function handleLogout() {
   await userStore.logout()
-  await router.push({ name: "login" })
+  await router.push({ name: LOGIN_ROUTE_NAME })
 }
 </script>
 

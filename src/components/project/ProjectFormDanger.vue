@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import VButton from "@/components/form/VButton.vue"
+import { HOME_ROUTE_NAME } from "@/router"
 import { useProjectStore } from "@/stores/project"
 import { useRouter } from "vue-router"
 
@@ -8,7 +9,7 @@ const projectStore = useProjectStore()
 
 async function handleProjectDeletion() {
   await projectStore.deleteProject()
-  router.push({ name: "home" })
+  router.push({ name: HOME_ROUTE_NAME })
 }
 </script>
 

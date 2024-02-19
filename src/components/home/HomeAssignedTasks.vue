@@ -4,6 +4,7 @@ import { getAssignedTasksRequest } from "@/api/task.requests"
 import { Task } from "@/types"
 import { useRouter } from "vue-router"
 import { useProjectStore } from "@/stores/project"
+import { CANBAN_ROUTE_NAME } from "@/router"
 
 const router = useRouter()
 const projectStore = useProjectStore()
@@ -24,7 +25,7 @@ watchEffect(async () => {
 
 async function handleProjectUpdate(projectId: number, taskId: number) {
   await projectStore.updateProjectInStore(projectId)
-  router.push({ name: "canban", query: { taskId } })
+  router.push({ name: CANBAN_ROUTE_NAME, query: { taskId } })
 }
 </script>
 

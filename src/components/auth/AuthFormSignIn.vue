@@ -8,6 +8,7 @@ import { useRouter } from "vue-router"
 import { rules } from "@/utils"
 import { useParticipatingProjectsStore } from "@/stores/participating.projects"
 import { createFormState } from "@/utils/form.state"
+import { HOME_ROUTE_NAME } from "@/router"
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -30,7 +31,7 @@ function handleSubmit() {
     .then(async ({ data }) => {
       await projectsStore.updateProjectsList()
       userStore.saveUser(data)
-      router.push({ name: "home" })
+      router.push({ name: HOME_ROUTE_NAME })
     })
     .catch(() => (serverError.value = true))
 }

@@ -3,54 +3,63 @@ import { useUserStore } from "@/stores/user"
 import HomeView from "@/views/HomeView.vue"
 import { createRouter, createWebHistory } from "vue-router"
 
-// TODO: route names should be constant
+export const HOME_ROUTE_NAME = "home"
+export const ABOUT_ROUTER_NAME = "about"
+export const AUTH_ROUTE_NAME = "auth"
+export const PROFILE_ROUTE_NAME = "profile"
+export const LOGIN_ROUTE_NAME = "login"
+export const REGISTER_ROUTE_NAME = "register"
+export const CANBAN_ROUTE_NAME = "canban"
+export const TIMELINE_ROUTE_NAME = "timeline"
+export const PROJECT_ROUTE_NAME = "project"
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: "/",
-      name: "home",
+      name: HOME_ROUTE_NAME,
       component: HomeView
     },
     {
       path: "/about",
-      name: "about",
+      name: ABOUT_ROUTER_NAME,
       component: () => import("@/views/AboutView.vue")
     },
     {
       path: "/canban",
-      name: "canban",
+      name: CANBAN_ROUTE_NAME,
       component: () => import("@/views/CanbanView.vue")
     },
     {
       path: "/timeline",
-      name: "timeline",
+      name: TIMELINE_ROUTE_NAME,
       component: () => import("@/views/TimelineView.vue")
     },
     {
       path: "/project",
-      name: "project",
+      name: PROJECT_ROUTE_NAME,
       component: () => import("@/views/ProjectView.vue")
     },
     {
       path: "/profile",
-      name: "profile",
+      name: PROFILE_ROUTE_NAME,
       component: () => import("@/views/ProfileView.vue")
     },
     {
       path: "/auth",
-      name: "auth",
+      name: AUTH_ROUTE_NAME,
       component: () => import("@/views/AuthView.vue"),
       redirect: { name: "login" },
       children: [
         {
           path: "login",
-          name: "login",
+          name: LOGIN_ROUTE_NAME,
           component: () => import("@/components/auth/AuthFormSignIn.vue")
         },
         {
-          path: "sign-up",
-          name: "sign-up",
+          path: "register",
+          name: REGISTER_ROUTE_NAME,
           component: () => import("@/components/auth/AuthFormSignUp.vue")
         }
       ]
@@ -63,8 +72,8 @@ router.beforeEach(async (to) => {
   const isAuthenticated = await checkUserAuthentiocationRequest()
     .then((res) => res.data)
     .catch(() => false)
-  const home = { name: "home", replace: true }
-  const auth = { name: "auth", replace: true }
+  const home = { name: HOME_ROUTE_NAME, replace: true }
+  const auth = { name: AUTH_ROUTE_NAME, replace: true }
 
   if (isAuthenticated) {
     useUserStore().updateByAuthenticatedUser()

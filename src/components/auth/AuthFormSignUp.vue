@@ -6,6 +6,7 @@ import VButton from "@/components/form/VButton.vue"
 import { userRegistrationRequest } from "@/api/auth.requests"
 import { rules } from "@/utils"
 import { createFormState } from "@/utils/form.state"
+import { LOGIN_ROUTE_NAME } from "@/router"
 
 const router = useRouter()
 
@@ -36,7 +37,7 @@ function handleSubmit() {
     password: password.value.trim(),
     firstname: firstname.value.trim()
   })
-    .then(() => router.push({ name: "login" }))
+    .then(() => router.push({ name: LOGIN_ROUTE_NAME }))
     .catch(() => (serverError.value = true))
 }
 </script>
