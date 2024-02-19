@@ -1,15 +1,15 @@
 import type { ColumnProto } from "@/types"
 import axios from "./axios"
 
-export async function createColumnInProject(projectId: number) {
+export async function createProjectColumnRequest(projectId: number) {
   return axios.post(`columns/`, { projectId, title: "Column" })
 }
 
-export async function deleteColumnFromProject(projectId: number, columnId: number) {
+export async function deleteProjectColumnRequest(projectId: number, columnId: number) {
   return axios.delete(`columns/${columnId}`, { data: { projectId } })
 }
 
-export async function updateColumn(
+export async function updateColumnRequest(
   projectId: number,
   columnId: number,
   data: Partial<Omit<ColumnProto, "id">>

@@ -1,5 +1,5 @@
-import { deleteTask, updateTask } from "@/api"
 import { createCommentRequest } from "@/api/comments.requests"
+import { deleteTaskRequest, updateTaskRequest } from "@/api/task.requests"
 import { useProjectStore } from "@/stores/project"
 import type { Column, Project, Task, UpdatedTask } from "@/types"
 import { task as initializeTask } from "@/utils"
@@ -20,7 +20,7 @@ export function useTaskDrawer() {
   return {
     async handleTaskChange(updatedTask: UpdatedTask) {
       selected.task.performerId = updatedTask.performerId
-      await updateTask(project.value.id, updatedTask)
+      await updateTaskRequest(project.value.id, updatedTask)
       await projectStore.updateProjectInStore(project.value.id)
     },
     async handleTaskComment(newCommentContent: string) {
@@ -36,7 +36,7 @@ export function useTaskDrawer() {
       selected.columnId = NaN
     },
     async handleTaskDelete() {
-      await deleteTask(project.value.id, selected.task.id)
+      await deleteTaskRequest(project.value.id, selected.task.id)
       await projectStore.updateProjectInStore(project.value.id)
       isDrawerOpen.value = false
     },

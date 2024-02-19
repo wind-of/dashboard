@@ -1,11 +1,11 @@
 import type { User } from "@/types"
 import axios from "./axios"
 
-export async function getUserById(userId: number) {
+export async function getUserRequest(userId: number) {
   return axios.get(`users/${userId}`)
 }
 
-export async function getUsersByIds(userIds: number[]) {
+export async function getUsersRequest(userIds: number[]) {
   return axios.get(`users/list?userIds=${userIds.join(",")}`)
 }
 

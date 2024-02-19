@@ -8,15 +8,14 @@ import TaskDrawer from "@/components/TaskDrawer/TaskDrawer.vue"
 import type { Project, Task } from "@/types"
 import { useTaskDrawer } from "@/composables/useTaskDrawer"
 import { useProjectStore } from "@/stores/project"
+import { updateProjectTitleRequest } from "@/api/project.requests"
+import { createTaskRequest, updateTaskPositionRequest } from "@/api/task.requests"
 import {
-  createColumnInProject,
-  createTaskInColumn,
-  deleteColumnFromProject,
-  updateColumn,
-  updateColumnPositionRequest,
-  updateProjectTitle,
-  updateTaskPositionRequest
-} from "@/api"
+  createProjectColumnRequest,
+  deleteProjectColumnRequest,
+  updateColumnRequest,
+  updateColumnPositionRequest
+} from "@/api/column.requests"
 import { useTagsStore } from "@/stores/tags"
 import { column as initializeColumn, isTaskInList } from "@/utils"
 
@@ -104,20 +103,20 @@ async function handleColumnPositionChange() {
   )
 }
 async function handleTaskCreation(columnId: number) {
-  await projectUpdater(() => createTaskInColumn(projectId.value, columnId))
+  await projectUpdater(() => createTaskRequest(projectId.value, columnId))
 }
 async function handleColumnCreation() {
-  await projectUpdater(() => createColumnInProject(projectId.value))
+  await projectUpdater(() => createProjectColumnRequest(projectId.value))
 }
 async function handleColumnDeletion(columnId: number) {
-  await projectUpdater(() => deleteColumnFromProject(projectId.value, columnId))
+  await projectUpdater(() => deleteProjectColumnRequest(projectId.value, columnId))
 }
 async function handleColumnTitleChange({ title, columnId }: { title: string; columnId: number }) {
-  await projectUpdater(() => updateColumn(projectId.value, columnId, { title }))
+  await projectUpdater(() => updateColumnRequest(projectId.value, columnId, { title }))
 }
 
 async function handleProjectTitleChange(title: string) {
-  await projectUpdater(() => updateProjectTitle(projectId.value, title))
+  await projectUpdater(() => updateProjectTitleRequest(projectId.value, title))
 }
 
 provide("createTask", handleTaskCreation)

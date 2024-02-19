@@ -3,7 +3,7 @@ import { computed, ref, toRaw, watch } from "vue"
 import { useRouter } from "vue-router"
 import VInput from "@/components/form/VInput.vue"
 import VButton from "@/components/form/VButton.vue"
-import { signUpUser } from "@/api"
+import { userRegistrationRequest } from "@/api/auth.requests"
 import { rules } from "@/utils"
 import { createFormState } from "@/utils/form.state"
 
@@ -31,7 +31,7 @@ const isButtonDisabled = computed(
 function handleSubmit() {
   const { email, password, firstname } = toRaw(state)
   serverError.value = false
-  signUpUser({
+  userRegistrationRequest({
     email: email.value.trim(),
     password: password.value.trim(),
     firstname: firstname.value.trim()

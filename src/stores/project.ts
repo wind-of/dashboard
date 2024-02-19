@@ -1,4 +1,9 @@
-import { createProject, deleteProjectRequest, getProjectTags, getWholeProjectById } from "@/api"
+import {
+  createProjectRequest,
+  deleteProjectRequest,
+  getProjectRequest,
+  getProjectTagsRequest
+} from "@/api/project.requests"
 import { useTagsStore } from "@/stores/tags"
 import type { Project } from "@/types"
 import { defineStore } from "pinia"
@@ -11,15 +16,15 @@ export const useProjectStore = defineStore("project", () => {
   const participatingProjectsStore = useParticipatingProjectsStore()
 
   async function updateProjectInStore(projectId: number) {
-    const { data: newProject } = await getWholeProjectById(projectId)
-    const { data: tags = [] } = await getProjectTags(projectId)
+    const { data: newProject } = await getProjectRequest(projectId)
+    const { data: tags = [] } = await getProjectTagsRequest(projectId)
     tagsStore.saveTags(tags)
     project.value = newProject
   }
 
   async function createNewProject() {
-    const { data: newProject } = await createProject()
-    const { data: tags = [] } = await getProjectTags(newProject.id)
+    const { data: newProject } = await createProjectRequest()
+    const { data: tags = [] } = await getProjectTagsRequest(newProject.id)
     await participatingProjectsStore.updateProjectsList()
     tagsStore.saveTags(tags)
     project.value = newProject

@@ -3,7 +3,7 @@ import { computed, ref, toRaw, watch } from "vue"
 import VInput from "@/components/form/VInput.vue"
 import VButton from "@/components/form/VButton.vue"
 import { useUserStore } from "@/stores/user"
-import { signInUser } from "@/api"
+import { userAuthorizationRequest } from "@/api/auth.requests"
 import { useRouter } from "vue-router"
 import { rules } from "@/utils"
 import { useParticipatingProjectsStore } from "@/stores/participating.projects"
@@ -26,7 +26,7 @@ const isButtonDisabled = computed(
 function handleSubmit() {
   const { email, password } = toRaw(state)
   serverError.value = false
-  signInUser({ email: email.value.trim(), password: password.value.trim() })
+  userAuthorizationRequest({ email: email.value.trim(), password: password.value.trim() })
     .then(async ({ data }) => {
       await projectsStore.updateProjectsList()
       userStore.saveUser(data)

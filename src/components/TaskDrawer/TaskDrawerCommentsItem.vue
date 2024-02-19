@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watchEffect } from "vue"
 import VAvatar from "@/components/common/VAvatar.vue"
-import { getUserById } from "@/api/user.requests"
+import { getUserRequest } from "@/api/user.requests"
 import { Comment, User } from "@/types"
 import { userFullName } from "@/utils"
 import { useTimeFormat } from "@/composables/useTimeFormat"
@@ -11,7 +11,7 @@ const props = defineProps<{ comment: Comment }>()
 const author = ref<User | null>(null)
 
 watchEffect(async () => {
-  const { data: user } = await getUserById(props.comment.userId)
+  const { data: user } = await getUserRequest(props.comment.userId)
   author.value = user
 })
 </script>

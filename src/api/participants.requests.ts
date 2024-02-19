@@ -5,7 +5,7 @@ export async function addParticipantRequest(email: string, projectId: number) {
   return axios.post(`participants`, { email, projectId })
 }
 
-export async function updateParticipantsRole(
+export async function updateParticipantsRoleRequest(
   projectId: number,
   userId: number,
   role: ParticipantRolesEnum

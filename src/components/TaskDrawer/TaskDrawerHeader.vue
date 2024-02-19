@@ -4,7 +4,7 @@ import { computed, ref, watchEffect, defineModel } from "vue"
 import VAvatar from "@/components/common/VAvatar.vue"
 import VSelect from "@/components/form/VSelect.vue"
 import { User } from "@/types"
-import { getUserById, getUsersByIds } from "@/api/user.requests"
+import { getUserRequest, getUsersRequest } from "@/api/user.requests"
 import { useProjectStore } from "@/stores/project"
 import { isNullable, userFullName } from "@/utils"
 
@@ -12,7 +12,7 @@ const props = defineProps<{ creatorId?: number; canEdit: boolean }>()
 
 const projectStore = useProjectStore()
 const projectParticipantsData = computed(() => projectStore.project!.participants)
-const { data: participants } = await getUsersByIds(
+const { data: participants } = await getUsersRequest(
   projectParticipantsData.value.map(({ userId }) => userId)
 )
 
@@ -26,14 +26,14 @@ watchEffect(async () => {
   if (isNullable(props.creatorId)) {
     return (creator.value = null)
   }
-  const { data } = await getUserById(props.creatorId as number).catch(() => ({ data: null }))
+  const { data } = await getUserRequest(props.creatorId as number).catch(() => ({ data: null }))
   creator.value = data
 })
 watchEffect(async () => {
   if (!performerId || isNullable(performerId.value)) {
     return (performer.value = null)
   }
-  const { data } = await getUserById(performerId.value as number).catch(() => ({ data: null }))
+  const { data } = await getUserRequest(performerId.value as number).catch(() => ({ data: null }))
   performer.value = data
 })
 </script>

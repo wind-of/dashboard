@@ -4,12 +4,15 @@ import { storeToRefs } from "pinia"
 import type { UserWithRole } from "@/types"
 import { ParticipantRolesEnum } from "@/types"
 import { useProjectStore } from "@/stores/project"
-import { getUsersByIds } from "@/api/user.requests"
+import { getUsersRequest } from "@/api/user.requests"
 import VAvatar from "@/components/common/VAvatar.vue"
 import VSelect from "@/components/form/VSelect.vue"
 import { ParticipantRoles } from "@/constants"
 import { keyMapper } from "@/utils"
-import { deleteParticipantRequest, updateParticipantsRole } from "@/api/participants.requests"
+import {
+  deleteParticipantRequest,
+  updateParticipantsRoleRequest
+} from "@/api/participants.requests"
 import { useUserStore } from "@/stores/user"
 
 const userStore = useUserStore()
@@ -33,7 +36,7 @@ watchEffect(async () => {
   if (!plainParticipants.value) {
     return
   }
-  const { data: users } = await getUsersByIds(plainParticipants.value.map(({ userId }) => userId))
+  const { data: users } = await getUsersRequest(plainParticipants.value.map(({ userId }) => userId))
   state.value.participants = users.map((user) => ({ ...user, role: roles.value![user.id] }))
   state.value.participantRoles = keyMapper(plainParticipants.value, "userId", "role")
 })
@@ -63,7 +66,7 @@ function isUserDeletionPermissible(role: ParticipantRolesEnum, userId: number) {
 }
 
 async function handleParticipantsRoleUpdate(participantId: number) {
-  await updateParticipantsRole(
+  await updateParticipantsRoleRequest(
     project.value?.id as number,
     participantId,
     state.value.participantRoles[participantId]

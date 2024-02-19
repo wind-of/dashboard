@@ -1,18 +1,18 @@
 import type { LoginUser, SignUpUser } from "@/types"
 import axios from "./axios"
 
-export async function signUpUser(user: SignUpUser) {
+export async function userRegistrationRequest(user: SignUpUser) {
   return axios.post(`auth/register`, user)
 }
 
-export async function signInUser(user: LoginUser) {
+export async function userAuthorizationRequest(user: LoginUser) {
   return axios.post(`auth/login`, user)
 }
 
-export async function logoutRequest() {
+export async function userLogoutRequest() {
   return axios.get(`auth/logout`)
 }
 
-export async function isUserAuthenticated() {
+export async function checkUserAuthentiocationRequest() {
   return axios.get(`auth/authenticated`)
 }

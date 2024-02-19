@@ -1,4 +1,4 @@
-import { isUserAuthenticated } from "@/api"
+import { checkUserAuthentiocationRequest } from "@/api/auth.requests"
 import { useUserStore } from "@/stores/user"
 import HomeView from "@/views/HomeView.vue"
 import { createRouter, createWebHistory } from "vue-router"
@@ -60,7 +60,7 @@ const router = createRouter({
 
 router.beforeEach(async (to) => {
   const isAuthPage = /\/auth\/*/.test(to.path)
-  const isAuthenticated = await isUserAuthenticated()
+  const isAuthenticated = await checkUserAuthentiocationRequest()
     .then((res) => res.data)
     .catch(() => false)
   const home = { name: "home", replace: true }

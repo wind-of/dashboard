@@ -2,7 +2,7 @@
 import { computed, ref } from "vue"
 import { storeToRefs } from "pinia"
 import { useProjectStore } from "@/stores/project"
-import { updateProjectTitle } from "@/api"
+import { updateProjectTitleRequest } from "@/api/project.requests"
 import VInput from "@/components/form/VInput.vue"
 import VButton from "@/components/form/VButton.vue"
 
@@ -12,7 +12,7 @@ const { project } = storeToRefs(projectStore)
 const title = ref(project.value?.title || "")
 const doesTitleChanged = computed(() => title.value !== project.value?.title)
 async function handleTitleSave() {
-  await updateProjectTitle(project.value?.id as number, title.value)
+  await updateProjectTitleRequest(project.value?.id as number, title.value)
   await projectStore.updateProjectInStore(project.value?.id as number)
 }
 </script>

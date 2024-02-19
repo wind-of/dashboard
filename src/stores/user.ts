@@ -1,4 +1,4 @@
-import { logoutRequest } from "@/api"
+import { userLogoutRequest } from "@/api/auth.requests"
 import { getMeRequest } from "@/api/user.requests"
 import type { User } from "@/types"
 import { defineStore } from "pinia"
@@ -18,7 +18,7 @@ export const useUserStore = defineStore("user", () => {
     user.value = null
   }
   async function logout() {
-    await logoutRequest()
+    await userLogoutRequest()
     resetUser()
   }
 
