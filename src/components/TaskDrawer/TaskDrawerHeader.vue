@@ -30,7 +30,7 @@ watchEffect(async () => {
   creator.value = data
 })
 watchEffect(async () => {
-  if (isNullable(performerId.value)) {
+  if (!performerId || isNullable(performerId.value)) {
     return (performer.value = null)
   }
   const { data } = await getUserById(performerId.value as number).catch(() => ({ data: null }))

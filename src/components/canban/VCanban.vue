@@ -142,7 +142,6 @@ provide("tasksListChangeEmulation", handleTasksListChangeEmulation)
     <CanbanTable :columns="project.columns" />
     <Teleport to="body">
       <TaskDrawer
-        v-if="!isNaN(selected.columnId)"
         :task="selected.task"
         :tags="tagsStore.tags"
         :columnId="selected.columnId"
