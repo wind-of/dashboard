@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Comment } from "@/types"
 import InputBlock from "@/components/form/InputBlock.vue"
-import TaskDrawerCommentsItem from "@/components/TaskDrawer/TaskDrawerCommentsItem.vue"
+import TaskDrawerCommentsItem from "@/components/task-drawer/TaskDrawerCommentsItem.vue"
 import { computed, ref } from "vue"
 
 const props = defineProps<{ comments: Comment[] }>()
