@@ -1,4 +1,4 @@
-import { useTabletEdgesCheck } from "@/composables/tablet.edges"
+import { useTabletEdgesCheck } from "@/composables/useTabletEdgesCheck"
 import { PERIODS } from "@/constants"
 import type { TabletList, TabletSignle } from "@/types"
 import { computeBorderRadiusStyle } from "@/utils"

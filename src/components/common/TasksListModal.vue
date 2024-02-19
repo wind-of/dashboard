@@ -2,7 +2,7 @@
 import { computed } from "vue"
 import { Task } from "@/types"
 import IconClose from "@/components/icons/IconClose.vue"
-import { useTimeFormat } from "@/composables/format.time"
+import { useTimeFormat } from "@/composables/useTimeFormat"
 
 const props = defineProps<{ tasks: Task[] }>()
 const emit = defineEmits(["onTaskClick", "onClose"])
@@ -118,3 +118,4 @@ function handleClose() {
   }
 }
 </style>
+@/composables/useTimeFormat

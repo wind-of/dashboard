@@ -4,7 +4,7 @@ import VAvatar from "@/components/common/VAvatar.vue"
 import { getUserById } from "@/api/user.requests"
 import { Comment, User } from "@/types"
 import { userFullName } from "@/utils"
-import { useTimeFormat } from "@/composables/format.time"
+import { useTimeFormat } from "@/composables/useTimeFormat"
 
 const props = defineProps<{ comment: Comment }>()
 
@@ -48,3 +48,4 @@ watchEffect(async () => {
   }
 }
 </style>
+@/composables/useTimeFormat

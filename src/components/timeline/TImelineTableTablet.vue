@@ -5,7 +5,7 @@ import { PERIODS, TIMELINE_TABLET_HEIGHT } from "@/constants"
 import {
   useComputedTimelineTabletStyles,
   useComputedTimelineTabletListStyles
-} from "@/composables/timeline.tablet.styles"
+} from "@/composables/useComputedTimelineTabletStyles"
 import { useCssVar } from "@vueuse/core"
 import TasksListModal from "@/components/common/TasksListModal.vue"
 import { ref } from "vue"
@@ -87,3 +87,4 @@ function getColumnTitle(columnId: number) {
   }
 }
 </style>
+@/composables/useComputedTimelineTabletStyles

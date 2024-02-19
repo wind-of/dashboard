@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue"
-import { useTimeFormat } from "@/composables/format.time"
+import { useTimeFormat } from "@/composables/useTimeFormat"
 import type { Task } from "@/types"
 import { useRouter } from "vue-router"
 
@@ -106,3 +106,4 @@ const isActiveTask = computed(() => {
   cursor: default;
 }
 </style>
+@/composables/useTimeFormat

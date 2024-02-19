@@ -9,7 +9,7 @@ import VSelect from "@/components/form/VSelect.vue"
 import InputBlock from "@/components/form/InputBlock.vue"
 import TaskDrawerHeader from "@/components/TaskDrawer/TaskDrawerHeader.vue"
 import TaskDrawerComments from "@/components/TaskDrawer/TaskDrawerComments.vue"
-import { useCopyReactive } from "@/composables/copy.reactive"
+import { useCopyReactive } from "@/composables/useCopyReactive"
 import { Tag, Task, ColumnProto } from "@/types"
 import { useUserStore } from "@/stores/user"
 import { rules } from "@/utils"
@@ -317,3 +317,4 @@ function handleCommentSend(newCommentContent) {
   align-self: flex-end;
 }
 </style>
+@/composables/useCopyReactive

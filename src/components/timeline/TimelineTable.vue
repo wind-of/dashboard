@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed, ref } from "vue"
+import { useCssVar } from "@vueuse/core"
+import TimelineTableTablet from "@/components/timeline/TimelineTableTablet.vue"
 import { Column } from "@/types"
 import { PERIODS, DEFAULT_TIMELINE_TABLET_UNIT_WIDTH } from "@/constants"
-import { useTasksToLeveledTablets } from "@/composables/tasks.to.levels"
-import { useFilterTasksByPeriod } from "@/composables/filter.tasks.by.period"
-import { useCssVar } from "@vueuse/core"
+import { useTasksToLeveledTablets } from "@/composables/useTasksToLeveledTablets"
+import { useFilterTasksByPeriod } from "@/composables/useFilterTasksByPeriod"
 import { computedTimelineUnitStyles, unitsCountInPeriod, computeLineOffset } from "@/utils/timeline"
-import TimelineTableTablet from "@/components/timeline/TimelineTableTablet.vue"
 
 const props = defineProps<{ columns: Column[]; period: PERIODS }>()
 const emit = defineEmits(["onTaskSelection"])

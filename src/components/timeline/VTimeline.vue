@@ -4,7 +4,7 @@ import type { Project } from "@/types"
 import TimelineHeader from "@/components/timeline/TimelineHeader.vue"
 import TimelineTable from "@/components/timeline/TimelineTable.vue"
 import TaskDrawer from "@/components/TaskDrawer/TaskDrawer.vue"
-import { useTaskDrawer } from "@/composables/task.drawer"
+import { useTaskDrawer } from "@/composables/useTaskDrawer"
 import { useProjectStore } from "@/stores/project"
 import { DEFAULT_PERIOD, PERIODS } from "@/constants"
 import { useTagsStore } from "@/stores/tags"
@@ -63,3 +63,4 @@ function handlePeriodUpdate(period: PERIODS) {
   gap: 40px;
 }
 </style>
+@/composables/useTaskDrawer

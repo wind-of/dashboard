@@ -6,7 +6,7 @@ import CanbanTable from "@/components/canban/CanbanTable.vue"
 import TaskDrawer from "@/components/TaskDrawer/TaskDrawer.vue"
 
 import type { Project, Task } from "@/types"
-import { useTaskDrawer } from "@/composables/task.drawer"
+import { useTaskDrawer } from "@/composables/useTaskDrawer"
 import { useProjectStore } from "@/stores/project"
 import {
   createColumnInProject,
@@ -166,3 +166,4 @@ provide("tasksListChangeEmulation", handleTasksListChangeEmulation)
   gap: 40px;
 }
 </style>
+@/composables/useTaskDrawer

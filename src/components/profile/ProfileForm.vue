@@ -7,7 +7,7 @@ import VDivider from "@/components/common/VDivider.vue"
 import { useUserStore } from "@/stores/user"
 import { createFormState } from "@/utils/form.state"
 import { rules } from "@/utils"
-import { useCopyReactive } from "@/composables/copy.reactive"
+import { useCopyReactive } from "@/composables/useCopyReactive"
 import { User } from "@/types"
 import { updateUserRequest } from "@/api/user.requests"
 
@@ -96,3 +96,4 @@ async function handleLogout() {
   gap: 15px;
 }
 </style>
+@/composables/useCopyReactive
