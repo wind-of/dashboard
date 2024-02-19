@@ -105,6 +105,9 @@ function handleCommentSend(newCommentContent) {
   }
   emit("onCommentSend", newCommentContent)
 }
+function handlePerformerUpdate(performerId) {
+  state.value.performerId.value = performerId
+}
 </script>
 
 <template>
@@ -123,7 +126,8 @@ function handleCommentSend(newCommentContent) {
         <Suspense>
           <TaskDrawerHeader
             :creatorId="task.creatorId"
-            v-model:performerId="state.performerId.value"
+            :performerId="state.performerId.value"
+            @onPerformerUpdate="handlePerformerUpdate"
             :canEdit="canEdit"
           />
         </Suspense>

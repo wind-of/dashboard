@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watchEffect, defineModel } from "vue"
+import { computed, ref, watchEffect } from "vue"
 
 import VAvatar from "@/components/common/VAvatar.vue"
 import VSelect from "@/components/form/VSelect.vue"
@@ -8,7 +8,17 @@ import { getUserRequest, getUsersRequest } from "@/api/user.requests"
 import { useProjectStore } from "@/stores/project"
 import { isNullable, userFullName } from "@/utils"
 
-const props = defineProps<{ creatorId?: number; canEdit: boolean }>()
+const props = defineProps<{ creatorId?: number; canEdit: boolean; performerId?: number }>()
+const emit = defineEmits(["onPerformerUpdate"])
+
+const performerId = computed({
+  get() {
+    return props.performerId
+  },
+  set(value) {
+    emit("onPerformerUpdate", value)
+  }
+})
 
 const projectStore = useProjectStore()
 const projectParticipantsData = computed(() => projectStore.project!.participants)
@@ -20,7 +30,6 @@ const creator = ref<User | null>(null)
 const performer = ref<User | null>(null)
 const creatorName = computed(() => userFullName(creator.value))
 const performerName = computed(() => userFullName(performer.value))
-const performerId = defineModel("performerId")
 
 watchEffect(async () => {
   if (isNullable(props.creatorId)) {
@@ -30,7 +39,7 @@ watchEffect(async () => {
   creator.value = data
 })
 watchEffect(async () => {
-  if (!performerId || isNullable(performerId.value)) {
+  if (isNullable(performerId.value)) {
     return (performer.value = null)
   }
   const { data } = await getUserRequest(performerId.value as number).catch(() => ({ data: null }))
