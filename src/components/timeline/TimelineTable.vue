@@ -22,7 +22,7 @@ const timelineSectionWidth = computed(() =>
 
 const levels = computed(() =>
   useTasksToLeveledTablets(
-    useFilterTasksByPeriod(props.columns, props.period),
+    useFilterTasksByPeriod(props.columns, props.period).flatMap(({ tasks }) => tasks),
     props.period,
     timelineSectionWidth.value
   )
