@@ -6,13 +6,13 @@ import { Column } from "@/types"
 import { PERIODS, DEFAULT_TIMELINE_TABLET_UNIT_WIDTH } from "@/constants"
 import { useTasksToLeveledTablets } from "@/composables/useTasksToLeveledTablets"
 import { useFilterTasksByPeriod } from "@/composables/useFilterTasksByPeriod"
-import { computedTimelineUnitStyles, unitsCountInPeriod, computeLineOffset } from "@/utils/timeline"
+import { getTimelineUnitStyles, getUnitsCountInPeriod, computeLineOffset } from "@/utils/timeline"
 
 const props = defineProps<{ columns: Column[]; period: PERIODS }>()
 const emit = defineEmits(["onTaskSelection"])
 
 const timelineTable = ref()
-const timelineUnitsCount = computed(() => unitsCountInPeriod(props.period))
+const timelineUnitsCount = computed(() => getUnitsCountInPeriod(props.period))
 const timelineSectionWidth = computed(() =>
   Math.max(
     DEFAULT_TIMELINE_TABLET_UNIT_WIDTH,
@@ -41,8 +41,8 @@ function handleSelection(taskId: number, columnId: number) {
       class="line"
       :style="computeLineOffset(period, timelineUnitsCount, timelineSectionWidth)"
     />
-    <template v-for="i in unitsCountInPeriod(period)" :key="i">
-      <div class="unit" :style="computedTimelineUnitStyles(timelineSectionWidth)">
+    <template v-for="i in getUnitsCountInPeriod(period)" :key="i">
+      <div class="unit" :style="getTimelineUnitStyles(timelineSectionWidth)">
         <h3 class="unit-title">{{ i }}</h3>
         <div class="unit-body"></div>
       </div>

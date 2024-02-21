@@ -14,7 +14,7 @@ import {
 import type { Tablet, TabletList, TabletSignle, Task } from "@/types"
 import { getNearbyPeriods } from "@/utils"
 
-export const computedTimelineUnitStyles = (width: number) => ({
+export const getTimelineUnitStyles = (width: number) => ({
   "max-width": `${width}px`,
   "min-width": `${width}px`
 })
@@ -44,7 +44,7 @@ export function getDaysCountInCurrentMonth() {
   return new Date(NOW.getFullYear(), NOW.getMonth() + 1, 0).getDate()
 }
 
-export function unitsCountInPeriod(period: PERIODS) {
+export function getUnitsCountInPeriod(period: PERIODS) {
   return {
     [PERIODS.day]: 24,
     [PERIODS.week]: 7,
@@ -53,11 +53,11 @@ export function unitsCountInPeriod(period: PERIODS) {
   }[period]
 }
 
-export function tabletLevelToTopOffset(levelIndex: number) {
+export function computeTopOffsetByLevel(levelIndex: number) {
   return levelIndex * TIMELINE_TABLET_HEIGHT
 }
 
-export function taskDateToTabletOffset(
+export function computeTabletOffsetFromDates(
   start: Date,
   end: Date,
   period: PERIODS = DEFAULT_PERIOD,
@@ -108,7 +108,7 @@ export function initializeNewTablet(
   return {
     task,
     top: 0,
-    ...taskDateToTabletOffset(
+    ...computeTabletOffsetFromDates(
       new Date(task.startDate),
       new Date(task.expirationDate),
       period,
@@ -125,7 +125,7 @@ export function initializeNewTabletWithList(
   const unitWidth = Math.max(timelineUnitWidth, DEFAULT_TIMELINE_TABLET_UNIT_WIDTH)
   return {
     task: list,
-    top: tabletLevelToTopOffset(0),
+    top: computeTopOffsetByLevel(0),
     width: unitWidth,
     left: offsetIndex * unitWidth
   }
@@ -140,7 +140,7 @@ export function insertNewTablet(levels: Tablet[][], tablet: Tablet) {
     // @ts-ignore
     const previousTablet = currentTabletLevel.at(-1)
     if (doesTabletsIntersect(previousTablet, tablet)) {
-      tablet.top = tabletLevelToTopOffset(tabletsLevelIndex)
+      tablet.top = computeTopOffsetByLevel(tabletsLevelIndex)
       currentTabletLevel.push(tablet)
       break
     }
