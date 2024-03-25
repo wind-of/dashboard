@@ -8,7 +8,7 @@ import { useRouter } from "vue-router"
 import { rules } from "@/utils"
 import { useParticipatingProjectsStore } from "@/stores/participating.projects"
 import { createFormState } from "@/utils/form.state"
-import { HOME_ROUTE_NAME } from "@/router"
+import { HOME_ROUTE_NAME, REGISTER_ROUTE_NAME } from "@/router"
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -59,7 +59,7 @@ function handleSubmit() {
         <VButton class="form-button" :disabled="isButtonDisabled" @click="handleSubmit"
           >Sign in</VButton
         >
-        <p>Don't have an account? <RouterLink to="/auth/sign-up">Sign up!</RouterLink></p>
+        <p>Don't have an account? <RouterLink :to="REGISTER_ROUTE_NAME">Sign up!</RouterLink></p>
         <p v-if="serverError" class="server-error">
           Something went wrong. Please try again or check your credentials.
         </p>
