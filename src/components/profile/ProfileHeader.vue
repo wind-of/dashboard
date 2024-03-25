@@ -8,6 +8,5 @@ withDefaults(defineProps<{ avatar?: string }>(), {
 <template>
   <header class="header">
     <VAvatar :image="avatar" />
-    <h1>Settings</h1>
   </header>
 </template>
