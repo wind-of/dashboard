@@ -41,7 +41,7 @@ function handleSubmit() {
   <section class="form-wrapper">
     <div class="form-inner-wrapper">
       <header class="form-header">
-        <h2 class="form-title">Sign in to your accont</h2>
+        <h2 class="form-title">Sign in to your account</h2>
         <p class="form-subtitle">Free to use</p>
       </header>
       <form class="form" @submit.prevent>
